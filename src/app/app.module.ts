@@ -9,7 +9,9 @@ import {DetailModule} from './detail/detail.module';
 import {MenuModule} from './menu/menu.module';
 import {BoardModule} from './board/board.module';
 import {MatCardModule} from '@angular/material';
+import {MatSidenavModule} from '@angular/material/sidenav';
 import { LeftpanelComponent } from './leftpanel/leftpanel.component';
+import { AdminMenuComponent } from './admin-menu/admin-menu.component';
 
 @NgModule({
     imports: [
@@ -22,11 +24,13 @@ import { LeftpanelComponent } from './leftpanel/leftpanel.component';
         MenuModule,
         DetailModule,
         HttpClientJsonpModule,
-        MatCardModule
+        MatCardModule,
+        MatSidenavModule
     ],
     declarations: [
         AppComponent,
         LeftpanelComponent,
+        AdminMenuComponent,
     ],
 
     bootstrap: [AppComponent]

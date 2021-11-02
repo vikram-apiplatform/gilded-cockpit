@@ -1,0 +1,35 @@
+<!--<p>-->
+<!--  admin-menu works!-->
+<!--</p>-->
+<!--<mat-drawer-container>-->
+<!--    <mat-drawer>-->
+<!--        <div>-->
+<!--            &lt;!&ndash;        <app-menu-list [options]="options" [defaultActiveMenu]="'Roles'" [menus]="environment['type'] === 'admin'?adminMenu:menu" [showFiller]="showFiller"></app-menu-list>&ndash;&gt;-->
+<!--            <app-leftpanel [options]="options" [menus]="adminMenu" [showFiller]="true"></app-leftpanel>-->
+<!--        </div>-->
+<!--    </mat-drawer>-->
+<!--    <div>-->
+
+<!--    </div>-->
+<!--</mat-drawer-container>-->
+
+<mat-drawer-container class="example-container" autosize>
+    <mat-drawer #drawer class="example-sidenav" mode="side" opened>
+<!--        <p>Auto-resizing sidenav</p>-->
+<!--        <p *ngIf="showFiller">Lorem, ipsum dolor sit amet consectetur.</p>-->
+<!--        <button (click)="showFiller = !showFiller" mat-raised-button>-->
+<!--            Toggle extra text-->
+<!--        </button>-->
+        <app-leftpanel [options]="options" [menus]="adminMenu" [showFiller]="true"></app-leftpanel>
+    </mat-drawer>
+
+    <div class="example-sidenav-content">
+<!--        <button type="button" mat-button (click)="drawer.toggle()">-->
+<!--            Toggle sidenav-->
+<!--        </button>-->
+        <app-menu-component></app-menu-component>
+        <router-outlet></router-outlet>
+    </div>
+
+</mat-drawer-container>
+
