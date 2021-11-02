@@ -1,4 +1,6 @@
 import {Component, OnInit} from '@angular/core';
+import {ConfigurationService} from '../services/configuration.service';
+import {MenuEventService} from '../menu/menu-service';
 
 export interface Menu {
     name: string;
@@ -21,7 +23,10 @@ export interface Config {
 export class AdminMenuComponent implements OnInit {
 
     options: Config = {multi: false};
-    showFiller = false;
+    dashboardList = [];
+    selectedBoard = '';
+    defaultActiveMenu = '';
+    showFiller = true;
     // adminMenu: Menu[] = [
     //     {
     //         name: 'Users',
@@ -112,16 +117,10 @@ export class AdminMenuComponent implements OnInit {
     adminMenu: Menu[] = [
         {
             name: 'Dashboard',
-            iconClass: 'fa fa-users',
-            active: false,
+            iconClass: 'fa fa-tachometer',
+            active: true,
             toolTip: 'Platform Experience',
-            submenu: [
-                {name: 'Platform Console', key: 'Platform Console', icon: 'fa fa-desktop', toolTip: 'Platform Console'},
-                {name: 'Developer Experience', key: 'Developer Experience', icon: 'fa fa-rocket', toolTip: 'Developer Experience'},
-                {name: 'API Gateway', key: 'API Gateway Manager', icon: 'fa fa-shield', toolTip: 'API Gateway'},
-                {name: 'File Storage', key: 'Storage', icon: 'fa fa-folder', toolTip: 'File Storage'},
-                {name: 'Databases', key: 'Databases', icon: 'fa fa-database', toolTip: 'Databases'}
-            ]
+            submenu: []
         },
         {
             name: 'Downloads',
@@ -167,10 +166,75 @@ export class AdminMenuComponent implements OnInit {
         },
     ]
 
-    constructor() {
+    constructor(public _configurationService: ConfigurationService, public _menuEventService: MenuEventService) {
     }
 
     ngOnInit() {
+        this.updateDashboardMenu('');
     }
 
+    updateDashboardMenu(selectedBoard: string) {
+
+        this._configurationService.getBoards().subscribe(data => {
+
+            const me = this;
+            if (data && data instanceof Array && data.length) {
+                this.dashboardList.length = 0;
+
+
+                // sort boards
+                data.sort((a: any, b: any) => a.boardInstanceId - b.boardInstanceId);
+                if (data && data.length) {
+                    this.adminMenu[0].submenu = [];
+                }
+                data.forEach(board => {
+
+                    me.dashboardList.push(board.title);
+                    this.adminMenu[0].submenu.push({
+                        name: board.title,
+                        key: board.title,
+                        icon: 'fa fa-th',
+                        toolTip: 'Platform Console'
+                    });
+
+                });
+
+                if (selectedBoard === '') {
+                    this.selectedBoard = this.dashboardList[0];
+                    this.defaultActiveMenu = this.adminMenu[0].submenu[0].key;
+                    //this.boardSelect(this.dashboardList[0]);
+
+                } else {
+
+                    //this.boardSelect(selectedBoard);
+                }
+            }
+        });
+    }
+
+    setupEventListeners() {
+        let gridEventSubscription = this._menuEventService.listenForGridEvents().subscribe((event: IEvent) => {
+
+            const edata = event['data'];
+
+            switch (event['name']) {
+                case 'boardUpdateEvent':
+                    this.updateDashboardMenu(edata);
+                    break;
+            }
+
+        });
+
+        this._menuEventService.addSubscriber(gridEventSubscription);
+
+    }
+
+    dashboardSelected(menuItem) {
+        this.selectedBoard = menuItem.child;
+        this._menuEventService.raiseMenuEvent({name: 'boardSelectEvent', data: menuItem.child});
+    }
+
+    toggleFiller() {
+        this.showFiller = !this.showFiller;
+    }
 }

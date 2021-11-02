@@ -19,9 +19,9 @@ import {DonutService} from '../gadgets/donut/service';
 import {TodoService} from '../gadgets/todo/service';
 import {ToastModule} from '../toast/toast.module';
 import {ConnectionService} from '../gadgets/port-connection/service';
-import {BubbleService} from "../gadgets/bubble/service";
-import {BarChartService} from "../gadgets/barchart/service";
-import {PieChartService} from "../gadgets/piechart/service";
+import {BubbleService} from '../gadgets/bubble/service';
+import {BarChartService} from '../gadgets/barchart/service';
+import {PieChartService} from '../gadgets/piechart/service';
 
 
 @NgModule({
@@ -51,7 +51,7 @@ import {PieChartService} from "../gadgets/piechart/service";
         DonutService,
         ConnectionService,
         TodoService  // todo gadget
-        ,BubbleService,
+        , BubbleService,
         BarChartService,
         PieChartService
     ]

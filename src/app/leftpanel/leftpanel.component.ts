@@ -12,6 +12,7 @@ export interface Config {
   multi?: boolean;
 }
 
+declare let $;
 
 @Component({
   selector: 'app-leftpanel',
@@ -26,6 +27,7 @@ export class LeftpanelComponent implements OnInit {
   @Input() defaultActiveMenu: any;
   @Output() menuItemSelected: EventEmitter<any> = new EventEmitter<any>();
   config: Config;
+  @Input() activeMenu = '';
 
   ngOnInit() {
     this.config = this.mergeConfig(this.options);
@@ -61,9 +63,10 @@ export class LeftpanelComponent implements OnInit {
     return '';
   }
 
-  onItemSelected(item, parentMenuName, itemName) {
+  onItemSelected(item, parentMenuName, itemName, key) {
     //$('.submenu li').removeClass('active');
-    //$(item.target).addClass('active');
+    $(item.target).addClass('active');
+    this.activeMenu = key;
     this.menuItemSelected.emit({parent: parentMenuName, child: itemName});
   }
 

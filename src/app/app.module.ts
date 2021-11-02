@@ -8,7 +8,7 @@ import {HttpClientJsonpModule, HttpClientModule} from '@angular/common/http';
 import {DetailModule} from './detail/detail.module';
 import {MenuModule} from './menu/menu.module';
 import {BoardModule} from './board/board.module';
-import {MatCardModule} from '@angular/material';
+import {MatButtonModule, MatCardModule} from '@angular/material';
 import {MatSidenavModule} from '@angular/material/sidenav';
 import { LeftpanelComponent } from './leftpanel/leftpanel.component';
 import { AdminMenuComponent } from './admin-menu/admin-menu.component';
@@ -25,7 +25,8 @@ import { AdminMenuComponent } from './admin-menu/admin-menu.component';
         DetailModule,
         HttpClientJsonpModule,
         MatCardModule,
-        MatSidenavModule
+        MatSidenavModule,
+        MatButtonModule
     ],
     declarations: [
         AppComponent,
