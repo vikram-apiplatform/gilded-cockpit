@@ -1,0 +1,101 @@
+.card {
+    box-shadow: 0 1px 4px 0 rgba(0, 0, 0, 0.4);
+    border: 0;
+    margin-bottom: 30px;
+    margin-top: 30px;
+    border-radius: 6px;
+    color: #333333;
+    background: #fff;
+    width: 100%;
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    min-width: 0;
+    word-wrap: break-word;
+    font-size: 0.875rem;
+}
+
+.card .card-header {
+    border-bottom: none;
+    background: transparent;
+}
+
+.card-header {
+    padding: 0.75rem 0rem;
+    margin-bottom: 0;
+    background-color: #fff;
+    border-bottom: 1px solid #eeeeee;
+}
+
+/*.card-stats .card-header .card-category:not([class*=text-]) {*/
+/*    color: #999999;*/
+/*    font-size: 14px;*/
+/*}*/
+
+
+.card .card-icon {
+    border-radius: 3px;
+    /*background-color: red;*/
+    color: white;
+    padding-top: 1.2rem;
+    padding-bottom: 1.2rem;
+    padding-left: 1.5rem;
+    padding-right: 1.5rem;
+    margin-top: -30px;
+    margin-right: 15px;
+    margin-left: 15px;
+    font-size: 1.5rem;
+    float: left;
+    /*box-shadow: 0 1px 4px 0 rgba(0, 0, 0, 0.4)*/
+}
+
+.total-inventory {
+    /*background-color: #ffd700;*/
+    background: linear-gradient(60deg, #ffa726, #fb8c00);
+}
+
+.available-inventory {
+    background: linear-gradient(60deg, #66bb6a, #43a047);
+}
+
+.bought {
+    background: linear-gradient(60deg, #ef5350, #e53935);
+}
+
+.sold {
+    background: linear-gradient(60deg, #26c6da, #00acc1);
+}
+
+.card-header-warning {
+    background: linear-gradient(60deg, #ffa726, #fb8c00);
+}
+
+.card-footer {
+    padding: 0;
+    padding-top: 10px;
+    margin: 0 15px 10px;
+    border-radius: 0;
+    justify-content: center;
+    align-items: center;
+    display: flex;
+    align-items: center;
+    background-color: transparent;
+    border: 0;
+    border-top: 1px solid #eee;
+    /*margin-top: 14px;*/
+}
+
+.stats {
+    color: #999999;
+    font-size: 12px;
+    line-height: 22px;
+    display: inline-flex;
+}
+
+.card-details {
+    text-align: center;
+}
+
+.details-text {
+    /*padding: 0.2rem;*/
+}
