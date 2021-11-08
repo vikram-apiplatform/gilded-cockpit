@@ -1073,6 +1073,14 @@
         "commander": "^2.15.1"
       }
     },
+    "@ng-bootstrap/ng-bootstrap": {
+      "version": "5.3.1",
+      "resolved": "https://registry.npmjs.org/@ng-bootstrap/ng-bootstrap/-/ng-bootstrap-5.3.1.tgz",
+      "integrity": "sha512-xlhBJb4oNcOQk04h5sQcq9P1E97sGB1HjqBCqgL0+S2w2uvLWME9F9SuH7wU4S1+eYe7WG9SKFpq+R4BjG2kMw==",
+      "requires": {
+        "tslib": "^1.9.0"
+      }
+    },
     "@ngtools/webpack": {
       "version": "7.3.10",
       "resolved": "https://registry.npmjs.org/@ngtools/webpack/-/webpack-7.3.10.tgz",
@@ -2540,6 +2548,11 @@
         "multicast-dns": "^6.0.1",
         "multicast-dns-service-types": "^1.1.0"
       }
+    },
+    "bootstrap": {
+      "version": "4.6.1",
+      "resolved": "https://registry.npmjs.org/bootstrap/-/bootstrap-4.6.1.tgz",
+      "integrity": "sha512-0dj+VgI9Ecom+rvvpNZ4MUZJz8dcX7WCX+eTID9+/8HgOkv3dsRzi8BGeZJCQU6flWQVYxwTQnEZFrmJSEO7og=="
     },
     "brace-expansion": {
       "version": "1.1.11",
@@ -10008,6 +10021,11 @@
       "version": "5.0.2",
       "resolved": "https://registry.npmjs.org/ng2-dnd/-/ng2-dnd-5.0.2.tgz",
       "integrity": "sha512-5mWWBePwvEPsNd/HkdbD543Q9mPyJofL6zkNydl8/Ah3qrrvZT2DaEPbknY08OgkXpI2qUGksc01OzzVlRQ9dQ=="
+    },
+    "ngx-bootstrap": {
+      "version": "5.6.2",
+      "resolved": "https://registry.npmjs.org/ngx-bootstrap/-/ngx-bootstrap-5.6.2.tgz",
+      "integrity": "sha512-6YHXtdXkGH3w0NQoaUgNYAcrj064Lv5RTO284ha/hvpNTrh55yQz2cVh0VvwBk3MjyY2tdmLH4SuCJDszYdYiw=="
     },
     "nice-try": {
       "version": "1.0.5",

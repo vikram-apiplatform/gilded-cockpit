@@ -8,10 +8,11 @@ import {HttpClientJsonpModule, HttpClientModule} from '@angular/common/http';
 import {DetailModule} from './detail/detail.module';
 import {MenuModule} from './menu/menu.module';
 import {BoardModule} from './board/board.module';
-import {MatButtonModule, MatCardModule} from '@angular/material';
+import {MatButtonModule, MatCardModule, MatIconModule} from '@angular/material';
 import {MatSidenavModule} from '@angular/material/sidenav';
 import { LeftpanelComponent } from './leftpanel/leftpanel.component';
 import { AdminMenuComponent } from './admin-menu/admin-menu.component';
+import { DashbordOverviewComponent } from './dashbord-overview/dashbord-overview.component';
 
 @NgModule({
     imports: [
@@ -26,12 +27,14 @@ import { AdminMenuComponent } from './admin-menu/admin-menu.component';
         HttpClientJsonpModule,
         MatCardModule,
         MatSidenavModule,
-        MatButtonModule
+        MatButtonModule,
+        MatIconModule
     ],
     declarations: [
         AppComponent,
         LeftpanelComponent,
         AdminMenuComponent,
+        DashbordOverviewComponent,
     ],
 
     bootstrap: [AppComponent]

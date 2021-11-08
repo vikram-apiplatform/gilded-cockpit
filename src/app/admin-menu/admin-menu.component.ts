@@ -199,6 +199,8 @@ export class AdminMenuComponent implements OnInit {
 
                 });
 
+                console.log(this.dashboardList);
+
                 if (selectedBoard === '') {
                     this.selectedBoard = this.dashboardList[0];
                     this.defaultActiveMenu = this.adminMenu[0].submenu[0].key;

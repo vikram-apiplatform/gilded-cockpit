@@ -66,7 +66,7 @@ export class GridComponent {
      * when changing the layout.
      *
      */
-    removeOldListeners(){
+    removeOldListeners() {
 
         this._gadgetInstanceService.unSubscribeAll();
         this._menuEventService.unSubscribeAll();
@@ -223,6 +223,7 @@ export class GridComponent {
         //console.log("Adding Gadget!!!!!!!@#@##@#@#@#@#@#@@");
 
         const _gadget = Object.assign({}, gadget);
+        console.log(gadget);
 
         _gadget.instanceId = new Date().getTime();
         _gadget.config = new GadgetConfigModel(gadget.config);
@@ -244,7 +245,7 @@ export class GridComponent {
 
     public updateBoardLayout(structure) {
 
-        console.log("IN UPDATE BOARD LAYOUT");
+        console.log('IN UPDATE BOARD LAYOUT');
 
         // user selected the currently selected layout
         if (structure.id === this.getModel().id) {
@@ -282,7 +283,7 @@ export class GridComponent {
 
         // clear temporary object
         for (const member in  _model) {
-            delete  _model[member];
+            delete _model[member];
         }
 
         // persist the board change
@@ -387,6 +388,7 @@ export class GridComponent {
 
         this._configurationService.getBoardByTitle(boardTitle).subscribe(board => {
 
+                console.log(board);
                 this.setModel(board);
                 this.updateServicesAndGridWithModel();
                 this.boardUpdateEvent.emit(boardTitle);

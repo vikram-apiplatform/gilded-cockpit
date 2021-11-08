@@ -124,6 +124,8 @@
 
 .example-sidenav-content {
     /*display: flex;*/
+    display: flex;
+    flex-direction: column;
     height: 100%;
     /*align-items: center;*/
     /*justify-content: center;*/
