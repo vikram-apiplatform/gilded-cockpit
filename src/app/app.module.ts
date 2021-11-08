@@ -25,6 +25,7 @@ import {MatSelectModule} from '@angular/material/select';
 import {MatTooltipModule} from '@angular/material/tooltip';
 import { OrderCmpComponent } from './order-cmp/order-cmp.component';
 import { PlaceOrderComponent } from './order-cmp/place-order/place-order.component';
+import { OrderManagementComponent } from './order-cmp/order-management/order-management.component';
 
 @NgModule({
     imports: [
@@ -60,7 +61,8 @@ import { PlaceOrderComponent } from './order-cmp/place-order/place-order.compone
         OrderFormComponent,
         DynamicFormGeneratorComponent,
         OrderCmpComponent,
-        PlaceOrderComponent
+        PlaceOrderComponent,
+        OrderManagementComponent
     ],
     providers: [LeftpanelComponent],
     entryComponents: [AttributeDescriptionComponent],

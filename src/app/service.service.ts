@@ -40,4 +40,29 @@ export class ServiceService {
     return this._http.get(environment.apiHost + '/v1/formData?formName=orderForm', this.options)
         .pipe(map(res => res));
   }
+
+  placeOrder(formAttributes) {
+    this.getHttp();
+    const payload = {
+      orderDetails: formAttributes
+    }
+    const options = {
+      headers: new HttpHeaders({
+        'Content-Type': 'application/json',
+        'pkey': '3fdba83a7f2055ea3fe39d9d3d862d7a',
+        'apikey': 'IzoIJCYSxrwCnXsVRmTXKpgk3cuEqOtY',
+        'process_id': 'Process_1635486464023',
+        'tenant_id': 'dev-gilded-dev-gilded',
+        'Access-Control-Allow-Origin': '*',
+        'observe': 'response'
+      })
+    };
+    return this._http.post(environment.apiHost + '/v1/startOrderWorkflow', payload, options).pipe(map(res => res));
+  }
+
+  getOrders() {
+    this.getHttp();
+    return this._http.get(environment.apiHost + '/v1/orders', this.options)
+        .pipe(map(res => res));
+  }
 }

@@ -1,6 +1,7 @@
 import {Component, OnInit} from '@angular/core';
 import {ConfigurationService} from '../services/configuration.service';
 import {MenuEventService} from '../menu/menu-service';
+import { Router } from '@angular/router';
 
 export interface Menu {
     name: string;
@@ -155,7 +156,24 @@ export class AdminMenuComponent implements OnInit {
             iconClass: 'fa fa-briefcase',
             active: false,
             toolTip: 'Platform Experience',
-            submenu: []
+            submenu: [{
+                name: 'Place Order',
+                key: 'Place Order',
+                icon: 'fa fa-th',
+                toolTip: 'Place Order'
+            }]
+        },
+        {
+            name: 'Configurations',
+            iconClass: 'fa fa-briefcase',
+            active: false,
+            toolTip: 'Configurations',
+            submenu: [{
+                name: 'Order Form',
+                key: 'Order Form',
+                icon: 'fa fa-th',
+                toolTip: 'Order Form'
+            }]
         },
         {
             name: 'PayTM',
@@ -166,7 +184,7 @@ export class AdminMenuComponent implements OnInit {
         },
     ]
 
-    constructor(public _configurationService: ConfigurationService, public _menuEventService: MenuEventService) {
+    constructor(public _configurationService: ConfigurationService, public _menuEventService: MenuEventService, private router: Router) {
     }
 
     ngOnInit() {
@@ -229,6 +247,18 @@ export class AdminMenuComponent implements OnInit {
 
         this._menuEventService.addSubscriber(gridEventSubscription);
 
+    }
+
+    menuItemSelected(menuItem) {
+        console.log(menuItem.parent)
+        if (menuItem.parent === 'Dashboard') {
+            this.selectedBoard = menuItem.child;
+            this._menuEventService.raiseMenuEvent({name: 'boardSelectEvent', data: menuItem.child});
+        } else if ((menuItem.parent === 'Inventory')) {
+            this.router.navigateByUrl('/order')
+        } else if ((menuItem.parent === 'Configurations')) {
+            this.router.navigateByUrl('/form')
+        }
     }
 
     dashboardSelected(menuItem) {

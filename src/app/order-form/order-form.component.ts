@@ -8,7 +8,7 @@ import {AttributeColumn} from '../dynamic-form-builder/dynamic-form-builder.comp
   styleUrls: ['./order-form.component.scss']
 })
 export class OrderFormComponent implements OnInit {
-
+  formAttribute
   tableDefinition: AttributeColumn[] = [
     {
       name: 'displayName',
@@ -16,6 +16,13 @@ export class OrderFormComponent implements OnInit {
       type: 'input',
       placeholder: 'Display Name',
       description: 'Display Name',
+      disabled: false
+    },
+    {
+      name: 'formAttribute',
+      headerDisplayName: 'Form Attribute',
+      type: 'checkbox',
+      description: 'form',
       disabled: false
     },
     {

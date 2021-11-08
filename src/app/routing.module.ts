@@ -6,6 +6,7 @@ import {DetailComponent} from './detail/detail.component';
 import {DynamicFormBuilderComponent} from './dynamic-form-builder/dynamic-form-builder.component';
 import {OrderFormComponent} from './order-form/order-form.component';
 import {PlaceOrderComponent} from './order-cmp/place-order/place-order.component';
+import {OrderManagementComponent} from './order-cmp/order-management/order-management.component';
 
 export const routes: Routes = [
     {
@@ -34,6 +35,10 @@ export const routes: Routes = [
         path: 'order',
         component: PlaceOrderComponent
     },
+    {
+        path: 'orders',
+        component: OrderManagementComponent
+    }
 
 
 ];
