@@ -1,0 +1,94 @@
+<div class="table-responsive">
+  <table class="col-lg-12 col-md-12 col-sm-12">
+    <thead>
+    <tr>
+      <th style="width: 1%;">#</th>
+
+      <th *ngFor="let header of tableDefinition; let i = index">
+        {{header.headerDisplayName}}
+      </th>
+
+      <th style="width: 1%;">
+        <i matTooltip="Add Attribute" class="fa fa-plus-square tour-schema-def-add-attribute"
+           (click)="addAttributeField()"></i>
+      </th>
+
+    </tr>
+    </thead>
+    <tbody cdkDropList (cdkDropListDropped)="attributeDrop($event)">
+    <ng-container *ngFor="let value of formAttributes; let i = index" >
+      <tr cdkDrag cdkDragLockAxis="y">
+        <td style="width: 1%;">
+          <div class="drag-handle" cdkDragHandle>
+            <ng-container [ngTemplateOutlet]="dragHandleTmpl">
+            </ng-container>
+          </div>
+        </td>
+
+        <td *ngFor="let column of tableDefinition;">
+          <ng-container *ngIf="column.type ===  'input'" [ngTemplateOutlet]="tagTypeInput" [ngTemplateOutletContext]="{header: column, attribute:value}"></ng-container>
+          <ng-container *ngIf="column.type ===  'selector'" [ngTemplateOutlet]="tagTypeSelector" [ngTemplateOutletContext]="{header: column, attribute:value}"></ng-container>
+          <ng-container *ngIf="column.type ===  'checkbox'" [ngTemplateOutlet]="tagTypeCheckbox" [ngTemplateOutletContext]="{header: column, attribute:value}"></ng-container>
+          <ng-container *ngIf="column.type ===  'more'" [ngTemplateOutlet]="tagTypeMore" [ngTemplateOutletContext]="{header: column, attribute:value}"></ng-container>
+
+        </td>
+
+        <td class="text-center">
+          <i class="fa fa-minus-square" (click)="deleteAttributeField(i)"></i>
+        </td>
+      </tr>
+      <!--                <tr *ngIf="definition.type === 'selectable_field'">-->
+      <!--                    <td style="padding-left: 35px;" [colSpan]="6">-->
+      <!--                        <ng-container [ngTemplateOutlet]="fieldOptions" [ngTemplateOutletContext]="{attribute:definition}"></ng-container>-->
+      <!--                    </td>-->
+      <!--                </tr>-->
+    </ng-container>
+    </tbody>
+  </table>
+</div>
+
+
+<!--<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 text-right" >-->
+<!--    <button (click)="submitForm()" class="apiplatform-btn"><span>Submit</span>-->
+<!--    </button>-->
+<!--</div>-->
+
+<ng-template #dragHandleTmpl>
+  <svg class="bi bi-list handle" width="1em" height="1em" viewBox="0 0 16 16" fill="currentColor"
+       xmlns="http://www.w3.org/2000/svg">
+    <path fill-rule="evenodd"
+          d="M2.5 11.5A.5.5 0 013 11h10a.5.5 0 010 1H3a.5.5 0 01-.5-.5zm0-4A.5.5 0 013 7h10a.5.5 0 010 1H3a.5.5 0 01-.5-.5zm0-4A.5.5 0 013 3h10a.5.5 0 010 1H3a.5.5 0 01-.5-.5z"
+          clip-rule="evenodd" />
+  </svg>
+</ng-template>
+
+<ng-template #tagTypeInput let-header='header' let-attribute='attribute'>
+  <input class="form-control attribute" placeholder="{{header.placeholder}}"
+         [value]="attribute[header.name]"
+         [(ngModel)]="attribute[header.name]">
+</ng-template>
+
+<ng-template #tagTypeCheckbox let-header='header' let-attribute='attribute'>
+  <mat-checkbox [(ngModel)]="attribute[header.name]">
+  </mat-checkbox>
+</ng-template>
+
+<ng-template #tagTypeSelector let-header='header' let-attribute='attribute'>
+  <select *ngIf="!header.disabled" class="form-control"
+          [(ngModel)]="attribute[header.name]">
+    <option *ngFor="let option of header.selectableOptions; let i = index" [value]="option">
+      <ng-container *ngIf="!(header.selectableOptions && header.optionsDisplayNames && header.selectableOptions.length === header.optionsDisplayNames.length)">
+        {{option}}
+      </ng-container>
+      <ng-container *ngIf="header.selectableOptions && header.optionsDisplayNames && header.selectableOptions.length === header.optionsDisplayNames.length">
+        {{header.optionsDisplayNames[i]}}
+      </ng-container>
+    </option>
+  </select>
+  <input *ngIf="header.disabled" class="form-control attribute" placeholder="{{header.disabledPlaceholder}}" disabled>
+</ng-template>
+
+<ng-template #tagTypeMore let-header='header' let-attribute='attribute'>
+  <a class="text-right" style="cursor: pointer; padding-right: 15px"
+     (click)="openAttributeDescriptionDialog(header, attribute)">More...</a>
+</ng-template>

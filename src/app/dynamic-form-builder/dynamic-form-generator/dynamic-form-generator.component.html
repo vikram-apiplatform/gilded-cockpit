@@ -1,0 +1,20 @@
+<div *ngFor="let attribute of attributeData">
+  <mat-form-field *ngIf="attribute.fieldType === 'text_field'" class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+    <input [required]="attribute.required" matInput placeholder="{{attribute.displayName}}" [type]="attribute.displayPolicy === 'Masked' ? 'password' : 'text'"
+           [(ngModel)]="attribute.value">
+    <mat-icon *ngIf="attribute.description && attribute.description !== ''" matSuffix><i class="fa fa-info-circle icon-background1"
+                                                                                         matTooltip="{{attribute.description}}"></i>
+    </mat-icon>
+  </mat-form-field>
+
+  <mat-form-field *ngIf="attribute.fieldType === 'selectable_field'" class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+    <mat-select [required]="attribute.required" placeholder="{{attribute.displayName}}" [(ngModel)]="attribute.value">
+      <mat-option *ngFor="let option of attribute.options" [value]="attribute.value">
+        {{option}}
+      </mat-option>
+    </mat-select>
+    <mat-icon *ngIf="attribute.description && attribute.description !== ''" matSuffix><i class="fa fa-info-circle icon-background1"
+                                                                                         matTooltip="{{attribute.description}}"></i>
+    </mat-icon>
+  </mat-form-field>
+</div>

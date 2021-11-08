@@ -11,6 +11,8 @@ export const environment = {
         board: true,
         ai: false,
         endpoint: true
-    }
+    },
+    apiHost: 'https://dev-gilded.gateway.apiplatform.io',
+    apiHostName: 'dev-gilded',
 
 };

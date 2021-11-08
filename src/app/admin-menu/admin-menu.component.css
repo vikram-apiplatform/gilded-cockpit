@@ -125,6 +125,7 @@
 .example-sidenav-content {
     /*display: flex;*/
     height: 100%;
+    background-color: #edebe9;
     /*align-items: center;*/
     /*justify-content: center;*/
 }
