@@ -22,7 +22,6 @@ import { OrderFormComponent } from './order-form/order-form.component';
 import {DragDropModule} from '@angular/cdk/drag-drop';
 import { DynamicFormGeneratorComponent } from './dynamic-form-builder/dynamic-form-generator/dynamic-form-generator.component';
 import {MatSelectModule} from '@angular/material/select';
-import {MatIconModule} from '@angular/material/icon';
 import {MatTooltipModule} from '@angular/material/tooltip';
 import { OrderCmpComponent } from './order-cmp/order-cmp.component';
 import { PlaceOrderComponent } from './order-cmp/place-order/place-order.component';
@@ -41,8 +40,7 @@ import { PlaceOrderComponent } from './order-cmp/place-order/place-order.compone
         MatCardModule,
         MatSidenavModule,
         MatButtonModule,
-        MatIconModule
-        MatSidenavModule,
+        MatIconModule,
         MatCheckboxModule,
         MatFormFieldModule,
         MatInputModule,
