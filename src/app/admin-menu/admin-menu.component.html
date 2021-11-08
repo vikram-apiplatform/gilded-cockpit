@@ -15,19 +15,28 @@
 
 <mat-drawer-container class="example-container" autosize>
     <mat-drawer #drawer class="example-sidenav" mode="side" opened>
-<!--        <p>Auto-resizing sidenav</p>-->
-<!--        <p *ngIf="showFiller">Lorem, ipsum dolor sit amet consectetur.</p>-->
-<!--        <button (click)="showFiller = !showFiller" mat-raised-button>-->
-<!--            Toggle extra text-->
-<!--        </button>-->
-        <app-leftpanel [options]="options" [menus]="adminMenu" [showFiller]="true"></app-leftpanel>
+        <!--        <p>Auto-resizing sidenav</p>-->
+        <!--        <p *ngIf="showFiller">Lorem, ipsum dolor sit amet consectetur.</p>-->
+        <!--        <button (click)="showFiller = !showFiller" mat-raised-button>-->
+        <!--            Toggle extra text-->
+        <!--        </button>-->
+        <app-leftpanel [options]="options" [menus]="adminMenu" [showFiller]="showFiller" [activeMenu]="defaultActiveMenu"
+                       (menuItemSelected)="dashboardSelected($event)"></app-leftpanel>
     </mat-drawer>
 
     <div class="example-sidenav-content">
-<!--        <button type="button" mat-button (click)="drawer.toggle()">-->
-<!--            Toggle sidenav-->
-<!--        </button>-->
-        <app-menu-component></app-menu-component>
+        <!--        <button type="button" mat-button (click)="drawer.toggle()">-->
+        <!--            Toggle sidenav-->
+        <!--        </button>-->
+        <app-menu-component [dashboardList]="dashboardList" [selectedBoard]="selectedBoard"
+                            (adminMenuRefreshDashboard)="updateDashboardMenu('')"></app-menu-component>
+        <app-dashbord-overview></app-dashbord-overview>
+<!--        <div style="padding: 10px; background-color: red" (click)="toggleFiller()">-->
+        <!--            toggleMe-->
+        <!--        </div>-->
+        <!--        <button mat-fab color="primary" aria-label="Example icon button with a delete icon" (click)="toggleFiller()">-->
+        <!--            Toggle-->
+        <!--        </button>-->
         <router-outlet></router-outlet>
     </div>
 

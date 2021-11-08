@@ -12,9 +12,9 @@
 }
 
 .accordion .menu {
-    /*position: relative;*/
+    position: relative;
     display: flex;
-    padding: 0rem 3.5rem 0rem 0rem;
+    padding: 0rem 0rem 0rem 0rem;
     color: #F2F2F2;
     font-size: 1rem;
     /*border-bottom: 0.09rem solid rgba(100, 100, 100, 0.5);*/
@@ -40,7 +40,6 @@
     /*top: 1.2rem;*/
     /*left: 1rem;*/
     color: White;
-    font-size: 1.5rem;
     transition: all 0.4s ease;
 }
 
@@ -49,6 +48,7 @@
     top: 1.2rem;
     right: 1rem;
     left: auto;
+    font-size: 0.8rem;
 }
 
 .accordion li.active i.fa-chevron-down {
@@ -163,7 +163,7 @@ h1 {
 }
 
 .nav-icon-expanded {
-    font-size: 2rem;
+    font-size: 1.5rem;
     font-weight: bold;
     color: white;
     padding-top: 2.5rem;
@@ -185,11 +185,17 @@ h1 {
     font-size: 0.9rem;
 }
 
+.submenu-text {
+    margin-left: 1rem;
+    color: rgba(200, 200, 200, 0.8);
+    font-size: 0.9rem;
+}
+
 .side-nav-div-collapsed {
-    width: 4.5rem;
+    /*width: 4.5rem;*/
     padding: 0px;
     /*background-color: #2A3F54;*/
-    background-color: rgba(0, 0, 0, 1);
+    background-color: rgba(0, 0, 0, 0.85);
     height: 100%;
     overflow: auto;
 }
@@ -220,12 +226,26 @@ h1 {
 }
 
 .menuIcon {
+    font-size: 1.5rem;
+}
 
+.submenuIcon {
+    font-size: 1rem;
+    padding-left: 2rem;
 }
 
 .menuTextContainer {
     padding-top: 1rem;
     padding-bottom: 1rem;
+    padding-right: 3rem;
+}
+
+.activatedMenu {
+    background-color: rgba(100, 100, 100, 0.5);
+}
+
+.deactivatedMenu {
+
 }
 
 .fill {

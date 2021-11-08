@@ -51,7 +51,7 @@ export class AddGadgetComponent implements AfterViewInit {
     placeHolderText = 'Begin typing gadget name';
     layoutColumnOneWidth = 'six';
     layoutColumnTwoWidth = 'ten';
-    listHeader= 'Gadgets';
+    listHeader = 'Gadgets';
     facetTags: Array<Facet>;
 
     color = 'white';
@@ -110,9 +110,10 @@ export class AddGadgetComponent implements AfterViewInit {
             const me = this;
             data.library.forEach(function (item) {
 
-                    me.gadgetObjectList.push(item);
-                    me.gadgetObjectTitleList.push(item.name);
+                me.gadgetObjectList.push(item);
+                me.gadgetObjectTitleList.push(item.name);
             });
+            console.log(this.gadgetObjectList);
             const facetTagProcess = new FacetTagProcessor(this.gadgetObjectList);
             this.facetTags = facetTagProcess.getFacetTags();
         });

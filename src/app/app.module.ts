@@ -8,10 +8,11 @@ import {HttpClientJsonpModule, HttpClientModule} from '@angular/common/http';
 import {DetailModule} from './detail/detail.module';
 import {MenuModule} from './menu/menu.module';
 import {BoardModule} from './board/board.module';
-import {MatCardModule} from '@angular/material';
+import {MatButtonModule, MatCardModule, MatIconModule} from '@angular/material';
 import {MatSidenavModule} from '@angular/material/sidenav';
 import { LeftpanelComponent } from './leftpanel/leftpanel.component';
 import { AdminMenuComponent } from './admin-menu/admin-menu.component';
+import { DashbordOverviewComponent } from './dashbord-overview/dashbord-overview.component';
 import {AttributeDescriptionComponent, DynamicFormBuilderComponent} from './dynamic-form-builder/dynamic-form-builder.component';
 import {MatCheckboxModule} from '@angular/material/checkbox';
 import {MatFormFieldModule} from '@angular/material/form-field';
@@ -39,6 +40,9 @@ import { PlaceOrderComponent } from './order-cmp/place-order/place-order.compone
         HttpClientJsonpModule,
         MatCardModule,
         MatSidenavModule,
+        MatButtonModule,
+        MatIconModule
+        MatSidenavModule,
         MatCheckboxModule,
         MatFormFieldModule,
         MatInputModule,
@@ -52,6 +56,7 @@ import { PlaceOrderComponent } from './order-cmp/place-order/place-order.compone
         AppComponent,
         LeftpanelComponent,
         AdminMenuComponent,
+        DashbordOverviewComponent,
         DynamicFormBuilderComponent,
         AttributeDescriptionComponent,
         OrderFormComponent,

@@ -4,7 +4,7 @@ import {RuntimeService} from '../../services/runtime.service';
 import {GadgetPropertyService} from '../_common/gadget-property.service';
 import {EndPointService} from '../../configuration/tab-endpoint/endpoint.service';
 import {GadgetBase} from '../_common/gadget-base';
-import {CPUService} from './service';
+import {GoldService} from './service';
 import {Router} from '@angular/router';
 import {OptionsService} from '../../configuration/tab-options/service';
 
@@ -15,7 +15,7 @@ import {OptionsService} from '../../configuration/tab-options/service';
     styleUrls: ['../_common/styles-gadget.css']
 })
 
-export class CPUGadgetComponent extends GadgetBase {
+export class GoldInventoryGadgetComponent extends GadgetBase {
 
     // chart options
     showXAxis = true;
@@ -24,7 +24,7 @@ export class CPUGadgetComponent extends GadgetBase {
     showLegend = true;
     showXAxisLabel = true;
     showYAxisLabel = true;
-    yAxisLabel = 'Available Gold';
+    yAxisLabel = 'Gold bars';
     xAxisLabel = 'Percent Utilization';
     view: any[];
     cpu: any[] = [];
@@ -37,7 +37,7 @@ export class CPUGadgetComponent extends GadgetBase {
                 protected _gadgetInstanceService: GadgetInstanceService,
                 protected _propertyService: GadgetPropertyService,
                 protected _endPointService: EndPointService,
-                protected _cpuService: CPUService,
+                protected _goldService: GoldService,
                 private _changeDetectionRef: ChangeDetectorRef,
                 protected _optionsService: OptionsService,
                 private _route: Router) {
@@ -69,12 +69,79 @@ export class CPUGadgetComponent extends GadgetBase {
 
     public updateData(data: any[]) {
 
-        this._cpuService.getMockData().subscribe(cpu => {
-
-                Object.assign(this, {cpu});
-
+        // this._goldService.getMockData().subscribe(cpu => {
+        //
+        //         Object.assign(this, {cpu});
+        //
+        //     },
+        //     error => this.handleError(error));
+        console.log(this.title);
+        let chartData = [
+            {
+                'name': 'Gold bar 1',
+                'series': [
+                    {
+                        'name': 'used',
+                        'value': 45
+                    },
+                    {
+                        'name': 'available',
+                        'value': 55
+                    }
+                ]
             },
-            error => this.handleError(error));
+            {
+                'name': 'Gold bar 2',
+                'series': [
+                    {
+                        'name': 'used',
+                        'value': 23
+                    },
+                    {
+                        'name': 'available',
+                        'value': 77
+                    }
+                ]
+            },
+            {
+                'name': 'Gold bar 3',
+                'series': [
+                    {
+                        'name': 'used',
+                        'value': 7
+                    },
+                    {
+                        'name': 'available',
+                        'value': 93
+                    }
+                ]
+            }
+        ];
+        this.cpu = chartData;
+        let barData: any;
+        this._goldService.getMockData().subscribe(response => {
+            console.log(response);
+            barData = response;
+            if (barData && barData.length) {
+                chartData = [];
+                for (const bar of barData) {
+                    chartData.push({
+                        'name': bar.serialNumber,
+                        'series': [
+                            {
+                                'name': 'pending',
+                                'value': Number(bar.pendingWeight)
+                            },
+                            {
+                                'name': 'available',
+                                'value': Number(bar.barWeight) - Number(bar.pendingWeight)
+                            }
+                        ]
+                    })
+                }
+                this.cpu = chartData
+            }
+        });
     }
 
     public drillDown(data) {

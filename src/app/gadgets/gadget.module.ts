@@ -12,6 +12,7 @@ import {NewsGadgetComponent} from './news/news-gadget.component';
 import {TodoGadgetComponent} from './todo/todo-gadget.component';  // todo gadget
 import {JobAnalysisGadgetComponent} from './job-analysis/job-analysis-gadget.component';
 import {CPUService} from './cpu/service';
+import {GoldService} from './gold-inventory/service';
 import {EdgeService} from './edge-service-list/service';
 import {StatisticService} from './statistic/service';
 import {DiskService} from './disk/service';
@@ -41,15 +42,14 @@ import {FacetModule} from '../facet/facet.module';
 import {TypeAheadInputModule} from '../typeahead-input/typeahead-input.module';
 import {TodoService} from './todo/service';
 import {ConnectionService} from './port-connection/service';
-import {BubbleGadgetComponent} from "./bubble/bubble-gadget.component";
-import {ResultViewComponent} from "./port-connection/result-view.component";
-import {SolutionViewComponent} from "./port-connection/solution-view.component";
-import {BarChartGadgetComponent} from "./barchart/barchart-gadget.component";
-import {BarChartService} from "./barchart/service";
-import {PieChartGadgetComponent} from "./piechart/piechart-gadget.component";
-import {PieChartService} from "./piechart/service";  // todo gadget
-
-
+import {BubbleGadgetComponent} from './bubble/bubble-gadget.component';
+import {ResultViewComponent} from './port-connection/result-view.component';
+import {SolutionViewComponent} from './port-connection/solution-view.component';
+import {BarChartGadgetComponent} from './barchart/barchart-gadget.component';
+import {BarChartService} from './barchart/service';
+import {PieChartGadgetComponent} from './piechart/piechart-gadget.component';
+import {PieChartService} from './piechart/service';
+import {GoldInventoryGadgetComponent} from './gold-inventory/gold-inventory-gadget.component';// todo gadget
 
 
 @NgModule({
@@ -76,6 +76,7 @@ import {PieChartService} from "./piechart/service";  // todo gadget
     declarations: [
         TodoGadgetComponent,  // todo gadget
         CPUGadgetComponent,
+        GoldInventoryGadgetComponent,
         CPUMGadgetComponent,
         DiskGadgetComponent,
         MemoryGadgetComponent,
@@ -105,6 +106,7 @@ import {PieChartService} from "./piechart/service";  // todo gadget
         StatisticService,
         EdgeService,
         CPUService,
+        GoldService,
         StorageService,
         DonutService,
         APITokenService,
@@ -117,6 +119,7 @@ import {PieChartService} from "./piechart/service";  // todo gadget
     exports: [
         TodoGadgetComponent,  // todo gadget
         CPUGadgetComponent,
+        GoldInventoryGadgetComponent,
         CPUMGadgetComponent,
         DiskGadgetComponent,
         MemoryGadgetComponent,
