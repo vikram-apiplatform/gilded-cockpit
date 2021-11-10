@@ -1,8 +1,8 @@
 import {Component, OnInit} from '@angular/core';
-import {ActivatedRoute, NavigationEnd, Router} from "@angular/router";
-import {EndPointService} from "../configuration/tab-endpoint/endpoint.service";
-import {RuntimeService} from "../services/runtime.service";
-import {DetailService} from "./service";
+import {ActivatedRoute, NavigationEnd, Router} from '@angular/router';
+import {EndPointService} from '../configuration/tab-endpoint/endpoint.service';
+import {RuntimeService} from '../services/runtime.service';
+import {DetailService} from './service';
 
 
 /**a
@@ -25,6 +25,8 @@ export class DetailComponent implements OnInit {
     navRoutes: Array<string> = [];
     navigationSubscription: any;
     objectAsArray = [];
+    tableData: any;
+    tableDataKeys: any;
 
 
     constructor(private _router: Router,
@@ -46,7 +48,16 @@ export class DetailComponent implements OnInit {
         this.chartMetric = this._route.snapshot.queryParams['chartMetric'];
         this.endPointName = this._route.snapshot.queryParams['endPointName'];
         this.getObjectsByMetric(false);
+        this._route.queryParams.subscribe(params => {
+            console.log(JSON.parse(params.data));
+            this.tableData = JSON.parse(params.data).data;
+            this.tableDataKeys = Object.keys(this.tableData);
+        })
 
+    }
+
+    transformKeys(key) {
+        return key.toUpperCase();
     }
 
     getObject(record: any) {
@@ -54,8 +65,8 @@ export class DetailComponent implements OnInit {
 
         Object.keys(record).forEach(key => {
 
-            if (key.indexOf("link") < 0) {
-                this.objectAsArray.push({"key": key, "value": record[key]});
+            if (key.indexOf('link') < 0) {
+                this.objectAsArray.push({'key': key, 'value': record[key]});
             }
         })
     }
@@ -63,7 +74,7 @@ export class DetailComponent implements OnInit {
     getObjectsByHateoasLink(detail: any) {
         this.clearDetailDisplay();
 
-        let href = "";
+        let href = '';
         detail.links.forEach(link => {
             if (link.rel == 'self') {
                 href = link.href;
@@ -106,7 +117,7 @@ export class DetailComponent implements OnInit {
     }
 
     goHome() {
-        this._router.navigate(["/cockpit"]);
+        this._router.navigate(['/cockpit']);
     }
 
     gotToRoute(nav: string, disabled: boolean) {

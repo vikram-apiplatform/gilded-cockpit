@@ -20,18 +20,24 @@
         <!--        <button (click)="showFiller = !showFiller" mat-raised-button>-->
         <!--            Toggle extra text-->
         <!--        </button>-->
-        <app-leftpanel [options]="options" [menus]="adminMenu" [showFiller]="showFiller" [activeMenu]="defaultActiveMenu"
-                       (menuItemSelected)="dashboardSelected($event)"></app-leftpanel>
+        <app-leftpanel [options]="options" [menus]="adminMenu" [showFiller]="showFiller"
+                       [activeMenu]="defaultActiveMenu"
+                       (menuItemSelected)="menuItemSelected($event)"></app-leftpanel>
     </mat-drawer>
 
     <div class="example-sidenav-content">
         <!--        <button type="button" mat-button (click)="drawer.toggle()">-->
         <!--            Toggle sidenav-->
         <!--        </button>-->
-        <app-menu-component [dashboardList]="dashboardList" [selectedBoard]="selectedBoard"
-                            (adminMenuRefreshDashboard)="updateDashboardMenu('')"></app-menu-component>
-        <app-dashbord-overview></app-dashbord-overview>
-<!--        <div style="padding: 10px; background-color: red" (click)="toggleFiller()">-->
+        <div *ngIf="activeMenu==='Dashboard'">
+            <app-menu-component [dashboardList]="dashboardList" [selectedBoard]="selectedBoard"
+                                (adminMenuRefreshDashboard)="updateDashboardMenu('')"></app-menu-component>
+        </div>
+        <app-cockpit-header></app-cockpit-header>
+        <div *ngIf="activeMenu==='Dashboard'">
+            <app-dashbord-overview></app-dashbord-overview>
+        </div>
+        <!--        <div style="padding: 10px; background-color: red" (click)="toggleFiller()">-->
         <!--            toggleMe-->
         <!--        </div>-->
         <!--        <button mat-fab color="primary" aria-label="Example icon button with a delete icon" (click)="toggleFiller()">-->

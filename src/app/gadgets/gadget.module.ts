@@ -137,7 +137,8 @@ import {GoldInventoryGadgetComponent} from './gold-inventory/gold-inventory-gadg
         DonutGadgetComponent,
         BubbleGadgetComponent,
         BarChartGadgetComponent,
-        PieChartGadgetComponent
+        PieChartGadgetComponent,
+        DrillDownComponent
     ]
 })
 export class GadgetModule {

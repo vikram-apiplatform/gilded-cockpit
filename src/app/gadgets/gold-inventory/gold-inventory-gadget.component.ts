@@ -28,6 +28,7 @@ export class GoldInventoryGadgetComponent extends GadgetBase {
     xAxisLabel = 'Percent Utilization';
     view: any[];
     cpu: any[] = [];
+    barData: any;
     colorScheme: any = {
         domain: ['black', '#ffd700']
     };
@@ -67,6 +68,129 @@ export class GoldInventoryGadgetComponent extends GadgetBase {
         this.setStopState(false);
     }
 
+
+    populateGoldBarsData() {
+        let chartData = [];
+        for (const bar of this.barData) {
+            chartData.push({
+                'name': bar.serialNumber,
+                'series': [
+                    {
+                        'name': 'used',
+                        'value': Number(bar.barWeight) - Number(bar.pendingWeight),
+                        'data': bar
+                    },
+                    {
+                        'name': 'available',
+                        'value': Number(bar.pendingWeight),
+                        'data': bar
+                    }
+                ]
+            })
+        }
+        this.cpu = chartData
+    }
+
+    populateGoldLocationsData() {
+        let chartData = [];
+        let goldBarsLocations: any;
+        return new Promise((resolve, reject) => {
+            this._goldService.getGoldBarsLocations().subscribe(response => {
+                goldBarsLocations = response;
+                if (goldBarsLocations && goldBarsLocations.length) {
+                    let bars: any;
+                    let count = 0;
+                    for (const goldBarsLocation of goldBarsLocations) {
+                        this._goldService.getGoldBarsDataWithParams('barLocationId=' + goldBarsLocation.id).subscribe(resp => {
+                            console.log(resp);
+                            let available = 0;
+                            let used = 0;
+                            bars = resp;
+                            if (bars && bars.length) {
+                                for (const bar of bars) {
+                                    available += Number(bar.pendingWeight);
+                                    used += Number(bar.barWeight) - Number(bar.pendingWeight);
+                                }
+                                chartData.push({
+                                    'name': goldBarsLocation.location,
+                                    'series': [
+                                        {
+                                            'name': 'used',
+                                            'value': used
+                                        },
+                                        {
+                                            'name': 'available',
+                                            'value': available
+                                        }
+                                    ]
+                                })
+                            }
+                            count += 1;
+                            if (count === goldBarsLocations.length) {
+                                resolve(chartData);
+                                this.cpu = chartData;
+                            }
+                        })
+                    }
+                    // console.log(chartData);
+                    // this.cpu = chartData;
+                }
+            }, error => {
+                reject(error);
+            })
+        })
+    }
+
+    populateGoldRefineriesData() {
+        let chartData = [];
+        let goldBarRefineries: any;
+        return new Promise((resolve, reject) => {
+            this._goldService.getGoldBarsRefineries().subscribe(response => {
+                goldBarRefineries = response;
+                if (goldBarRefineries && goldBarRefineries.length) {
+                    let bars: any;
+                    let count = 0;
+                    for (const goldBarRefinery of goldBarRefineries) {
+                        this._goldService.getGoldBarsDataWithParams('barRefineryId=' + goldBarRefinery.id).subscribe(resp => {
+                            console.log(resp);
+                            let available = 0;
+                            let used = 0;
+                            bars = resp;
+                            if (bars && bars.length) {
+                                for (const bar of bars) {
+                                    available += Number(bar.pendingWeight);
+                                    used += Number(bar.barWeight) - Number(bar.pendingWeight);
+                                }
+                                chartData.push({
+                                    'name': goldBarRefinery.refinery,
+                                    'series': [
+                                        {
+                                            'name': 'used',
+                                            'value': used
+                                        },
+                                        {
+                                            'name': 'available',
+                                            'value': available
+                                        }
+                                    ]
+                                })
+                            }
+                            count += 1;
+                            if (count === goldBarRefineries.length) {
+                                resolve(chartData);
+                                this.cpu = chartData;
+                            }
+                        })
+                    }
+                    // console.log(chartData);
+                    // this.cpu = chartData;
+                }
+            }, error => {
+                reject(error);
+            })
+        })
+    }
+
     public updateData(data: any[]) {
 
         // this._goldService.getMockData().subscribe(cpu => {
@@ -76,6 +200,7 @@ export class GoldInventoryGadgetComponent extends GadgetBase {
         //     },
         //     error => this.handleError(error));
         console.log(this.title);
+        console.log(this.config);
         let chartData = [
             {
                 'name': 'Gold bar 1',
@@ -118,34 +243,29 @@ export class GoldInventoryGadgetComponent extends GadgetBase {
             }
         ];
         this.cpu = chartData;
-        let barData: any;
-        this._goldService.getMockData().subscribe(response => {
+        this._goldService.getGoldBarsData().subscribe(async response => {
             console.log(response);
-            barData = response;
-            if (barData && barData.length) {
-                chartData = [];
-                for (const bar of barData) {
-                    chartData.push({
-                        'name': bar.serialNumber,
-                        'series': [
-                            {
-                                'name': 'pending',
-                                'value': Number(bar.pendingWeight)
-                            },
-                            {
-                                'name': 'available',
-                                'value': Number(bar.barWeight) - Number(bar.pendingWeight)
-                            }
-                        ]
-                    })
+            this.barData = response;
+            if (this.barData && this.barData.length) {
+                switch (this.title) {
+                    case 'Gold Bars':
+                        this.populateGoldBarsData();
+                        break;
+                    case 'Gold Locations':
+                        await this.populateGoldLocationsData();
+                        this.yAxisLabel = 'Gold Vault';
+                        break;
+                    case 'Gold Refineries':
+                        await this.populateGoldRefineriesData();
+                        this.yAxisLabel = 'Gold Refineries';
+
                 }
-                this.cpu = chartData
             }
         });
     }
 
     public drillDown(data) {
-        this._route.navigate(['/detail'], {});
+        this._route.navigate(['/detail'], {queryParams: {data: JSON.stringify(data)}});
     }
 
     public updateProperties(updatedProperties: any) {

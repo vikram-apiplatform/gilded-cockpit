@@ -1,6 +1,7 @@
 import {Component, OnInit} from '@angular/core';
 import {ConfigurationService} from '../services/configuration.service';
 import {MenuEventService} from '../menu/menu-service';
+import {Router} from '@angular/router';
 
 export interface Menu {
     name: string;
@@ -26,6 +27,7 @@ export class AdminMenuComponent implements OnInit {
     dashboardList = [];
     selectedBoard = '';
     defaultActiveMenu = '';
+    activeMenu = '';
     showFiller = true;
     // adminMenu: Menu[] = [
     //     {
@@ -130,19 +132,38 @@ export class AdminMenuComponent implements OnInit {
             submenu: []
         },
         {
-            name: 'KYC',
-            iconClass: 'fa fa-users',
-            active: false,
-            toolTip: 'Platform Experience',
-            submenu: []
-        },
-        {
-            name: 'Anti-Money Laundering',
+            name: 'Exceptions Management',
             iconClass: 'fa fa-user-secret',
             active: false,
             toolTip: 'Platform Experience',
-            submenu: []
+            submenu: [
+                {
+                    name: 'KYC',
+                    key: 'KYC',
+                    icon: 'fa fa-users',
+                    toolTip: 'Know your customer',
+                },
+                {
+                    name: 'Anti-Money Laundering',
+                    key: 'Anti-Money Laundering',
+                    icon: 'fa fa-user-secret',
+                    toolTip: 'Anti-Money Laundering',
+                }]
         },
+        // {
+        //     name: 'KYC',
+        //     iconClass: 'fa fa-users',
+        //     active: false,
+        //     toolTip: 'Platform Experience',
+        //     submenu: []
+        // },
+        // {
+        //     name: 'Anti-Money Laundering',
+        //     iconClass: 'fa fa-user-secret',
+        //     active: false,
+        //     toolTip: 'Platform Experience',
+        //     submenu: []
+        // },
         {
             name: 'Transactions',
             iconClass: 'fa fa-usd',
@@ -166,11 +187,13 @@ export class AdminMenuComponent implements OnInit {
         },
     ]
 
-    constructor(public _configurationService: ConfigurationService, public _menuEventService: MenuEventService) {
+    constructor(public _configurationService: ConfigurationService, public _menuEventService: MenuEventService, public _router: Router) {
     }
 
     ngOnInit() {
+        console.log('Init');
         this.updateDashboardMenu('');
+        this.setupEventListeners();
     }
 
     updateDashboardMenu(selectedBoard: string) {
@@ -204,6 +227,7 @@ export class AdminMenuComponent implements OnInit {
                 if (selectedBoard === '') {
                     this.selectedBoard = this.dashboardList[0];
                     this.defaultActiveMenu = this.adminMenu[0].submenu[0].key;
+                    this.activeMenu = this.adminMenu[0].name;
                     //this.boardSelect(this.dashboardList[0]);
 
                 } else {
@@ -229,6 +253,25 @@ export class AdminMenuComponent implements OnInit {
 
         this._menuEventService.addSubscriber(gridEventSubscription);
 
+    }
+
+    menuItemSelected(menuItem) {
+        console.log(menuItem.parent);
+        console.log(this.activeMenu);
+        if (menuItem.parent === 'Dashboard') {
+            this.selectedBoard = menuItem.child;
+            this._menuEventService.raiseMenuEvent({name: 'boardSelectEvent', data: menuItem.child});
+            //if (this.activeMenu !== 'Dashboard') {
+            this._router.navigateByUrl('');
+            //}
+
+        }
+        this.activeMenu = menuItem.parent;
+        switch (menuItem.parent) {
+            case 'Exceptions Management':
+                this._router.navigateByUrl('kyc');
+                break;
+        }
     }
 
     dashboardSelected(menuItem) {
