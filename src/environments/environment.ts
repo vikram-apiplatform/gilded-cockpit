@@ -12,11 +12,11 @@ export const environment = {
         aiSearch: true,
         notification: true
     },
-    boardConfiguration:{
+    boardConfiguration: {
         board: true,
         ai: true,
         endpoint: true
-    }
+    },
+    apiHost: 'https://dev-gilded.gateway.apiplatform.io',
+    apiHostName: 'dev-gilded',
 };
-
-

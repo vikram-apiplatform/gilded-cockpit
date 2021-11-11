@@ -1,0 +1,15 @@
+<mat-card class="col-lg-12 col-md-12 col-sm-12 col-xs-12 m-10">
+    <h2>Order Form</h2><hr>
+    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 scroll-h">
+        <app-dynamic-form-builder [formAttributes]="formAttributes"
+                                  [newAttribute]="newAttribute"
+                                  [tableDefinition]="tableDefinition"></app-dynamic-form-builder>
+    </div>
+
+    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12" style="padding: 0px; margin-top: 10px; text-align: right">
+        <button (click)="updateFormAttributes()" [disabled]="formUpdating" class="gilded-btn">
+            <span *ngIf="!formUpdating">Submit</span>
+            <span *ngIf="formUpdating"><i class="fa fa-spinner fa-spin" style="font-size:24px"></i></span>
+        </button>
+    </div>
+</mat-card>

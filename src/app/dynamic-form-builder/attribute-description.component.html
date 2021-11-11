@@ -1,0 +1,25 @@
+<h5 mat-dialog-title>Describe Attribute</h5>
+<mat-dialog-content class="mat-typography">
+    <input *ngIf="!data['disableDisplayNameField']" [(ngModel)]="data['displayName']" [value]="data['displayName']" class="form-control attribute"
+           placeholder="Display Name" style="margin-bottom: 7px;">
+    <textarea [(ngModel)]="data['description']" [value]="data['description']"
+              class="form-control attribute" placeholder="Description"></textarea>
+    <mat-label *ngIf="isFamilyString(data['definitionType'], data['datatypeFilter'])">Data Storage Policy</mat-label>
+    <select *ngIf="isFamilyString(data['definitionType'], data['datatypeFilter'])" placeholder="Data Storage Policy" [(ngModel)]="data['dataStoragePolicy']" class="form-control">-->
+        <option *ngFor="let datastorage of datastoragepolicy" [value]="datastorage">
+            {{datastorage}}
+        </option>
+    </select>
+    <mat-label *ngIf="isFamilyString(data['definitionType'], data['datatypeFilter'])">API Access Policy</mat-label>
+    <select *ngIf="isFamilyString(data['definitionType'], data['datatypeFilter'])" placeholder="API Access Policy" [(ngModel)]="data['apiAccessPolicy']" class="form-control">-->
+        <option *ngFor="let apiAccess of apiaccesspolicy" [value]="apiAccess">
+            {{apiAccess}}
+        </option>
+    </select>
+    <mat-label *ngIf="isFamilyString(data['definitionType'], data['datatypeFilter']) || data['enableDisplayPolicyFieldByDefault']">Display Policy</mat-label>
+    <select *ngIf="isFamilyString(data['definitionType'], data['datatypeFilter']) || data['enableDisplayPolicyFieldByDefault']" placeholder="Display Policy" [(ngModel)]="data['displayPolicy']" class="form-control">-->
+        <option *ngFor="let displayPol of displaypolicy" [value]="displayPol">
+            {{displayPol}}
+        </option>
+    </select>
+</mat-dialog-content>

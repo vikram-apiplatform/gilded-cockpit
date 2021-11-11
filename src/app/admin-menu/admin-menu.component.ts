@@ -1,14 +1,15 @@
 import {Component, OnInit} from '@angular/core';
 import {ConfigurationService} from '../services/configuration.service';
 import {MenuEventService} from '../menu/menu-service';
-import {Router} from '@angular/router';
+import {ActivatedRoute, Router} from '@angular/router';
 
 export interface Menu {
     name: string;
     iconClass: string;
     active: boolean;
     toolTip: string;
-    submenu: { name: string, key: string, icon: string, toolTip: string }[];
+    route: string;
+    submenu: { name: string, route: string, key: string, icon: string, toolTip: string }[];
 }
 
 export interface Config {
@@ -122,6 +123,7 @@ export class AdminMenuComponent implements OnInit {
             iconClass: 'fa fa-tachometer',
             active: true,
             toolTip: 'Platform Experience',
+            route: '',
             submenu: []
         },
         {
@@ -129,6 +131,7 @@ export class AdminMenuComponent implements OnInit {
             iconClass: 'fa fa-cloud-download',
             active: false,
             toolTip: 'Platform Experience',
+            route: '',
             submenu: []
         },
         // {
@@ -155,6 +158,7 @@ export class AdminMenuComponent implements OnInit {
             iconClass: 'fa fa-users',
             active: false,
             toolTip: 'Platform Experience',
+            route: 'kyc',
             submenu: []
         },
         {
@@ -162,6 +166,7 @@ export class AdminMenuComponent implements OnInit {
             iconClass: 'fa fa-user-secret',
             active: false,
             toolTip: 'Platform Experience',
+            route: '',
             submenu: []
         },
         {
@@ -169,6 +174,7 @@ export class AdminMenuComponent implements OnInit {
             iconClass: 'fa fa-usd',
             active: false,
             toolTip: 'Platform Experience',
+            route: '',
             submenu: []
         },
         {
@@ -176,22 +182,46 @@ export class AdminMenuComponent implements OnInit {
             iconClass: 'fa fa-briefcase',
             active: false,
             toolTip: 'Platform Experience',
-            submenu: []
+            route: '',
+            submenu: [{
+                name: 'Place Order',
+                key: 'Place Order',
+                icon: 'fa fa-th',
+                route: 'order',
+                toolTip: 'Place Order'
+            }]
+        },
+        {
+            name: 'Configurations',
+            iconClass: 'fa fa-briefcase',
+            active: false,
+            toolTip: 'Configurations',
+            route: '',
+            submenu: [{
+                name: 'Order Form',
+                key: 'Order Form',
+                icon: 'fa fa-th',
+                route: 'form',
+                toolTip: 'Order Form'
+            }]
         },
         {
             name: 'PayTM',
             iconClass: 'fa fa-money',
             active: false,
             toolTip: 'Platform Experience',
+            route: '',
             submenu: []
         },
     ]
 
-    constructor(public _configurationService: ConfigurationService, public _menuEventService: MenuEventService, public _router: Router) {
+    constructor(public _configurationService: ConfigurationService, public _menuEventService: MenuEventService, public _router: Router, public route: ActivatedRoute) {
     }
 
     ngOnInit() {
         console.log('Init');
+        console.log(this._router);
+        console.log(this.route);
         this.updateDashboardMenu('');
         this.setupEventListeners();
     }
@@ -217,6 +247,7 @@ export class AdminMenuComponent implements OnInit {
                         name: board.title,
                         key: board.title,
                         icon: 'fa fa-th',
+                        route: '',
                         toolTip: 'Platform Console'
                     });
 
@@ -270,14 +301,25 @@ export class AdminMenuComponent implements OnInit {
             //}
 
         }
-        switch (menuItem.parent) {
-            case 'Exceptions Management':
-                this._router.navigateByUrl('kyc');
-                break;
-            case 'KYC':
-                this._router.navigateByUrl('kyc');
-                break;
-        }
+        this._router.navigateByUrl(menuItem.route);
+        // switch (menuItem.parent) {
+        //     case 'Exceptions Management':
+        //         this._router.navigateByUrl('kyc');
+        //         break;
+        //     case 'KYC':
+        //         this._router.navigateByUrl('kyc');
+        //         break;
+        //     case 'Inventory':
+        //         if (menuItem.children === 'Place Order') {
+        //             this._router.navigateByUrl('order');
+        //         }
+        //         break;
+        //     case 'Inventory':
+        //         if (menuItem.children === 'Place Order') {
+        //             this._router.navigateByUrl('order');
+        //         }
+        //         break;
+        // }
     }
 
     dashboardSelected(menuItem) {

@@ -1,0 +1,49 @@
+
+<div *ngIf="!error && orders && orders.length > 0" class="row order-cards">
+  <div *ngFor="let order of orders; let i = index; let c = counter" class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+    <div >
+      <div class="card shadow contents">
+        <div class="card-header order-header">
+          <ul class="nav nav-pills card-header-pills">
+            <li class="nav-item order-number">
+              <div class="nav-link order-id-title">
+                <strong>ORDER #</strong>
+              </div>
+              <div class="nav-link order-id-number">
+                {{order['id']}}
+              </div>
+            </li>
+            <li class="nav-item order-date">
+              <div class="nav-link order-date-title">
+                <strong>ORDER DATE</strong>
+              </div>
+              <div class="nav-link order-date-text">
+                <span>{{order.timestamp | date:'EEEE, MMMM d, y' | uppercase}}</span>
+              </div>
+            </li>
+            <li class="nav-item order-action text-center">
+              <div class="nav-link purchased-pending">
+                <strong>
+                  <div *ngIf="!order['paymentStatus']">{{'Pending' | uppercase}}</div>
+                </strong>
+              </div>
+              <div >
+                <a class="btn btn-outline-info">TRACK ORDER</a>
+              </div>
+            </li>
+
+          </ul>
+        </div>
+        <div class="card-body">
+          <div *ngFor="let product of order['productsList']; let j = index; let cnt = count" class="card-text">
+            <div>
+              {{product['name'] | uppercase}} x {{product['quantity']}} = {{product['amount']*product['quantity'] | currency:'INR':'symbol-narrow':'4.2-2'}}
+              <hr *ngIf="!(j+1==cnt)" class="hr-product-name">
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <br>
+  </div>
+</div>
