@@ -81,7 +81,7 @@
     <div class="chart-header">
         {{header}}
     </div>
-    <ngx-charts-pie-chart *ngIf="!inConfig"
+    <ngx-charts-pie-chart
                           [scheme]="colorScheme"
                           [view]="[300, 200]"
                           [results]="data"
@@ -92,6 +92,7 @@
                           [gradient]="false"
                           [legendTitle]="'KYC'"
                           [arcWidth]=".5"
+                          (select)="showDrillDown($event)"
     >
     </ngx-charts-pie-chart>
 </div>

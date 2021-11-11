@@ -76,7 +76,7 @@ export class GoldInventoryGadgetComponent extends GadgetBase {
                 'name': bar.serialNumber,
                 'series': [
                     {
-                        'name': 'used',
+                        'name': 'utilized',
                         'value': Number(bar.barWeight) - Number(bar.pendingWeight),
                         'data': bar
                     },
@@ -115,7 +115,7 @@ export class GoldInventoryGadgetComponent extends GadgetBase {
                                     'name': goldBarsLocation.location,
                                     'series': [
                                         {
-                                            'name': 'used',
+                                            'name': 'utilized',
                                             'value': used
                                         },
                                         {
@@ -165,7 +165,7 @@ export class GoldInventoryGadgetComponent extends GadgetBase {
                                     'name': goldBarRefinery.refinery,
                                     'series': [
                                         {
-                                            'name': 'used',
+                                            'name': 'utilized',
                                             'value': used
                                         },
                                         {
@@ -251,7 +251,7 @@ export class GoldInventoryGadgetComponent extends GadgetBase {
                     case 'Gold Bars':
                         this.populateGoldBarsData();
                         break;
-                    case 'Gold Locations':
+                    case 'Gold Vaults':
                         await this.populateGoldLocationsData();
                         this.yAxisLabel = 'Gold Vault';
                         break;
@@ -263,6 +263,7 @@ export class GoldInventoryGadgetComponent extends GadgetBase {
             }
         });
     }
+
 
     public drillDown(data) {
         this._route.navigate(['/detail'], {queryParams: {data: JSON.stringify(data)}});

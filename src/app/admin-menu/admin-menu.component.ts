@@ -131,39 +131,39 @@ export class AdminMenuComponent implements OnInit {
             toolTip: 'Platform Experience',
             submenu: []
         },
-        {
-            name: 'Exceptions Management',
-            iconClass: 'fa fa-user-secret',
-            active: false,
-            toolTip: 'Platform Experience',
-            submenu: [
-                {
-                    name: 'KYC',
-                    key: 'KYC',
-                    icon: 'fa fa-users',
-                    toolTip: 'Know your customer',
-                },
-                {
-                    name: 'Anti-Money Laundering',
-                    key: 'Anti-Money Laundering',
-                    icon: 'fa fa-user-secret',
-                    toolTip: 'Anti-Money Laundering',
-                }]
-        },
         // {
-        //     name: 'KYC',
-        //     iconClass: 'fa fa-users',
-        //     active: false,
-        //     toolTip: 'Platform Experience',
-        //     submenu: []
-        // },
-        // {
-        //     name: 'Anti-Money Laundering',
+        //     name: 'Exceptions Management',
         //     iconClass: 'fa fa-user-secret',
         //     active: false,
         //     toolTip: 'Platform Experience',
-        //     submenu: []
+        //     submenu: [
+        //         {
+        //             name: 'KYC',
+        //             key: 'KYC',
+        //             icon: 'fa fa-users',
+        //             toolTip: 'Know your customer',
+        //         },
+        //         {
+        //             name: 'Anti-Money Laundering',
+        //             key: 'Anti-Money Laundering',
+        //             icon: 'fa fa-user-secret',
+        //             toolTip: 'Anti-Money Laundering',
+        //         }]
         // },
+        {
+            name: 'KYC',
+            iconClass: 'fa fa-users',
+            active: false,
+            toolTip: 'Platform Experience',
+            submenu: []
+        },
+        {
+            name: 'Anti-Money Laundering',
+            iconClass: 'fa fa-user-secret',
+            active: false,
+            toolTip: 'Platform Experience',
+            submenu: []
+        },
         {
             name: 'Transactions',
             iconClass: 'fa fa-usd',
@@ -233,6 +233,7 @@ export class AdminMenuComponent implements OnInit {
                 } else {
 
                     //this.boardSelect(selectedBoard);
+                    this.selectedBoard = selectedBoard;
                 }
             }
         });
@@ -242,9 +243,10 @@ export class AdminMenuComponent implements OnInit {
         let gridEventSubscription = this._menuEventService.listenForGridEvents().subscribe((event: IEvent) => {
 
             const edata = event['data'];
-
+            console.log('eventListener');
             switch (event['name']) {
                 case 'boardUpdateEvent':
+                    console.log('updateBoard');
                     this.updateDashboardMenu(edata);
                     break;
             }
@@ -258,17 +260,21 @@ export class AdminMenuComponent implements OnInit {
     menuItemSelected(menuItem) {
         console.log(menuItem.parent);
         console.log(this.activeMenu);
+        this.activeMenu = menuItem.parent;
         if (menuItem.parent === 'Dashboard') {
-            this.selectedBoard = menuItem.child;
+            this._router.navigateByUrl('cockpit');
+            //this.selectedBoard = menuItem.child;
+            console.log(this._menuEventService);
             this._menuEventService.raiseMenuEvent({name: 'boardSelectEvent', data: menuItem.child});
             //if (this.activeMenu !== 'Dashboard') {
-            this._router.navigateByUrl('');
             //}
 
         }
-        this.activeMenu = menuItem.parent;
         switch (menuItem.parent) {
             case 'Exceptions Management':
+                this._router.navigateByUrl('kyc');
+                break;
+            case 'KYC':
                 this._router.navigateByUrl('kyc');
                 break;
         }

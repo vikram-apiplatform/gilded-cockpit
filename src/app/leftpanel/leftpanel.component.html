@@ -33,7 +33,8 @@
         </li>
         <li *ngFor="let menu of menus; let i = index"
             [class.active]="menu.active">
-            <div class="row menu" (click)="toggle(i)">
+            <div class="row menu" [ngClass]="activeMenu === menu.name?'activatedMenu':'deactivatedMenu'"
+                 (click)="menu.submenu && menu.submenu.length ?toggle(i): onItemSelected($event, menu.name, '', menu.name)">
                 <div class="iconContainer menuIcon">
                     <i [class]="menu.iconClass"></i></div>
                 <div class="main-menu-text menuTextContainer" *ngIf="showFiller">{{ menu.name }}

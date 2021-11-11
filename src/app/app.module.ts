@@ -25,6 +25,7 @@ import {DynamicFormModule} from './dynamic-form/dynamic-form-module';
 import {ErrorHandlerModule} from './error/error.module';
 import {GadgetModule} from './gadgets/gadget.module';
 import {APIService} from './api.service';
+import { ChartDrilldownComponent } from './chart-drilldown/chart-drilldown.component';
 
 @NgModule({
     imports: [
@@ -62,6 +63,7 @@ import {APIService} from './api.service';
         CockpitHeaderComponent,
         KycComponent,
         DonutComponent,
+        ChartDrilldownComponent,
     ],
 
     bootstrap: [AppComponent]

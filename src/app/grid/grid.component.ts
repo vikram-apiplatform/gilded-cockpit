@@ -49,7 +49,7 @@ export class GridComponent {
                 private _menuEventService: MenuEventService) {
 
 
-        this.removeOldListeners();
+        //this.removeOldListeners();
 
         this.setupEventListeners();
         this.initializeBoard();

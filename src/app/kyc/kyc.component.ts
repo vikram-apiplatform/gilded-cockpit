@@ -12,42 +12,52 @@ export class KycComponent implements OnInit {
     statusChartData = [
         {
             name: 'Passed',
-            value: 0
+            value: 0,
+            records: []
         },
         {
             name: 'Failed',
-            value: 0
+            value: 0,
+            records: []
         },
         {
             name: 'Not attempted',
-            value: 0
+            value: 0,
+            records: []
         }
     ];
     attemptsChartData = [
         {
             name: 'Attempts: 1',
-            value: 0
+            value: 0,
+            records: []
         },
         {
             name: 'Attempts: 2',
-            value: 0
+            value: 0,
+            records: []
         },
         {
             name: 'Attempts: 3',
-            value: 0
+            value: 0,
+            records: []
         },
         {
             name: 'Attempts: 4',
-            value: 0
+            value: 0,
+            records: []
         },
         {
             name: 'Attempts: 5',
-            value: 0
+            value: 0,
+            records: []
         }
     ];
     statusChartHeader = 'KYC Status';
     attemptsChartHeader = 'Attempts Status';
     isDataloading = true;
+    showDrillDown = false;
+    drillDownData = [];
 
     constructor(public apiService: APIService) {
     }
@@ -65,12 +75,15 @@ export class KycComponent implements OnInit {
                     switch (kyc.status) {
                         case 'passed':
                             this.statusChartData[0].value += 1;
+                            this.statusChartData[0].records.push(kyc);
                             break;
                         case 'failed':
                             this.statusChartData[1].value += 1;
+                            this.statusChartData[1].records.push(kyc);
                             break;
                         case 'notAttempted':
                             this.statusChartData[2].value += 1;
+                            this.statusChartData[2].records.push(kyc);
                             break;
                     }
                     if (kyc.status === 'failed') {
@@ -102,6 +115,16 @@ export class KycComponent implements OnInit {
 
     getKeys(obj) {
         return Object.keys(obj);
+    }
+
+    showDrillDownDetails(data) {
+        this.drillDownData = data[0].records;
+        console.log(this.drillDownData);
+        this.showDrillDown = true;
+    }
+
+    hideDrillDownDetails() {
+        this.showDrillDown = false;
     }
 
 }

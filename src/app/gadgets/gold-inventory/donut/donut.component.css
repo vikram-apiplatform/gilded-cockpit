@@ -19,9 +19,9 @@
     width: 100%;
     text-align: center;
     padding-bottom: 1rem;
-    border-bottom: 1px solid black;
+    border-bottom: 1px solid #F2F2F2;
 }
 
 :host ::ng-deep .legend-labels {
-    min-width: 3rem;
+    min-width: 8.2rem;
 }

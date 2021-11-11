@@ -16,13 +16,13 @@ export class CockpitHeaderComponent implements OnInit {
 
 
     alerts: Alert[] = [
+        // {
+        //     name: 'Downloads',
+        //     icon: 'fa fa-cloud-download',
+        //     notifications: 10
+        // },
         {
-            name: 'Downloads',
-            icon: 'fa fa-cloud-download',
-            notifications: 10
-        },
-        {
-            name: 'KYC Applications',
+            name: 'KYC Verifications',
             icon: 'fa fa-users',
             notifications: 12
         },

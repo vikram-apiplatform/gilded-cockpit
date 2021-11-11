@@ -1,4 +1,4 @@
-import {ChangeDetectorRef, Component, Input, OnDestroy, OnInit} from '@angular/core';
+import {ChangeDetectorRef, Component, EventEmitter, Input, OnDestroy, OnInit, Output} from '@angular/core';
 import {RuntimeService} from '../../../services/runtime.service';
 import {GadgetInstanceService} from '../../../grid/grid.service';
 import {GadgetPropertyService} from '../../_common/gadget-property.service';
@@ -41,7 +41,7 @@ import {
         ])
     ]
 })
-export class DonutComponent extends GadgetBase implements OnDestroy {
+export class DonutComponent implements OnDestroy {
 
     topic: any;
     // @Input() data = [
@@ -56,6 +56,7 @@ export class DonutComponent extends GadgetBase implements OnDestroy {
     // ];
     @Input() data = [];
     @Input() header = '';
+    @Output() drillDown: EventEmitter<any> = new EventEmitter<any>();
     colorScheme = {
         domain: ['#0cd057', '#ef5350', '#00acc1']
     };
@@ -74,12 +75,12 @@ export class DonutComponent extends GadgetBase implements OnDestroy {
                 protected _donutService: DonutService,
                 protected  _apiTokenService: APITokenService,
                 protected _optionsService: OptionsService) {
-        super(_runtimeService,
-            _gadgetInstanceService,
-            _propertyService,
-            _endPointService,
-            _changeDetectionRef,
-            _optionsService);
+        // super(_runtimeService,
+        //     _gadgetInstanceService,
+        //     _propertyService,
+        //     _endPointService,
+        //     _changeDetectionRef,
+        //     _optionsService);
     }
 
     public preRun(): void {
@@ -157,7 +158,7 @@ export class DonutComponent extends GadgetBase implements OnDestroy {
 
     public setProperties() {
 
-        this.title = this.getPropFromPropertyPages('title');
+        //this.title = this.getPropFromPropertyPages('title');
         this.detailMenuOpen = 'out';
     }
 
@@ -166,6 +167,14 @@ export class DonutComponent extends GadgetBase implements OnDestroy {
 
         this.detailMenuOpen = this.detailMenuOpen === 'out' ? 'in' : 'out';
 
+    }
+
+    showDrillDown(filteredData) {
+        console.log(this.data);
+        console.log(filteredData);
+        const selectedData = this.data.filter(e => e.name === filteredData.name);
+        console.log(selectedData);
+        this.drillDown.emit(selectedData);
     }
 
     public ngOnDestroy() {
