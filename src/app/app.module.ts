@@ -39,6 +39,7 @@ import {ErrorHandlerModule} from './error/error.module';
 import {GadgetModule} from './gadgets/gadget.module';
 import {APIService} from './api.service';
 import { ChartDrilldownComponent } from './chart-drilldown/chart-drilldown.component';
+import {FilterPipe} from './filter.pipe';
 
 @NgModule({
     imports: [
@@ -90,9 +91,13 @@ import { ChartDrilldownComponent } from './chart-drilldown/chart-drilldown.compo
         KycComponent,
         DonutComponent,
         ChartDrilldownComponent,
+        FilterPipe
     ],
     providers: [APIService, LeftpanelComponent],
     entryComponents: [AttributeDescriptionComponent],
+    exports: [
+        ChartDrilldownComponent
+    ],
 
     bootstrap: [AppComponent]
 })

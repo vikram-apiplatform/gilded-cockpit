@@ -529,3 +529,19 @@ th, td {
 .table-data-first-child {
     padding-left: 1rem;
 }
+
+.drill-down-header {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+}
+
+.drill-down-acions {
+    font-size: 1rem;
+}
+
+.drill-down-title {
+    font-size: 1.2rem;
+    font-weight: bold;
+    text-align: center;
+}

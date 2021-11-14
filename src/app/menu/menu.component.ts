@@ -58,7 +58,7 @@ export class MenuComponent implements OnInit {
 
             switch (event['name']) {
                 case 'boardUpdateEvent':
-                    //this.updateDashboardMenu(edata);
+                    this.updateDashboardMenu(edata);
                     break;
             }
 

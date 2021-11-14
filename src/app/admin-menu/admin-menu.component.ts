@@ -2,6 +2,8 @@ import {Component, OnInit} from '@angular/core';
 import {ConfigurationService} from '../services/configuration.service';
 import {MenuEventService} from '../menu/menu-service';
 import {ActivatedRoute, Router} from '@angular/router';
+import {Location} from '@angular/common';
+import {ListenerService} from '../listener.service';
 
 export interface Menu {
     name: string;
@@ -29,7 +31,11 @@ export class AdminMenuComponent implements OnInit {
     selectedBoard = '';
     defaultActiveMenu = '';
     activeMenu = '';
+    activeRoute: any;
     showFiller = true;
+    showDrillDown = false;
+    drillDownData: any;
+    drillDownTitle = '';
     // adminMenu: Menu[] = [
     //     {
     //         name: 'Users',
@@ -215,14 +221,25 @@ export class AdminMenuComponent implements OnInit {
         },
     ]
 
-    constructor(public _configurationService: ConfigurationService, public _menuEventService: MenuEventService, public _router: Router, public route: ActivatedRoute) {
+    constructor(public _configurationService: ConfigurationService, public _menuEventService: MenuEventService, public _router: Router, public location: Location, public listener: ListenerService) {
     }
 
     ngOnInit() {
         console.log('Init');
         console.log(this._router);
-        console.log(this.route);
+        this.activeRoute = this.location['_platformStrategy']['_platformLocation'].location.pathname;
+        console.log(this.location['_platformStrategy']['_platformLocation'].location.pathname);
+        // if (this.location['_platformStrategy']['_platformLocation'].location.pathname) {
+        //     this._router.navigateByUrl(this.location['_platformStrategy']['_platformLocation'].location.pathname);
+        // }
+        this.listener.drillDownListener.subscribe(data => {
+            console.log(data);
+            this.showDrillDown = data.showDrillDown;
+            this.drillDownData = data.drillDownData;
+            this.drillDownTitle = data.drillDownTitle;
+        })
         this.updateDashboardMenu('');
+        this._menuEventService.unSubscribeAll();
         this.setupEventListeners();
     }
 
@@ -266,6 +283,12 @@ export class AdminMenuComponent implements OnInit {
                     //this.boardSelect(selectedBoard);
                     this.selectedBoard = selectedBoard;
                 }
+                if (this.activeRoute) {
+                    if (this.activeRoute !== '/cockpit') {
+                        this.activeMenu = '';
+                        this._router.navigateByUrl(this.activeRoute);
+                    }
+                }
             }
         });
     }
@@ -280,6 +303,9 @@ export class AdminMenuComponent implements OnInit {
                     console.log('updateBoard');
                     this.updateDashboardMenu(edata);
                     break;
+                case 'drillDownEvent':
+                    console.log('drilldown');
+                    break;
             }
 
         });
@@ -293,8 +319,8 @@ export class AdminMenuComponent implements OnInit {
         console.log(this.activeMenu);
         this.activeMenu = menuItem.parent;
         if (menuItem.parent === 'Dashboard') {
-            this._router.navigateByUrl('cockpit');
-            //this.selectedBoard = menuItem.child;
+            //this._router.navigateByUrl('cockpit');
+            this.selectedBoard = menuItem.child;
             console.log(this._menuEventService);
             this._menuEventService.raiseMenuEvent({name: 'boardSelectEvent', data: menuItem.child});
             //if (this.activeMenu !== 'Dashboard') {
@@ -329,5 +355,10 @@ export class AdminMenuComponent implements OnInit {
 
     toggleFiller() {
         this.showFiller = !this.showFiller;
+    }
+
+    hideDrillDownDetails() {
+        this.showDrillDown = false;
+        //this.listener.drillDownListener.emit(false);
     }
 }

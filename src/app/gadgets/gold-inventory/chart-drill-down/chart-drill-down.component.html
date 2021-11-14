@@ -210,6 +210,31 @@
     </div>
     <div></div>
 </div>
+
+<!--[(ngModel)]="selectedItems"-->
+<!--(onSelect)="onItemSelect($event)"-->
+<!--(onSelectAll)="onSelectAll($event)"-->
+<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 filter-container">
+    <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6">
+        <ng-multiselect-dropdown
+                [placeholder]="'Select attribute(s) to search instantly'"
+                [settings]="dropdownSettings"
+                [data]="dropdownList"
+                [(ngModel)]="filterData"
+        >
+        </ng-multiselect-dropdown>
+    </div>
+    <div class="col-lg-5 col-md-5 col-sm-5 col-xs-5 filter-action">
+        <input [(ngModel)]="searchText" (ngModelChange)="checkFilter()" class="form-control searchNode"
+               name="searchText" placeholder="Enter the text to filter rows on multiple attributes"
+               type="text">
+    </div>
+    <div class="col-lg-1 col-md-1 col-sm-1 col-xs-1 filter-action">
+        <button (click)="download()"><i class="fa fa-arrow-down"></i></button>
+    </div>
+</div>
+<!--<angular2-multiselect [(ngModel)]="filterData" [data]="itemList" [settings]="settings"-->
+<!--                      name="filterData" ngDefaultControl></angular2-multiselect>-->
 <div class="limiter">
     <div class="container-table100">
         <div class="wrap-table100">
@@ -237,9 +262,9 @@
                     <table>
                         <thead>
                         <tr class="row100 head">
-                            <th *ngFor="let key of getKeys(data[0]); let i=index">
+                            <th *ngFor="let key of getKeys(filteredData[0]); let i=index">
                                 <div class="table-head"
-                                     [ngClass]="i==0?'table-head-first-child':i==getKeys(data[0]).length-1?'table-head-last-child':''"
+                                     [ngClass]="i==0?'table-head-first-child':i==getKeys(filteredData[0]).length-1?'table-head-last-child':''"
                                      *ngIf="key!=='id'">
                                     {{key}}
                                 </div>
@@ -247,11 +272,11 @@
                         </tr>
                         </thead>
                         <tbody>
-                        <tr *ngFor="let record of data">
+                        <tr *ngFor="let record of filteredData; let recordId=index">
                             <td *ngFor="let key of getKeys(record); let i=index">
                                 <div class="row100 body" [ngClass]="i===0?'table-data-first-child':''"
                                      *ngIf="key!=='id'">
-                                    {{record[key]}}
+                                    {{getActualData(record[key], key, title, recordId)}}
                                 </div>
                             </td>
                         </tr>

@@ -1,4 +1,4 @@
-import {ChangeDetectorRef, Component, OnDestroy, OnInit} from '@angular/core';
+import {ChangeDetectorRef, Component, EventEmitter, OnDestroy, OnInit, Output} from '@angular/core';
 import {GadgetInstanceService} from '../../grid/grid.service';
 import {RuntimeService} from '../../services/runtime.service';
 import {GadgetPropertyService} from '../_common/gadget-property.service';
@@ -7,6 +7,8 @@ import {GadgetBase} from '../_common/gadget-base';
 import {GoldService} from './service';
 import {Router} from '@angular/router';
 import {OptionsService} from '../../configuration/tab-options/service';
+import {MenuEventService} from '../../menu/menu-service';
+import {ListenerService} from '../../listener.service';
 
 @Component({
     selector: 'app-dynamic-component',
@@ -32,10 +34,16 @@ export class GoldInventoryGadgetComponent extends GadgetBase {
     colorScheme: any = {
         domain: ['black', '#ffd700']
     };
+    @Output() chartInsights: EventEmitter<any> = new EventEmitter<any>();
+    showDrillDown = false;
+    drillDownData: any;
+    drillDownTitle = '';
 
 
     constructor(protected _runtimeService: RuntimeService,
                 protected _gadgetInstanceService: GadgetInstanceService,
+                public _menuEventService: MenuEventService,
+                public listener: ListenerService,
                 protected _propertyService: GadgetPropertyService,
                 protected _endPointService: EndPointService,
                 protected _goldService: GoldService,
@@ -78,12 +86,12 @@ export class GoldInventoryGadgetComponent extends GadgetBase {
                     {
                         'name': 'utilized',
                         'value': Number(bar.barWeight) - Number(bar.pendingWeight),
-                        'data': bar
+                        records: [bar]
                     },
                     {
                         'name': 'available',
                         'value': Number(bar.pendingWeight),
-                        'data': bar
+                        records: [bar]
                     }
                 ]
             })
@@ -116,11 +124,13 @@ export class GoldInventoryGadgetComponent extends GadgetBase {
                                     'series': [
                                         {
                                             'name': 'utilized',
-                                            'value': used
+                                            'value': used,
+                                            records: bars
                                         },
                                         {
                                             'name': 'available',
-                                            'value': available
+                                            'value': available,
+                                            records: bars
                                         }
                                     ]
                                 })
@@ -166,11 +176,13 @@ export class GoldInventoryGadgetComponent extends GadgetBase {
                                     'series': [
                                         {
                                             'name': 'utilized',
-                                            'value': used
+                                            'value': used,
+                                            records: bars
                                         },
                                         {
                                             'name': 'available',
-                                            'value': available
+                                            'value': available,
+                                            records: bars
                                         }
                                     ]
                                 })
@@ -311,6 +323,26 @@ export class GoldInventoryGadgetComponent extends GadgetBase {
 
         this.showOperationControls = true;
 
+    }
+
+    showDrillDownDetails(data) {
+        console.log(data);
+        this.drillDownData = data.records
+        this.drillDownTitle = this.title;
+        this.chartInsights.emit('');
+        this._menuEventService.raiseMenuEvent({name: 'drillDownEvent', data: ''});
+        const payload = {
+            showDrillDown: true,
+            drillDownData: this.drillDownData,
+            drillDownTitle: this.drillDownTitle,
+        }
+        this.listener.drillDownListener.emit(payload);
+        this.showDrillDown = true;
+    }
+
+    hideDrillDownDetails() {
+        this.showDrillDown = false;
+        this.listener.drillDownListener.emit(false);
     }
 
 }

@@ -49,7 +49,12 @@ import {BarChartGadgetComponent} from './barchart/barchart-gadget.component';
 import {BarChartService} from './barchart/service';
 import {PieChartGadgetComponent} from './piechart/piechart-gadget.component';
 import {PieChartService} from './piechart/service';
-import {GoldInventoryGadgetComponent} from './gold-inventory/gold-inventory-gadget.component';// todo gadget
+import {GoldInventoryGadgetComponent} from './gold-inventory/gold-inventory-gadget.component';
+import {AppModule} from '../app.module';
+import {ChartDrillDownComponent} from './gold-inventory/chart-drill-down/chart-drill-down.component';
+import {NgMultiSelectDropDownModule} from 'ng-multiselect-dropdown';
+
+// todo gadget
 
 
 @NgModule({
@@ -71,7 +76,8 @@ import {GoldInventoryGadgetComponent} from './gold-inventory/gold-inventory-gadg
         FormsModule,
         FacetModule,
         TypeAheadInputModule,
-        DataListModule
+        DataListModule,
+        NgMultiSelectDropDownModule
     ],
     declarations: [
         TodoGadgetComponent,  // todo gadget
@@ -97,7 +103,8 @@ import {GoldInventoryGadgetComponent} from './gold-inventory/gold-inventory-gadg
         ResultViewComponent,
         SolutionViewComponent,
         BarChartGadgetComponent,
-        PieChartGadgetComponent
+        PieChartGadgetComponent,
+        ChartDrillDownComponent,
 
     ],
 
@@ -138,8 +145,10 @@ import {GoldInventoryGadgetComponent} from './gold-inventory/gold-inventory-gadg
         BubbleGadgetComponent,
         BarChartGadgetComponent,
         PieChartGadgetComponent,
-        DrillDownComponent
-    ]
+        DrillDownComponent,
+        ChartDrillDownComponent
+    ],
+    bootstrap: [ChartDrillDownComponent]
 })
 export class GadgetModule {
 }

@@ -54,10 +54,14 @@ export class KycComponent implements OnInit {
         }
     ];
     statusChartHeader = 'KYC Status';
-    attemptsChartHeader = 'Attempts Status';
+    attemptsChartHeader = 'No. Of Attempts';
+    attemptsColorScheme = {
+        domain: ['#ff6b6b', '#ff5252', '#ff3838', '#ff1f1f', '#ff0505']
+    };
     isDataloading = true;
     showDrillDown = false;
     drillDownData = [];
+    drillDownTitle = '';
 
     constructor(public apiService: APIService) {
     }
@@ -90,18 +94,23 @@ export class KycComponent implements OnInit {
                         switch (kyc.noOfAttempts) {
                             case 1:
                                 this.attemptsChartData[0].value += 1;
+                                this.attemptsChartData[0].records.push(kyc);
                                 break;
                             case 2:
                                 this.attemptsChartData[1].value += 1;
+                                this.attemptsChartData[1].records.push(kyc);
                                 break;
                             case 3:
                                 this.attemptsChartData[2].value += 1;
+                                this.attemptsChartData[2].records.push(kyc);
                                 break;
                             case 4:
                                 this.attemptsChartData[3].value += 1;
+                                this.attemptsChartData[3].records.push(kyc);
                                 break;
                             case 5:
                                 this.attemptsChartData[4].value += 1;
+                                this.attemptsChartData[4].records.push(kyc);
                                 break;
                         }
                     }
@@ -118,8 +127,9 @@ export class KycComponent implements OnInit {
     }
 
     showDrillDownDetails(data) {
-        this.drillDownData = data[0].records;
+        this.drillDownData = data.records;
         console.log(this.drillDownData);
+        this.drillDownTitle = data.title;
         this.showDrillDown = true;
     }
 

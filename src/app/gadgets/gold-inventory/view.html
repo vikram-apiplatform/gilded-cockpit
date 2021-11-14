@@ -1,13 +1,13 @@
 <div class="ui  center aligned segment gadget" dnd-draggable
      [dragEnabled]="true" [dragData]="instanceId" [dropZones]="['c0','c1','c2','c3','r0','r1']">
-<!--    <mat-form-field appearance="fill" style="margin-top: 3rem">-->
-<!--        <mat-label>Choose an option</mat-label>-->
-<!--        <mat-select>-->
-<!--            <mat-option value="option1">Locations</mat-option>-->
-<!--            <mat-option value="option2">Refineries</mat-option>-->
-<!--            <mat-option value="option3">Bars</mat-option>-->
-<!--        </mat-select>-->
-<!--    </mat-form-field>-->
+    <!--    <mat-form-field appearance="fill" style="margin-top: 3rem">-->
+    <!--        <mat-label>Choose an option</mat-label>-->
+    <!--        <mat-select>-->
+    <!--            <mat-option value="option1">Locations</mat-option>-->
+    <!--            <mat-option value="option2">Refineries</mat-option>-->
+    <!--            <mat-option value="option3">Bars</mat-option>-->
+    <!--        </mat-select>-->
+    <!--    </mat-form-field>-->
     <a class="ui left corner label">
         <i class="circle icon" [ngClass]="{'green':inRun, 'yellow':!inRun}"></i>
     </a>
@@ -47,7 +47,7 @@
                         [yAxisLabel]="yAxisLabel"
                         [barPadding]=30
                         [showGridLines]="true"
-                        (select)="drillDown($event)">
+                        (select)="showDrillDownDetails($event)">
                 </ngx-charts-bar-horizontal-normalized>
             </div>
         </div>
@@ -69,4 +69,12 @@
 
 </div>
 
+<!--<div *ngIf="showDrillDown" class="container">-->
+<!--    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">-->
+<!--&lt;!&ndash;        <app-chart-drilldown (hideDetails)="hideDrillDownDetails()" [data]="drillDownData"&ndash;&gt;-->
+<!--&lt;!&ndash;                             [title]="drillDownTitle"></app-chart-drilldown>&ndash;&gt;-->
+<!--        <app-chart-drill-down (hideDetails)="hideDrillDownDetails()" [data]="drillDownData"-->
+<!--                              [title]="drillDownTitle"></app-chart-drill-down>-->
+<!--    </div>-->
+<!--</div>-->
 

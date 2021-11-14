@@ -57,8 +57,8 @@ export class DonutComponent implements OnDestroy {
     @Input() data = [];
     @Input() header = '';
     @Output() drillDown: EventEmitter<any> = new EventEmitter<any>();
-    colorScheme = {
-        domain: ['#0cd057', '#ef5350', '#00acc1']
+    @Input () colorScheme = {
+        domain: ['#0cd057', '#ff3838', '#00acc1']
     };
     detailMenuOpen: string;
     donutServiceSubscription: any;
@@ -174,7 +174,8 @@ export class DonutComponent implements OnDestroy {
         console.log(filteredData);
         const selectedData = this.data.filter(e => e.name === filteredData.name);
         console.log(selectedData);
-        this.drillDown.emit(selectedData);
+        selectedData[0]['title'] = this.header;
+        this.drillDown.emit(selectedData[0]);
     }
 
     public ngOnDestroy() {
