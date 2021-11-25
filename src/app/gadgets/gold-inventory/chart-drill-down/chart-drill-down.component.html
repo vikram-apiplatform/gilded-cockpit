@@ -215,7 +215,20 @@
 <!--(onSelect)="onItemSelect($event)"-->
 <!--(onSelectAll)="onSelectAll($event)"-->
 <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 filter-container">
-    <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6">
+    <div class="col-lg-4 col-md-4 col-sm-6 col-xs-12">
+        <ng-multiselect-dropdown
+                [placeholder]="'Select attribute(s) to view'"
+                [settings]="dropdownSettings"
+                [data]="attributesList"
+                [(ngModel)]="attributesFilter"
+                (onSelect)="onAttributeSelect($event)"
+                (onDeSelect)="onAttributeDeSelect($event)"
+                (onSelectAll)="onAttributeSelectAll($event)"
+                (onDeSelectAll)="onAttributeDeSelectAll($event)"
+        >
+        </ng-multiselect-dropdown>
+    </div>
+    <div class="col-lg-4 col-md-4 col-sm-6 col-xs-12">
         <ng-multiselect-dropdown
                 [placeholder]="'Select attribute(s) to search instantly'"
                 [settings]="dropdownSettings"
@@ -224,13 +237,13 @@
         >
         </ng-multiselect-dropdown>
     </div>
-    <div class="col-lg-5 col-md-5 col-sm-5 col-xs-5 filter-action">
+    <div class="col-lg-3 col-md-3 col-sm-11 col-xs-11 filter-action">
         <input [(ngModel)]="searchText" (ngModelChange)="checkFilter()" class="form-control searchNode"
                name="searchText" placeholder="Enter the text to filter rows on multiple attributes"
                type="text">
     </div>
     <div class="col-lg-1 col-md-1 col-sm-1 col-xs-1 filter-action">
-        <button (click)="download()"><i class="fa fa-arrow-down"></i></button>
+        <i (click)="download()" class="fa fa-download download-icon"></i>
     </div>
 </div>
 <!--<angular2-multiselect [(ngModel)]="filterData" [data]="itemList" [settings]="settings"-->
@@ -259,23 +272,70 @@
                 <!--                </div>-->
 
                 <div class="table100-body js-pscroll">
-                    <table>
+                    <table #mf="mfDataTable" [mfData]="filteredData" class="">
                         <thead>
                         <tr class="row100 head">
-                            <th *ngFor="let key of getKeys(filteredData[0]); let i=index">
+                            <th *ngFor="let key of getKeys(mf.data[0]); let i=index" mfSortByChange>
                                 <div class="table-head"
                                      [ngClass]="i==0?'table-head-first-child':i==getKeys(filteredData[0]).length-1?'table-head-last-child':''"
-                                     *ngIf="key!=='id'">
-                                    {{key}}
+                                     *ngIf="key!=='id' && itemList.includes(key)">
+                                    <mfDefaultSorter by="{{key}}"><span
+                                            class="table-key-text">{{getReadableFormat(key)}}</span></mfDefaultSorter>
+                                    <i class="fa fa-filter filter-icon" (click)="toggleQueryFilter(key)"></i>
+
+                                    <i *ngIf="queryFilterData[key] && queryFilterData[key].filterData && queryFilterData[key].filterData.length"
+                                       class="fa fa-times-rectangle-o filter-icon" (click)="clearFilter(key, false)"></i>
+                                </div>
+                                <!--                                <mat-menu #menu="matMenu">-->
+                                <!--                                    <div>-->
+                                <!--                                        Hi..-->
+                                <!--                                        <ng-multiselect-dropdown-->
+                                <!--                                                [placeholder]="'Select attribute(s) to search instantly'"-->
+                                <!--                                                [settings]="dropdownSettings"-->
+                                <!--                                                [data]="dropdownList"-->
+                                <!--                                                [(ngModel)]="filterData"-->
+                                <!--                                        >-->
+                                <!--                                        </ng-multiselect-dropdown>-->
+                                <!--                                    </div>-->
+                                <!--&lt;!&ndash;                                    <button mat-menu-item>&ndash;&gt;-->
+                                <!--&lt;!&ndash;                                        <mat-icon>dialpad</mat-icon>&ndash;&gt;-->
+                                <!--&lt;!&ndash;                                        <span>Redial</span>&ndash;&gt;-->
+                                <!--&lt;!&ndash;                                    </button>&ndash;&gt;-->
+                                <!--&lt;!&ndash;                                    <button mat-menu-item disabled>&ndash;&gt;-->
+                                <!--&lt;!&ndash;                                        <mat-icon>voicemail</mat-icon>&ndash;&gt;-->
+                                <!--&lt;!&ndash;                                        <span>Check voice mail</span>&ndash;&gt;-->
+                                <!--&lt;!&ndash;                                    </button>&ndash;&gt;-->
+                                <!--&lt;!&ndash;                                    <button mat-menu-item>&ndash;&gt;-->
+                                <!--&lt;!&ndash;                                        <mat-icon>notifications_off</mat-icon>&ndash;&gt;-->
+                                <!--&lt;!&ndash;                                        <span>Disable alerts</span>&ndash;&gt;-->
+                                <!--&lt;!&ndash;                                    </button>&ndash;&gt;-->
+                                <!--                                </mat-menu>-->
+                                <div *ngIf="showQueryFilter && showQueryFilter[key]" class="filter-query-container">
+                                    <div class="query-filter-action-container">
+                                        <button mat-button class="gilded-button" (click)="clearFilter(key)">Clear
+                                        </button>
+                                        <button mat-button class="gilded-button" (click)="applyQueryFilters(key)">
+                                            Apply
+                                        </button>
+                                    </div>
+                                    <div class="query-filter-selector">
+                                        <ng-multiselect-dropdown
+                                                [placeholder]="'Select ' + getReadableFormat(key) + ' to filter'"
+                                                [settings]="showQueryFilter && showQueryFilter[key]?queryFilterDropdownSettings:null"
+                                                [data]="queryFilterData[key].dropdownList"
+                                                [(ngModel)]="queryFilterData[key].filterData"
+                                        >
+                                        </ng-multiselect-dropdown>
+                                    </div>
                                 </div>
                             </th>
                         </tr>
                         </thead>
                         <tbody>
-                        <tr *ngFor="let record of filteredData; let recordId=index">
+                        <tr *ngFor="let record of mf.data; let recordId=index">
                             <td *ngFor="let key of getKeys(record); let i=index">
                                 <div class="row100 body" [ngClass]="i===0?'table-data-first-child':''"
-                                     *ngIf="key!=='id'">
+                                     *ngIf="key!=='id' && itemList.includes(key)">
                                     {{getActualData(record[key], key, title, recordId)}}
                                 </div>
                             </td>

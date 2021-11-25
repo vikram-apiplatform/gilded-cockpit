@@ -53,6 +53,8 @@ import {GoldInventoryGadgetComponent} from './gold-inventory/gold-inventory-gadg
 import {AppModule} from '../app.module';
 import {ChartDrillDownComponent} from './gold-inventory/chart-drill-down/chart-drill-down.component';
 import {NgMultiSelectDropDownModule} from 'ng-multiselect-dropdown';
+import {MatMenuModule} from '@angular/material/menu';
+import {DataTableModule} from 'angular2-datatable';
 
 // todo gadget
 
@@ -77,7 +79,9 @@ import {NgMultiSelectDropDownModule} from 'ng-multiselect-dropdown';
         FacetModule,
         TypeAheadInputModule,
         DataListModule,
-        NgMultiSelectDropDownModule
+        NgMultiSelectDropDownModule,
+        MatMenuModule,
+        DataTableModule
     ],
     declarations: [
         TodoGadgetComponent,  // todo gadget

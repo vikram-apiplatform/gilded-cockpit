@@ -1,5 +1,6 @@
 import {Component, OnInit} from '@angular/core';
 import {APIService} from '../api.service';
+import {environment} from '../../environments/environment';
 
 @Component({
     selector: 'app-kyc',
@@ -9,6 +10,7 @@ import {APIService} from '../api.service';
 export class KycComponent implements OnInit {
 
     kycDetails: any;
+    env = environment;
     statusChartData = [
         {
             name: 'Passed',
@@ -80,14 +82,17 @@ export class KycComponent implements OnInit {
                         case 'passed':
                             this.statusChartData[0].value += 1;
                             this.statusChartData[0].records.push(kyc);
+                            this.statusChartData[0]['query'] = 'status=passed';
                             break;
                         case 'failed':
                             this.statusChartData[1].value += 1;
                             this.statusChartData[1].records.push(kyc);
+                            this.statusChartData[0]['query'] = 'status=failed';
                             break;
                         case 'notAttempted':
                             this.statusChartData[2].value += 1;
                             this.statusChartData[2].records.push(kyc);
+                            this.statusChartData[0]['query'] = 'status=notAttempted';
                             break;
                     }
                     if (kyc.status === 'failed') {
@@ -95,22 +100,27 @@ export class KycComponent implements OnInit {
                             case 1:
                                 this.attemptsChartData[0].value += 1;
                                 this.attemptsChartData[0].records.push(kyc);
+                                this.statusChartData[0]['query'] = 'noOfAttempts=1';
                                 break;
                             case 2:
                                 this.attemptsChartData[1].value += 1;
                                 this.attemptsChartData[1].records.push(kyc);
+                                this.statusChartData[0]['query'] = 'noOfAttempts=2';
                                 break;
                             case 3:
                                 this.attemptsChartData[2].value += 1;
                                 this.attemptsChartData[2].records.push(kyc);
+                                this.statusChartData[0]['query'] = 'noOfAttempts=3';
                                 break;
                             case 4:
                                 this.attemptsChartData[3].value += 1;
                                 this.attemptsChartData[3].records.push(kyc);
+                                this.statusChartData[0]['query'] = 'noOfAttempts=4';
                                 break;
                             case 5:
                                 this.attemptsChartData[4].value += 1;
                                 this.attemptsChartData[4].records.push(kyc);
+                                this.statusChartData[0]['query'] = 'noOfAttempts=5';
                                 break;
                         }
                     }
@@ -135,6 +145,14 @@ export class KycComponent implements OnInit {
 
     hideDrillDownDetails() {
         this.showDrillDown = false;
+    }
+
+    applyFilters(params) {
+        const url = environment.kycUrl + params;
+        this.apiService.getData(url).subscribe(response => {
+            console.log(response);
+            this.kycDetails = response;
+        })
     }
 
 }

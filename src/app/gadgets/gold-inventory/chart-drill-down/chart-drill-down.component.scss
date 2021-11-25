@@ -215,6 +215,7 @@ th, td {
 
 .table100-body {
   max-height: 585px;
+  height: 50vh;
   overflow: auto;
 }
 
@@ -573,4 +574,50 @@ th, td {
 
 :host ::ng-deep .multiselect-dropdown .dropdown-btn .dropdown-multiselect__caret {
   padding-bottom: 0.5rem !important;
+}
+
+.table-key-text {
+  color: white;
+  margin-right: 0.3rem;
+  cursor: pointer;
+}
+
+.filter-query-container {
+  position: absolute;
+  padding: 1rem;
+  padding-top: 0.5rem;
+  top: 3.1rem;
+  left: auto;
+  margin-left: 4rem;
+  /* left: 3rem; */
+  background-color: white;
+  color: black;
+  //height: 200px;
+  //width: 200px;
+  width: 25%;
+  box-shadow: 0 1px 2px 0 rgba(34, 36, 38, 0.5);
+}
+
+.query-filter-action-container {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+}
+
+.query-filter-selector {
+  margin-top: 0.2rem;
+}
+
+.download-icon {
+  font-size: 1.5rem;
+  cursor: pointer;
+}
+
+.filter-icon {
+  margin: 0.5rem;
+  cursor: pointer;
+}
+
+:host ::ng-deep .glyphicon {
+  color: white;
 }

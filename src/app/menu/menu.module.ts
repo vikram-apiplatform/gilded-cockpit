@@ -16,6 +16,7 @@ import {TypeAheadInputModule} from '../typeahead-input/typeahead-input.module';
 import {MenuComponent} from './menu.component';
 import {MenuEventService} from './menu-service';
 import {AboutModule} from "../about/about.module";
+import {MatTooltipModule} from '@angular/material/tooltip';
 
 @NgModule({
     imports: [
@@ -28,7 +29,7 @@ import {AboutModule} from "../about/about.module";
         TypeAheadInputModule,
         GadgetModule,
         DndModule.forRoot(),
-        MatButtonModule, MatIconModule,
+        MatButtonModule, MatIconModule, MatTooltipModule,
     ],
     providers: [EndPointService,
         RuntimeService,

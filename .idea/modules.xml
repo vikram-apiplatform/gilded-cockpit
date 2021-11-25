@@ -2,7 +2,7 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/.idea/GIL-leftpanel.iml" filepath="$PROJECT_DIR$/.idea/GIL-leftpanel.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/gilded-cockpit.iml" filepath="$PROJECT_DIR$/.idea/gilded-cockpit.iml" />
     </modules>
   </component>
 </project>

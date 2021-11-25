@@ -3,6 +3,8 @@
 // `ng build --env=prod` then `environment.prod.ts` will be used instead.
 // The list of which env maps to which file can be found in `.angular-cli.json`.
 
+const apiHostUrl = 'https://dev-gilded.gateway.apiplatform.io';
+
 export const environment = {
     production: false,
     productName: 'Gilded Cockpit',
@@ -17,6 +19,7 @@ export const environment = {
         ai: true,
         endpoint: true
     },
-    apiHost: 'https://dev-gilded.gateway.apiplatform.io',
+    apiHost: apiHostUrl,
     apiHostName: 'dev-gilded',
+    kycUrl: apiHostUrl + '/v1/kyc'
 };

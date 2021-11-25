@@ -29,11 +29,11 @@
         <!--        <button type="button" mat-button (click)="drawer.toggle()">-->
         <!--            Toggle sidenav-->
         <!--        </button>-->
-        <div *ngIf="activeMenu==='Dashboard'">
+        <div>
             <app-menu-component [dashboardList]="dashboardList" [selectedBoard]="selectedBoard"
                                 (adminMenuRefreshDashboard)="updateDashboardMenu('')"></app-menu-component>
         </div>
-        <app-cockpit-header></app-cockpit-header>
+<!--        <app-cockpit-header></app-cockpit-header>-->
         <div *ngIf="activeMenu==='Dashboard' && !showDrillDown">
             <app-dashbord-overview></app-dashbord-overview>
         </div>

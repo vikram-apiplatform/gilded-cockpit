@@ -168,7 +168,7 @@ export class AdminMenuComponent implements OnInit {
             submenu: []
         },
         {
-            name: 'Anti-Money Laundering',
+            name: 'AML',
             iconClass: 'fa fa-user-secret',
             active: false,
             toolTip: 'Platform Experience',

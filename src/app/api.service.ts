@@ -1,5 +1,6 @@
 import {Injectable} from '@angular/core';
 import {HttpClient, HttpHeaders} from '@angular/common/http';
+import {environment} from '../environments/environment';
 import {catchError, map} from 'rxjs/operators';
 
 @Injectable()
@@ -18,7 +19,11 @@ export class APIService {
     constructor(private _http: HttpClient) {
     }
 
-    getKYCDetails() {
-        return this._http.get('https://dev-gilded.gateway.apiplatform.io/v1/kyc', this.httpOptions).pipe(map(res => res));
+    getKYCDetails(params = '') {
+        return this._http.get(environment.apiHost + '/v1/kyc' + params, this.httpOptions).pipe(map(res => res));
+    }
+
+    getData(url) {
+        return this._http.get(url, this.httpOptions).pipe(map(res => res));
     }
 }

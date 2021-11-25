@@ -6,6 +6,12 @@ import {environment} from '../../environments/environment';
 
 declare var jQuery: any;
 
+export interface Alert {
+    name: string;
+    icon: string;
+    notifications: number;
+}
+
 
 /**a
  * Menu component
@@ -41,6 +47,29 @@ export class MenuComponent implements OnInit {
     typeAheadIsInMenu = true;
 
     layoutId = 0;
+
+    alerts: Alert[] = [
+        // {
+        //     name: 'Downloads',
+        //     icon: 'fa fa-cloud-download',
+        //     notifications: 10
+        // },
+        {
+            name: 'KYC Verifications',
+            icon: 'fa fa-users',
+            notifications: 12
+        },
+        {
+            name: 'AML Verifications',
+            icon: 'fa fa-user-secret',
+            notifications: 10
+        },
+        {
+            name: 'Inventory',
+            icon: 'fa fa-briefcase',
+            notifications: 10
+        }
+    ]
 
     constructor(private _configurationService: ConfigurationService,
                 private _menuEventService: MenuEventService) {
