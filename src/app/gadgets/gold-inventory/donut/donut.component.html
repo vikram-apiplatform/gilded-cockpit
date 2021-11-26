@@ -77,22 +77,42 @@
 <!--    <mat-progress-bar mode="indeterminate"></mat-progress-bar>-->
 <!--  </div>-->
 <!--</div>-->
-<div *ngIf="data.length" class="chart-background">
-    <div class="chart-header">
-        {{header}}
-    </div>
+<!--<div *ngIf="data.length" class="chart-background">-->
+<!--    <div class="chart-header">-->
+<!--        {{header}}-->
+<!--    </div>-->
+<!--    <ngx-charts-pie-chart-->
+<!--                          [scheme]="colorScheme"-->
+<!--                          [view]="[300, 200]"-->
+<!--                          [results]="data"-->
+<!--                          [legend]="true"-->
+<!--                          [explodeSlices]="false"-->
+<!--                          [labels]="false"-->
+<!--                          [doughnut]="true"-->
+<!--                          [gradient]="false"-->
+<!--                          [legendTitle]="'KYC'"-->
+<!--                          [arcWidth]=".5"-->
+<!--                          (select)="showDrillDown($event)"-->
+<!--    >-->
+<!--    </ngx-charts-pie-chart>-->
+<!--</div>-->
+
+<div *ngIf="data.length">
+<!--    <div class="chart-header">-->
+<!--        {{header}}-->
+<!--    </div>-->
     <ngx-charts-pie-chart
-                          [scheme]="colorScheme"
-                          [view]="[300, 200]"
-                          [results]="data"
-                          [legend]="true"
-                          [explodeSlices]="false"
-                          [labels]="false"
-                          [doughnut]="true"
-                          [gradient]="false"
-                          [legendTitle]="'KYC'"
-                          [arcWidth]=".5"
-                          (select)="showDrillDown($event)"
+            [scheme]="colorScheme"
+            [view]="[300, 200]"
+            [results]="data"
+            [legend]="true"
+            [explodeSlices]="false"
+            [labels]="false"
+            [doughnut]="true"
+            [gradient]="false"
+            [legendTitle]="''"
+            [arcWidth]=".5"
+            (select)="showDrillDown($event)"
     >
     </ngx-charts-pie-chart>
 </div>

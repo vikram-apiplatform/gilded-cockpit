@@ -1,6 +1,8 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, Inject, OnInit} from '@angular/core';
 import {APIService} from '../api.service';
 import {environment} from '../../environments/environment';
+import {MAT_DIALOG_DATA, MatDialog, MatDialogRef} from '@angular/material/dialog';
+import {LeftpanelComponent} from '../leftpanel/leftpanel.component';
 
 @Component({
     selector: 'app-kyc',
@@ -10,6 +12,7 @@ import {environment} from '../../environments/environment';
 export class KycComponent implements OnInit {
 
     kycDetails: any;
+    kycHistory = {};
     env = environment;
     statusChartData = [
         {
@@ -62,14 +65,17 @@ export class KycComponent implements OnInit {
     };
     isDataloading = true;
     showDrillDown = false;
-    drillDownData = [];
+    drillDownData: any;
     drillDownTitle = '';
+    drillDownQueryParams = '';
 
-    constructor(public apiService: APIService) {
+    constructor(public apiService: APIService, public dialog: MatDialog) {
     }
 
     ngOnInit() {
-        this.getKYC()
+        this.drillDownData = [];
+        this.getKYC();
+        this.getKycHistory();
     }
 
     getKYC() {
@@ -87,12 +93,12 @@ export class KycComponent implements OnInit {
                         case 'failed':
                             this.statusChartData[1].value += 1;
                             this.statusChartData[1].records.push(kyc);
-                            this.statusChartData[0]['query'] = 'status=failed';
+                            this.statusChartData[1]['query'] = 'status=failed';
                             break;
                         case 'notAttempted':
                             this.statusChartData[2].value += 1;
                             this.statusChartData[2].records.push(kyc);
-                            this.statusChartData[0]['query'] = 'status=notAttempted';
+                            this.statusChartData[2]['query'] = 'status=notAttempted';
                             break;
                     }
                     if (kyc.status === 'failed') {
@@ -100,27 +106,27 @@ export class KycComponent implements OnInit {
                             case 1:
                                 this.attemptsChartData[0].value += 1;
                                 this.attemptsChartData[0].records.push(kyc);
-                                this.statusChartData[0]['query'] = 'noOfAttempts=1';
+                                this.attemptsChartData[0]['query'] = 'noOfAttempts=1';
                                 break;
                             case 2:
                                 this.attemptsChartData[1].value += 1;
                                 this.attemptsChartData[1].records.push(kyc);
-                                this.statusChartData[0]['query'] = 'noOfAttempts=2';
+                                this.attemptsChartData[1]['query'] = 'noOfAttempts=2';
                                 break;
                             case 3:
                                 this.attemptsChartData[2].value += 1;
                                 this.attemptsChartData[2].records.push(kyc);
-                                this.statusChartData[0]['query'] = 'noOfAttempts=3';
+                                this.attemptsChartData[2]['query'] = 'noOfAttempts=3';
                                 break;
                             case 4:
                                 this.attemptsChartData[3].value += 1;
                                 this.attemptsChartData[3].records.push(kyc);
-                                this.statusChartData[0]['query'] = 'noOfAttempts=4';
+                                this.attemptsChartData[3]['query'] = 'noOfAttempts=4';
                                 break;
                             case 5:
                                 this.attemptsChartData[4].value += 1;
                                 this.attemptsChartData[4].records.push(kyc);
-                                this.statusChartData[0]['query'] = 'noOfAttempts=5';
+                                this.attemptsChartData[4]['query'] = 'noOfAttempts=5';
                                 break;
                         }
                     }
@@ -137,9 +143,11 @@ export class KycComponent implements OnInit {
     }
 
     showDrillDownDetails(data) {
+        this.showDrillDown = false;
         this.drillDownData = data.records;
         console.log(this.drillDownData);
         this.drillDownTitle = data.title;
+        this.drillDownQueryParams = data.query;
         this.showDrillDown = true;
     }
 
@@ -151,8 +159,55 @@ export class KycComponent implements OnInit {
         const url = environment.kycUrl + params;
         this.apiService.getData(url).subscribe(response => {
             console.log(response);
-            this.kycDetails = response;
+            if (this.showDrillDown) {
+                this.drillDownData = response;
+            } else {
+                this.kycDetails = response;
+            }
         })
     }
 
+    getKycHistory() {
+        this.apiService.getKycHistory().subscribe(response => {
+            console.log(response);
+            let tempKycHhistory: any;
+            tempKycHhistory = response;
+            for (const kycHistory of tempKycHhistory) {
+                if (this.kycHistory[kycHistory.accountNumber]) {
+                    this.kycHistory[kycHistory.accountNumber].push(kycHistory);
+                } else {
+                    this.kycHistory[kycHistory.accountNumber] = [];
+                    this.kycHistory[kycHistory.accountNumber].push(kycHistory);
+                }
+            }
+            console.log(this.kycHistory);
+        })
+    }
+
+    openDocumentViewer(doc) {
+        console.log(doc)
+        const dialogRef = this.dialog.open(KycDocumentViewerComponent, {
+            data: doc,
+            width: '70%',
+            height: '80%'
+        })
+    }
+
+}
+
+
+@Component({
+    selector: 'app-kyc-document-viewer',
+    templateUrl: './kycDocumentViewer.html',
+    styleUrls: ['./kyc.component.css']
+})
+export class KycDocumentViewerComponent {
+    constructor(@Inject(MAT_DIALOG_DATA) public data: any, public dialogRef: MatDialogRef<KycDocumentViewerComponent>) {
+        dialogRef.disableClose = true;
+        console.log(this.data);
+    }
+
+    close() {
+        this.dialogRef.close();
+    }
 }

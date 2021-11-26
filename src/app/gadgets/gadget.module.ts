@@ -55,6 +55,8 @@ import {ChartDrillDownComponent} from './gold-inventory/chart-drill-down/chart-d
 import {NgMultiSelectDropDownModule} from 'ng-multiselect-dropdown';
 import {MatMenuModule} from '@angular/material/menu';
 import {DataTableModule} from 'angular2-datatable';
+import {MatTableModule} from '@angular/material/table';
+import {MatTooltipModule} from '@angular/material/tooltip';
 
 // todo gadget
 
@@ -81,7 +83,9 @@ import {DataTableModule} from 'angular2-datatable';
         DataListModule,
         NgMultiSelectDropDownModule,
         MatMenuModule,
-        DataTableModule
+        DataTableModule,
+        MatTableModule,
+        MatTooltipModule
     ],
     declarations: [
         TodoGadgetComponent,  // todo gadget

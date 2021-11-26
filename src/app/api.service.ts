@@ -26,4 +26,8 @@ export class APIService {
     getData(url) {
         return this._http.get(url, this.httpOptions).pipe(map(res => res));
     }
+
+    getKycHistory(params = '') {
+        return this._http.get(environment.apiHost + '/v1/kycHistory' + params, this.httpOptions).pipe(map(res => res));
+    }
 }

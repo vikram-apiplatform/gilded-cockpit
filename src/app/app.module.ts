@@ -10,22 +10,22 @@ import {MenuModule} from './menu/menu.module';
 import {BoardModule} from './board/board.module';
 import {MatButtonModule, MatCardModule, MatIconModule, MatProgressBarModule} from '@angular/material';
 import {MatSidenavModule} from '@angular/material/sidenav';
-import { LeftpanelComponent } from './leftpanel/leftpanel.component';
-import { AdminMenuComponent } from './admin-menu/admin-menu.component';
-import { DashbordOverviewComponent } from './dashbord-overview/dashbord-overview.component';
+import {LeftpanelComponent} from './leftpanel/leftpanel.component';
+import {AdminMenuComponent} from './admin-menu/admin-menu.component';
+import {DashbordOverviewComponent} from './dashbord-overview/dashbord-overview.component';
 import {AttributeDescriptionComponent, DynamicFormBuilderComponent} from './dynamic-form-builder/dynamic-form-builder.component';
 import {MatCheckboxModule} from '@angular/material/checkbox';
 import {MatFormFieldModule} from '@angular/material/form-field';
 import {MatInputModule} from '@angular/material/input';
 import {MatDialogModule} from '@angular/material/dialog';
-import { OrderFormComponent } from './order-form/order-form.component';
+import {OrderFormComponent} from './order-form/order-form.component';
 import {DragDropModule} from '@angular/cdk/drag-drop';
-import { DynamicFormGeneratorComponent } from './dynamic-form-builder/dynamic-form-generator/dynamic-form-generator.component';
+import {DynamicFormGeneratorComponent} from './dynamic-form-builder/dynamic-form-generator/dynamic-form-generator.component';
 import {MatSelectModule} from '@angular/material/select';
 import {MatTooltipModule} from '@angular/material/tooltip';
-import { OrderCmpComponent } from './order-cmp/order-cmp.component';
-import { PlaceOrderComponent } from './order-cmp/place-order/place-order.component';
-import { OrderManagementComponent } from './order-cmp/order-management/order-management.component';
+import {OrderCmpComponent} from './order-cmp/order-cmp.component';
+import {PlaceOrderComponent} from './order-cmp/place-order/place-order.component';
+import {OrderManagementComponent} from './order-cmp/order-management/order-management.component';
 import {GildedCockpitComponent} from './gilded-cockpit/gilded-cockpit.component';
 import {GridModule} from './grid/grid.module';
 import {CockpitHeaderComponent} from './cockpit-header/cockpit-header.component';
@@ -38,8 +38,10 @@ import {DynamicFormModule} from './dynamic-form/dynamic-form-module';
 import {ErrorHandlerModule} from './error/error.module';
 import {GadgetModule} from './gadgets/gadget.module';
 import {APIService} from './api.service';
-import { ChartDrilldownComponent } from './chart-drilldown/chart-drilldown.component';
+import {ChartDrilldownComponent} from './chart-drilldown/chart-drilldown.component';
 import {FilterPipe} from './filter.pipe';
+import {MatExpansionModule} from '@angular/material/expansion';
+import {KycDocumentViewerComponent} from './kyc/kyc.component';
 
 @NgModule({
     imports: [
@@ -72,7 +74,8 @@ import {FilterPipe} from './filter.pipe';
         DynamicFormModule,
         ErrorHandlerModule,
         GadgetModule,
-        MatProgressBarModule
+        MatProgressBarModule,
+        MatExpansionModule
     ],
     declarations: [
         AppComponent,
@@ -91,10 +94,11 @@ import {FilterPipe} from './filter.pipe';
         KycComponent,
         DonutComponent,
         ChartDrilldownComponent,
-        FilterPipe
+        FilterPipe,
+        KycDocumentViewerComponent
     ],
-    providers: [APIService, LeftpanelComponent],
-    entryComponents: [AttributeDescriptionComponent],
+    providers: [APIService, LeftpanelComponent, KycDocumentViewerComponent],
+    entryComponents: [AttributeDescriptionComponent, KycDocumentViewerComponent],
     exports: [
         ChartDrilldownComponent
     ],

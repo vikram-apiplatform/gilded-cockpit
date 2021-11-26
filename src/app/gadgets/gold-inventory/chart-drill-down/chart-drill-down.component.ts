@@ -2,11 +2,21 @@ import {Component, EventEmitter, Input, OnChanges, OnInit, Output} from '@angula
 import {IDropdownSettings} from 'ng-multiselect-dropdown/multiselect.model';
 import {FilterPipe} from '../../../filter.pipe';
 import {CsvService} from '../../../csv.service';
+import {animate, state, style, transition, trigger} from '@angular/animations';
+
+declare let $;
 
 @Component({
     selector: 'app-chart-drill-down',
     templateUrl: './chart-drill-down.component.html',
-    styleUrls: ['./chart-drill-down.component.scss']
+    styleUrls: ['./chart-drill-down.component.scss'],
+    animations: [
+        trigger('detailExpand', [
+            state('collapsed', style({height: '0px', minHeight: '0'})),
+            state('expanded', style({height: '*'})),
+            transition('expanded <=> collapsed', animate('225ms cubic-bezier(0.4, 0.0, 0.2, 1)')),
+        ]),
+    ],
 })
 export class ChartDrillDownComponent implements OnInit, OnChanges {
 
@@ -15,8 +25,11 @@ export class ChartDrillDownComponent implements OnInit, OnChanges {
     @Input() isDrillDown = true;
     @Input() apiUrl: any;
     @Input() includesParams = false;
+    @Input() paramsToBePassed = '';
+    @Input() kycHistory = [];
     @Output() hideDetails: EventEmitter<any> = new EventEmitter<any>();
     @Output() queryFilters: EventEmitter<any> = new EventEmitter<any>();
+    @Output() viewDocuments: EventEmitter<any> = new EventEmitter<any>();
     itemList = [];
     filterData: any[];
     columns = [];
@@ -24,6 +37,7 @@ export class ChartDrillDownComponent implements OnInit, OnChanges {
 
     dropdownList = [];
     dropdownSettings: IDropdownSettings;
+    attributesDropdownSettings: IDropdownSettings;
     queryFilterDropdownSettings: IDropdownSettings;
     searchText = '';
     filteredData = [];
@@ -33,30 +47,16 @@ export class ChartDrillDownComponent implements OnInit, OnChanges {
     queryFilteredData = [];
     attributesList = [];
     attributesFilter = [];
+    expandedElement: any;
+    showExpansionPanel = {};
+    showAttributesFilter = false;
 
     constructor(public _csvService: CsvService) {
     }
 
     ngOnInit() {
         this.filteredData = this.data;
-        //this.queryFilteredData = this.data;
-        this.itemList = [];
-        this.columns = Object.keys(this.data[0]);
-        this.itemList = this.columns;
-        for (let t = 0; t < this.columns.length; t++) {
-            // const tempObj = {};
-            // tempObj['id'] = t;
-            // tempObj['itemName'] = this.columns[t];
-            // this.itemList.push(tempObj);
-            this.dropdownList.push({item_id: t, item_text: this.columns[t]})
-            this.attributesList.push({item_id: t, item_text: this.columns[t]})
-            this.attributesFilter.push({item_id: t, item_text: this.columns[t]})
-            this.showQueryFilter[this.columns[t]] = false;
-            this.queryFilterData[this.columns[t]] = {
-                dropdownList: [],
-                filterData: []
-            }
-        }
+        this.populateFilters();
         this.populateQueryFiltersData();
 
         // this.dropdownList = [
@@ -75,6 +75,15 @@ export class ChartDrillDownComponent implements OnInit, OnChanges {
             itemsShowLimit: 5,
             allowSearchFilter: true
         };
+        this.attributesDropdownSettings = {
+            singleSelection: false,
+            idField: 'item_id',
+            textField: 'item_text',
+            selectAllText: 'Select All',
+            unSelectAllText: 'UnSelect All',
+            itemsShowLimit: 3,
+            allowSearchFilter: true
+        };
         this.queryFilterDropdownSettings = {
             singleSelection: false,
             idField: 'item_id',
@@ -87,9 +96,39 @@ export class ChartDrillDownComponent implements OnInit, OnChanges {
         };
     }
 
+    populateFilters() {
+        //this.queryFilteredData = this.data;
+        this.dropdownList = [];
+        this.attributesList = [];
+        this.attributesFilter = [];
+        this.showQueryFilter = {};
+        this.queryFilterData = {};
+        this.itemList = [];
+        this.columns = Object.keys(this.data[0]);
+        this.itemList = this.columns;
+        for (let t = 0; t < this.columns.length; t++) {
+            // const tempObj = {};
+            // tempObj['id'] = t;
+            // tempObj['itemName'] = this.columns[t];
+            // this.itemList.push(tempObj);
+            this.dropdownList.push({item_id: t, item_text: this.columns[t]})
+            this.attributesList.push({item_id: t, item_text: this.columns[t]})
+            this.attributesFilter.push({item_id: t, item_text: this.columns[t]})
+            this.showQueryFilter[this.columns[t]] = false;
+            this.queryFilterData[this.columns[t]] = {
+                dropdownList: [],
+                filterData: []
+            }
+        }
+    }
+
     ngOnChanges() {
         console.log(this.data);
         this.filteredData = this.data;
+        if (this.includesParams) {
+            this.populateFilters();
+            this.populateQueryFiltersData();
+        }
     }
 
     getKeys(obj) {
@@ -147,6 +186,7 @@ export class ChartDrillDownComponent implements OnInit, OnChanges {
 
     populateQueryFiltersData() {
         for (let i = 0; i < this.filteredData.length; i++) {
+            this.showExpansionPanel[i] = false;
             for (const key of Object.keys(this.filteredData[i])) {
                 if (!this.queryFilterData[key]) {
                     this.queryFilterData[key] = {
@@ -154,15 +194,18 @@ export class ChartDrillDownComponent implements OnInit, OnChanges {
                         filterData: []
                     }
                 }
-                if (!this.queryFilterData[key]['dropdownList'].includes({item_id: i, item_text: this.filteredData[i][key]})) {
+                if (!this.queryFilterData[key]['dropdownList'].filter(queryFilter => queryFilter.item_text === this.filteredData[i][key]).length) {
                     this.queryFilterData[key]['dropdownList'].push({item_id: i, item_text: this.filteredData[i][key]});
                 }
+                // if (!this.queryFilterData[key]['dropdownList'].includes({item_id: i, item_text: this.filteredData[i][key]})) {
+                //     this.queryFilterData[key]['dropdownList'].push({item_id: i, item_text: this.filteredData[i][key]});
+                // }
             }
         }
     }
 
     download() {
-        this._csvService.downloadFile(this.filteredData, 'csv', this.columns);
+        this._csvService.downloadFile(this.filteredData, 'KYC Report', this.columns);
     }
 
     getReadableFormat(key) {
@@ -179,8 +222,13 @@ export class ChartDrillDownComponent implements OnInit, OnChanges {
             Object.keys(this.showQueryFilter).forEach(queryKey => {
                 this.showQueryFilter[queryKey] = false
             });
+            $('.filter-query').css({'top': '5rem !important'});
         }
         this.showQueryFilter[key] = !this.showQueryFilter[key];
+    }
+
+    getQueryFilterStyle(i) {
+        return (-i * 1.2 + 'rem');
     }
 
     applyQueryFilters(queryKey, shouldToggleQueryFilter = true) {
@@ -189,6 +237,9 @@ export class ChartDrillDownComponent implements OnInit, OnChanges {
         for (const key of Object.keys(this.queryFilterData)) {
             if (queryParams === '') {
                 queryParams += '?';
+                if (this.includesParams) {
+                    queryParams += this.paramsToBePassed;
+                }
             }
             // else {
             //     queryParams += '&';
@@ -252,6 +303,24 @@ export class ChartDrillDownComponent implements OnInit, OnChanges {
     onAttributeDeSelectAll(attribute) {
         console.log(attribute);
         this.itemList = [];
+    }
+
+    // getStatusClass(status){
+    //     switch(status){
+    //         case 'passed':
+    //     }
+    // }
+
+    toggleExpansionPanel(index) {
+        this.showExpansionPanel[index] = !this.showExpansionPanel[index];
+    }
+
+    toggleAttributesFilter() {
+        this.showAttributesFilter = !this.showAttributesFilter;
+    }
+
+    showDocuments(accNo, attemptNo) {
+        this.viewDocuments.emit({accountNumber: accNo, attemptNumber: attemptNo});
     }
 
 }

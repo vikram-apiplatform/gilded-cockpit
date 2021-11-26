@@ -1,13 +1,35 @@
 <div *ngIf="!isDataloading" class="container">
     <div class="stats-container">
-        <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
-            <app-donut [data]="statusChartData" [header]="statusChartHeader"
-                       (drillDown)="showDrillDownDetails($event)"></app-donut>
-        </div>
-        <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
-            <app-donut [data]="attemptsChartData" [header]="attemptsChartHeader" [colorScheme]="attemptsColorScheme"
-                       (drillDown)="showDrillDownDetails($event)"></app-donut>
-        </div>
+        <mat-accordion class="col-lg-5 col-md-5 col-sm-12 col-xs-12">
+            <mat-expansion-panel expanded="true">
+                <mat-expansion-panel-header>
+                    KYC Status
+                </mat-expansion-panel-header>
+                <div>
+                    <app-donut [data]="statusChartData" [header]="statusChartHeader"
+                               (drillDown)="showDrillDownDetails($event)"></app-donut>
+                </div>
+            </mat-expansion-panel>
+        </mat-accordion>
+        <mat-accordion class="col-lg-5 col-md-5 col-sm-12 col-xs-12">
+            <mat-expansion-panel expanded="true">
+                <mat-expansion-panel-header>
+                    No. of attempts
+                </mat-expansion-panel-header>
+                <div>
+                    <app-donut [data]="attemptsChartData" [header]="attemptsChartHeader" [colorScheme]="attemptsColorScheme"
+                               (drillDown)="showDrillDownDetails($event)"></app-donut>
+                </div>
+            </mat-expansion-panel>
+        </mat-accordion>
+<!--        <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">-->
+<!--            <app-donut [data]="statusChartData" [header]="statusChartHeader"-->
+<!--                       (drillDown)="showDrillDownDetails($event)"></app-donut>-->
+<!--        </div>-->
+<!--        <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">-->
+<!--            <app-donut [data]="attemptsChartData" [header]="attemptsChartHeader" [colorScheme]="attemptsColorScheme"-->
+<!--                       (drillDown)="showDrillDownDetails($event)"></app-donut>-->
+<!--        </div>-->
     </div>
     <!--    <table class="table table-striped">-->
     <!--        <tr>-->
@@ -22,7 +44,10 @@
     <!--        </tr>-->
     <!--    </table>-->
     <div *ngIf="!showDrillDown" class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
-        <app-chart-drill-down [apiUrl]="env.kycUrl" [includesParams]="false" [data]="kycDetails" [isDrillDown]="false" (queryFilters)="applyFilters($event)"></app-chart-drill-down>
+        <app-chart-drill-down [apiUrl]="env.kycUrl" [includesParams]="false" [data]="kycDetails"
+                              [kycHistory]="kycHistory" [isDrillDown]="false"
+                              (viewDocuments)="openDocumentViewer($event)"
+                              (queryFilters)="applyFilters($event)"></app-chart-drill-down>
     </div>
 
     <!-- Table with panel -->
@@ -182,7 +207,8 @@
     <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
         <!--        <app-chart-drilldown (hideDetails)="hideDrillDownDetails()" [data]="drillDownData"-->
         <!--                             [title]="drillDownTitle"></app-chart-drilldown>-->
-        <app-chart-drill-down (hideDetails)="hideDrillDownDetails()" [data]="drillDownData"
-                              [title]="drillDownTitle"></app-chart-drill-down>
+        <app-chart-drill-down (hideDetails)="hideDrillDownDetails()" [apiUrl]="env.kycUrl" [includesParams]="true"
+                              [paramsToBePassed]="drillDownQueryParams" [data]="drillDownData" [kycHistory]="kycHistory"
+                              (viewDocuments)="openDocumentViewer($event)" [title]="drillDownTitle" (queryFilters)="applyFilters($event)"></app-chart-drill-down>
     </div>
 </div>
