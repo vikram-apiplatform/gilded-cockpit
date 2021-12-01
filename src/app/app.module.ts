@@ -42,6 +42,8 @@ import {ChartDrilldownComponent} from './chart-drilldown/chart-drilldown.compone
 import {FilterPipe} from './filter.pipe';
 import {MatExpansionModule} from '@angular/material/expansion';
 import {KycDocumentViewerComponent} from './kyc/kyc.component';
+import { AmlComponent } from './aml/aml.component';
+import { RemediationsComponent } from './remediations/remediations.component';
 
 @NgModule({
     imports: [
@@ -95,10 +97,12 @@ import {KycDocumentViewerComponent} from './kyc/kyc.component';
         DonutComponent,
         ChartDrilldownComponent,
         FilterPipe,
-        KycDocumentViewerComponent
+        KycDocumentViewerComponent,
+        AmlComponent,
+        RemediationsComponent
     ],
     providers: [APIService, LeftpanelComponent, KycDocumentViewerComponent],
-    entryComponents: [AttributeDescriptionComponent, KycDocumentViewerComponent],
+    entryComponents: [AttributeDescriptionComponent, KycDocumentViewerComponent, RemediationsComponent],
     exports: [
         ChartDrilldownComponent
     ],

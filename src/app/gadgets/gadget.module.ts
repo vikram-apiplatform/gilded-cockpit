@@ -57,6 +57,9 @@ import {MatMenuModule} from '@angular/material/menu';
 import {DataTableModule} from 'angular2-datatable';
 import {MatTableModule} from '@angular/material/table';
 import {MatTooltipModule} from '@angular/material/tooltip';
+import {MatDatepickerModule} from '@angular/material/datepicker';
+import {MatNativeDateModule} from '@angular/material/core';
+import { BarchartComponent } from './gold-inventory/barchart/barchart.component';
 
 // todo gadget
 
@@ -85,7 +88,9 @@ import {MatTooltipModule} from '@angular/material/tooltip';
         MatMenuModule,
         DataTableModule,
         MatTableModule,
-        MatTooltipModule
+        MatTooltipModule,
+        MatDatepickerModule,
+        MatNativeDateModule
     ],
     declarations: [
         TodoGadgetComponent,  // todo gadget
@@ -113,6 +118,7 @@ import {MatTooltipModule} from '@angular/material/tooltip';
         BarChartGadgetComponent,
         PieChartGadgetComponent,
         ChartDrillDownComponent,
+        BarchartComponent,
 
     ],
 

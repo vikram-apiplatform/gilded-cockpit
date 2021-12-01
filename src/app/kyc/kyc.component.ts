@@ -3,6 +3,7 @@ import {APIService} from '../api.service';
 import {environment} from '../../environments/environment';
 import {MAT_DIALOG_DATA, MatDialog, MatDialogRef} from '@angular/material/dialog';
 import {LeftpanelComponent} from '../leftpanel/leftpanel.component';
+import {RemediationsComponent} from '../remediations/remediations.component';
 
 @Component({
     selector: 'app-kyc',
@@ -188,6 +189,13 @@ export class KycComponent implements OnInit {
         console.log(doc)
         const dialogRef = this.dialog.open(KycDocumentViewerComponent, {
             data: doc,
+            width: '70%',
+            height: '80%'
+        })
+    }
+
+    openRemediations() {
+        const dialogRef = this.dialog.open(RemediationsComponent, {
             width: '70%',
             height: '80%'
         })

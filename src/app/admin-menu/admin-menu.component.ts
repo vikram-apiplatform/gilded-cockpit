@@ -172,7 +172,7 @@ export class AdminMenuComponent implements OnInit {
             iconClass: 'fa fa-user-secret',
             active: false,
             toolTip: 'Platform Experience',
-            route: '',
+            route: 'aml',
             submenu: []
         },
         {

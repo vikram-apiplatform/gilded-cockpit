@@ -30,6 +30,7 @@ export class ChartDrillDownComponent implements OnInit, OnChanges {
     @Output() hideDetails: EventEmitter<any> = new EventEmitter<any>();
     @Output() queryFilters: EventEmitter<any> = new EventEmitter<any>();
     @Output() viewDocuments: EventEmitter<any> = new EventEmitter<any>();
+    @Output() viewRemediations: EventEmitter<any> = new EventEmitter<any>();
     itemList = [];
     filterData: any[];
     columns = [];
@@ -321,6 +322,10 @@ export class ChartDrillDownComponent implements OnInit, OnChanges {
 
     showDocuments(accNo, attemptNo) {
         this.viewDocuments.emit({accountNumber: accNo, attemptNumber: attemptNo});
+    }
+
+    showRemediations() {
+        this.viewRemediations.emit();
     }
 
 }

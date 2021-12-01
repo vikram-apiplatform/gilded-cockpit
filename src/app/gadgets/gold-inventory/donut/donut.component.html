@@ -97,17 +97,17 @@
 <!--    </ngx-charts-pie-chart>-->
 <!--</div>-->
 
-<div *ngIf="data.length">
-<!--    <div class="chart-header">-->
-<!--        {{header}}-->
-<!--    </div>-->
+<div *ngIf="data.length" class="chart-background">
+    <div class="chart-header">
+        {{header}}
+    </div>
     <ngx-charts-pie-chart
             [scheme]="colorScheme"
-            [view]="[300, 200]"
+            [view]="[500,200]"
             [results]="data"
-            [legend]="true"
+            [legend]="false"
             [explodeSlices]="false"
-            [labels]="false"
+            [labels]="true"
             [doughnut]="true"
             [gradient]="false"
             [legendTitle]="''"

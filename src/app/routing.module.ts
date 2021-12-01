@@ -5,6 +5,7 @@ import {BoardComponent} from './board/board.component';
 import {DetailComponent} from './detail/detail.component';
 import {AdminMenuComponent} from './admin-menu/admin-menu.component';
 import {KycComponent} from './kyc/kyc.component';
+import {AmlComponent} from './aml/aml.component';
 import {GildedCockpitComponent} from './gilded-cockpit/gilded-cockpit.component';
 import {DynamicFormBuilderComponent} from './dynamic-form-builder/dynamic-form-builder.component';
 import {OrderFormComponent} from './order-form/order-form.component';
@@ -45,6 +46,11 @@ export const routes: Routes = [
     {
         path: 'kyc',
         component: KycComponent,
+        runGuardsAndResolvers: 'always'
+    },
+    {
+        path: 'aml',
+        component: AmlComponent,
         runGuardsAndResolvers: 'always'
     },
     {

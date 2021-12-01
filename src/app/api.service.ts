@@ -16,6 +16,16 @@ export class APIService {
         })
     };
 
+    gildedHttpOptions = {
+        headers: new HttpHeaders({
+            'Content-Type': 'application/json',
+            'pkey': '3fdba83a7f2055ea3fe39d9d3d862d7a',
+            'apikey': 'QHARThOgmAmnCIG2sNbqvnTVob9L1J5Y',
+            'Access-Control-Allow-Origin': '*',
+            'observe': 'response'
+        })
+    };
+
     constructor(private _http: HttpClient) {
     }
 
