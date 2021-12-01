@@ -29,13 +29,20 @@
                 <!--                    </mat-expansion-panel>-->
                 <!--                </mat-accordion>-->
                 <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
-                    <app-donut [data]="statusChartData" [header]="statusChartHeader"
-                               (drillDown)="showDrillDownDetails($event)"></app-donut>
+                    <!--                    <app-donut [data]="statusChartData" [header]="statusChartHeader"-->
+                    <!--                               (drillDown)="showDrillDownDetails($event)"></app-donut>-->
+                    <app-barchart [data]="statusChartData" [header]="statusChartHeader" [xAxisLabel]="'Status'"
+                                  [yAxisLabel]="'No.of Users'"
+                                  (drillDown)="showDrillDownDetails($event)"></app-barchart>
                 </div>
                 <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
-                    <app-donut [data]="attemptsChartData" [header]="attemptsChartHeader"
-                               [colorScheme]="attemptsColorScheme"
-                               (drillDown)="showDrillDownDetails($event)"></app-donut>
+                    <!--                    <app-donut [data]="attemptsChartData" [header]="attemptsChartHeader"-->
+                    <!--                               [colorScheme]="attemptsColorScheme"-->
+                    <!--                               (drillDown)="showDrillDownDetails($event)"></app-donut>-->
+                    <app-barchart [data]="attemptsChartData" [header]="attemptsChartHeader"
+                                  [xAxisLabel]="'No.of Attempts'"
+                                  [yAxisLabel]="'No.of Users'"
+                                  (drillDown)="showDrillDownDetails($event)"></app-barchart>
                 </div>
             </div>
         </mat-expansion-panel>
@@ -55,6 +62,8 @@
     <div *ngIf="!showDrillDown" class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
         <app-chart-drill-down [apiUrl]="env.kycUrl" [includesParams]="false" [data]="kycDetails"
                               [kycHistory]="kycHistory" [isDrillDown]="false"
+                              [remediateKey]="'is_kyc_verified'"
+                              [expandKey]="'kyc_check_count'"
                               (viewDocuments)="openDocumentViewer($event)"
                               (viewRemediations)="openRemediations()"
                               (queryFilters)="applyFilters($event)"></app-chart-drill-down>

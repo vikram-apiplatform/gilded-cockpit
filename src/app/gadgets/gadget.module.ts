@@ -160,7 +160,8 @@ import { BarchartComponent } from './gold-inventory/barchart/barchart.component'
         BarChartGadgetComponent,
         PieChartGadgetComponent,
         DrillDownComponent,
-        ChartDrillDownComponent
+        ChartDrillDownComponent,
+        BarchartComponent
     ],
     bootstrap: [ChartDrillDownComponent]
 })

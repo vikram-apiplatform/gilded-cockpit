@@ -1,21 +1,20 @@
-<p>
-    barchart works!
-</p>
-
-<div *ngIf="data.length">
-    <ngx-charts-bar-vertical-normalized
-            [view]="view"
+<div *ngIf="data.length" class="chart-background">
+    <div class="chart-header">
+        {{header}}
+    </div>
+    <ngx-charts-bar-vertical
+            [view]="[400, 200]"
             [scheme]="colorScheme"
             [results]="data"
             [gradient]="gradient"
             [xAxis]="true"
             [yAxis]="true"
-            [legend]="true"
+            [legend]="false"
             [showXAxisLabel]="true"
             [showYAxisLabel]="true"
             [xAxisLabel]="xAxisLabel"
             [yAxisLabel]="yAxisLabel"
             [barPadding]=15
             (select)="showDrillDown($event)">
-    </ngx-charts-bar-vertical-normalized>
+    </ngx-charts-bar-vertical>
 </div>

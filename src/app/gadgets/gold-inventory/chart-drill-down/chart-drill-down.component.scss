@@ -165,7 +165,7 @@ table {
 
 th, td {
   font-weight: unset;
-  padding-right: 10px;
+  padding-right: 30px;
 }
 
 //.column1 {
@@ -197,6 +197,7 @@ th, td {
 .table100-body td {
   padding-top: 16px;
   padding-bottom: 16px;
+  white-space: nowrap;
 }
 
 /*==================================================================
@@ -518,6 +519,10 @@ th, td {
 .table-head {
   padding-top: 0.5rem;
   padding-bottom: 0.5rem;
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-start;
+  align-items: center;
 }
 
 .table-head-first-child {
@@ -594,7 +599,7 @@ th, td {
   color: black;
   //height: 200px;
   //width: 200px;
-  min-width: 25%;
+  min-width: 14%;
   z-index: 999;
   box-shadow: 0 1px 2px 0 rgba(34, 36, 38, 0.5);
 }
@@ -631,6 +636,20 @@ th, td {
 }
 
 .failed {
+  height: 1rem;
+  width: 1rem;
+  background-color: red;
+  border-radius: 5rem;
+}
+
+.true {
+  height: 1rem;
+  width: 1rem;
+  background-color: green;
+  border-radius: 5rem;
+}
+
+.false {
   height: 1rem;
   width: 1rem;
   background-color: red;
@@ -704,6 +723,13 @@ th, td {
   flex-direction: row;
   //justify-content: space-between;
   align-items: center;
+}
+
+.cell-data {
+  display: flex;
+  width: 70%;
+  flex-direction: row;
+  justify-content: space-between;
 }
 
 //tr.example-detail-row {

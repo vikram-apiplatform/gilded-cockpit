@@ -68,7 +68,7 @@
             <div class="table100 ver1 m-b-110">
                 <div class="table100-body js-pscroll">
                     <table #mf="mfDataTable" [mfData]="filteredData" class="">
-                        <thead>
+                        <thead style="position: sticky !important; top: 0px; z-index: 99999">
                         <tr class="row100 head">
                             <th *ngFor="let key of getKeys(mf.data[0]); let i=index" mfSortByChange>
                                 <div class="table-head"
@@ -113,20 +113,23 @@
                             <tr>
                                 <td *ngFor="let key of columns; let i=index">
                                     <div class="row100 body table-cell-data">
-                                        <div class="row100 body" [ngClass]="i===0?'table-data-first-child':''"
-                                             *ngIf="key!=='id' && key!=='status' && itemList.includes(key)">
-                                            {{getActualData(record[key], key, title, recordId)}}
-                                            <i class="show-details-icon"
-                                               [ngClass]="!showExpansionPanel[recordId]?'fa fa-eye':'fa fa-eye-slash'"
-                                               (click)="toggleExpansionPanel(recordId)"
-                                               *ngIf="key==='noOfAttempts' && record.noOfAttempts && record.noOfAttempts>0"></i>
+                                        <div class="row100 body cell-data" [ngClass]="i===0?'table-data-first-child':''"
+                                             *ngIf="key!=='id' && key!==remediateKey && itemList.includes(key)">
+                                            <div *ngIf="record[key]!==null">{{getActualData(record[key], key, title, recordId)}}</div>
+                                            <div *ngIf="record[key]===null">null</div>
+                                            <div>
+                                                <i class="show-details-icon"
+                                                   [ngClass]="!showExpansionPanel[recordId]?'fa fa-eye':'fa fa-eye-slash'"
+                                                   (click)="toggleExpansionPanel(recordId)"
+                                                   *ngIf="key===expandKey && record[expandKey] && record[expandKey]>0"></i>
+                                            </div>
                                         </div>
                                         <div class="row100 body {{record[key]}}"
                                              [matTooltip]="getActualData(record[key], key, title, recordId)"
                                              [ngClass]="i===0?'table-data-first-child':''"
-                                             *ngIf="key==='status' && itemList.includes(key)">
+                                             *ngIf="key===remediateKey && itemList.includes(key)">
                                         </div>
-                                        <div *ngIf="key==='status' && record[key]==='failed' && itemList.includes(key)"
+                                        <div *ngIf="key===remediateKey && record[key]===false && itemList.includes(key)"
                                              class="row100 body">
                                             <button mat-button class="gilded-button remediate-button"
                                                     (click)="showRemediations()">Remediate
@@ -148,7 +151,7 @@
                             <tr *ngIf="showExpansionPanel[recordId]" style="margin:1rem">
                                 <td [colSpan]="columns.length + 1">
                                     <div class="details-table-container">
-                                        <table #mf="mfDataTable" [mfData]="kycHistory[record.accountNumber]"
+                                        <table #mf="mfDataTable" [mfData]="kycHistory[record.account_no]"
                                                class="details-table">
                                             <thead>
                                             <tr class="row100 head">
@@ -156,7 +159,8 @@
                                                     class="details-table-cell-header"
                                                     [ngClass]="i==0?'table-head-first-child':i==getKeys(mf.data[0]).length-1?'table-head-last-child':''"
                                                     mfSortByChange>
-                                                    <div *ngIf="key!=='id' && key!=='accountNumber'" class="table-head"
+                                                    <div *ngIf="key!=='id' && key!=='account_no' && key!=='full_response' && key!=='filter_response' && key!=='required_response'"
+                                                         class="table-head"
                                                          [ngClass]="i==getKeys(mf.data[0]).length-2?'table-head-action':''">
                                                         <mfDefaultSorter by="{{key}}"><span
                                                                 class="table-key-text">{{getReadableFormat(key)}}</span>
@@ -171,7 +175,8 @@
                                             <tbody>
                                             <tr *ngFor="let record of mf.data">
                                                 <td *ngFor="let key of getKeys(mf.data[0]); let i=index" mfSortByChange>
-                                                    <div *ngIf="key!=='id' && key!=='accountNumber'" class="row100-body"
+                                                    <div *ngIf="key!=='id' && key!=='account_no' && key!=='full_response' && key!=='filter_response' && key!=='required_response'"
+                                                         class="row100-body"
                                                          [ngClass]="i===0?'table-data-first-child':''">
                                                         <span *ngIf="key!=='docInfo'">{{record[key]}}</span>
                                                         <span *ngIf="key==='docInfo'"><button mat-button

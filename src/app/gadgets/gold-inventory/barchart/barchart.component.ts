@@ -7,7 +7,16 @@ import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
 })
 export class BarchartComponent implements OnInit {
 
-    @Input() data = [];
+    @Input() data = [
+        {
+            'name': 'Germany',
+            'value': 8940000
+        },
+        {
+            'name': 'USA',
+            'value': 5000000
+        }
+    ];
     @Input() header = '';
     @Input() xAxisLabel = '';
     @Input() yAxisLabel = '';
@@ -15,7 +24,7 @@ export class BarchartComponent implements OnInit {
     @Input() colorScheme = {
         domain: ['#0cd057', '#ff3838', '#00acc1']
     };
-    gradient = true;
+    gradient = false;
     @Output() drillDown: EventEmitter<any> = new EventEmitter<any>();
 
     constructor() {

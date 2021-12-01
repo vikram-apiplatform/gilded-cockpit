@@ -4,6 +4,7 @@
 // The list of which env maps to which file can be found in `.angular-cli.json`.
 
 const apiHostUrl = 'https://dev-gilded.gateway.apiplatform.io';
+const gildedHostUrl = 'https://apiplatform-services-dev.gildedco.app';
 
 export const environment = {
     production: false,
@@ -20,6 +21,10 @@ export const environment = {
         endpoint: true
     },
     apiHost: apiHostUrl,
+    gildedHost: gildedHostUrl,
     apiHostName: 'dev-gilded',
-    kycUrl: apiHostUrl + '/v1/kyc'
+    partner: 'dev-gilded',
+    account: 'dev-gilded',
+    // kycUrl: apiHostUrl + '/v1/kyc'
+    kycUrl: gildedHostUrl + '/v1/data/dev-gilded/dev-gilded/user'
 };

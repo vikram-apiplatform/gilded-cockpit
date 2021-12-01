@@ -30,14 +30,16 @@ export class APIService {
     }
 
     getKYCDetails(params = '') {
-        return this._http.get(environment.apiHost + '/v1/kyc' + params, this.httpOptions).pipe(map(res => res));
+        // https://apiplatform-services-dev.gildedco.app/v1/data/dev-gilded/dev-gilded/kycuser
+        // return this._http.get(environment.apiHost + '/v1/kyc' + params, this.httpOptions).pipe(map(res => res));
+        return this._http.get(environment.gildedHost + '/v1/data/' + environment.partner + '/' + environment.account + '/' + 'user' + params, this.gildedHttpOptions).pipe(map(res => res));
     }
 
     getData(url) {
-        return this._http.get(url, this.httpOptions).pipe(map(res => res));
+        return this._http.get(url, this.gildedHttpOptions).pipe(map(res => res));
     }
 
     getKycHistory(params = '') {
-        return this._http.get(environment.apiHost + '/v1/kycHistory' + params, this.httpOptions).pipe(map(res => res));
+        return this._http.get(environment.gildedHost + '/v1/data/' + environment.partner + '/' + environment.account + '/' + 'kycDetails' + params, this.gildedHttpOptions).pipe(map(res => res));
     }
 }

@@ -27,6 +27,8 @@ export class ChartDrillDownComponent implements OnInit, OnChanges {
     @Input() includesParams = false;
     @Input() paramsToBePassed = '';
     @Input() kycHistory = [];
+    @Input() remediateKey = '';
+    @Input() expandKey = '';
     @Output() hideDetails: EventEmitter<any> = new EventEmitter<any>();
     @Output() queryFilters: EventEmitter<any> = new EventEmitter<any>();
     @Output() viewDocuments: EventEmitter<any> = new EventEmitter<any>();
