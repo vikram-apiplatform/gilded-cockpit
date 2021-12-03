@@ -13,7 +13,7 @@
                         <!--                        <th class="message-column">Message</th>-->
                         <!--                        <th class="timestamp-column">Time Stamp</th>-->
                         <ng-container *ngFor="let key of columns">
-                            <th *ngIf="key!=='account_no' && key!=='id' && key!=='type' && key!=='time'">
+                            <th *ngIf="key!=='account_no' && key!=='id' && key!=='type'">
                                 <div>{{getReadableFormat(key)}}</div>
                             </th>
                         </ng-container>
@@ -23,7 +23,7 @@
                         <!--                        <td>{{data.timeStamp}}</td>-->
 
                         <ng-container *ngFor="let key of columns">
-                            <td *ngIf="key!=='account_no' && key!=='id' && key!=='type' && key!=='time'">
+                            <td *ngIf="key!=='account_no' && key!=='id' && key!=='type'">
                                 <div>{{getActualData(key, data[key])}}</div>
                             </td>
                         </ng-container>

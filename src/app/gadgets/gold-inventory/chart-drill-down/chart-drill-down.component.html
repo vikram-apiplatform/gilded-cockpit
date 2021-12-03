@@ -67,7 +67,7 @@
         <div class="wrap-table100">
             <div class="table100 ver1 m-b-110">
                 <div class="table100-body js-pscroll">
-                    <table #mf="mfDataTable" [mfData]="filteredData" class="">
+                    <table #mf="mfDataTable" [mfData]="filteredData" [(ngModel)]="filteredData" class="">
                         <thead style="position: sticky !important; top: 0px; z-index: 9">
                         <tr class="row100 head">
                             <th *ngFor="let key of itemList; let i=index" mfSortByChange>
@@ -109,7 +109,8 @@
                         </tr>
                         </thead>
                         <tbody>
-                        <ng-container *ngFor="let record of mf.data; let recordId=index">
+                        <ng-container
+                                *ngFor="let record of mf.data| slice: (currentPageDisplayed-1) * itemsPerPage : currentPageDisplayed * itemsPerPage; let recordId=index">
                             <tr>
                                 <td *ngFor="let key of itemList; let i=index">
                                     <div class="row100 body table-cell-data">
@@ -128,9 +129,9 @@
                                              [matTooltip]="getActualData(record[key], key, title, recordId)"
                                              [ngClass]="i===0?'table-data-first-child':''"
                                              *ngIf="key===remediateKey && itemList.includes(key)">
-                                            {{record[key] ? 'PASS' : 'FAIL'}}
+                                            {{record[key] === true ? 'PASS' : record[key] === false ? 'FAIL' : record[key]}}
                                         </div>
-                                        <div *ngIf="key===remediateKey && record[key]===false && itemList.includes(key)"
+                                        <div *ngIf="key===remediateKey && remediateIdentifiers.includes(record[key]) && itemList.includes(key)"
                                              class="row100 body">
                                             <button mat-button class="gilded-button remediate-button"
                                                     (click)="showRemediations(record)">Remediate
@@ -313,5 +314,20 @@
                 </div>
             </div>
         </div>
+    </div>
+    <div class="pagination">
+        <ngb-pagination [(page)]="page"
+                        [pageSize]="itemsPerPage"
+                        [collectionSize]="searchText!==''?tempCollectionSize:collectionSize" [maxSize]="5"
+                        (pageChange)="lastPage()"
+                        aria-label="Default pagination"></ngb-pagination>
+        <ngb-pagination [collectionSize]="5" [pageSize]="1" [ellipses]="false" [maxSize]="5"
+                        [boundaryLinks]="false"
+                        [directionLinks]="false"
+                        [(page)]="selectedItemsPerPageIndex"
+                        (pageChange)="setItemsPerPage()"
+                        aria-label="Custom pagination">
+            <ng-template ngbPaginationNumber let-p>{{ getPageSymbol(p) }}</ng-template>
+        </ngb-pagination>
     </div>
 </div>

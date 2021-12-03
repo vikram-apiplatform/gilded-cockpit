@@ -150,9 +150,15 @@ export class KycComponent implements OnInit {
                             this.statusChartData[0]['query'] = 'is_kyc_verified=true';
                             break;
                         case false:
-                            this.statusChartData[1].value += 1;
-                            this.statusChartData[1].records.push(kyc);
-                            this.statusChartData[1]['query'] = 'is_kyc_verified=false';
+                            if (kyc.kyc_check_count) {
+                                this.statusChartData[1].value += 1;
+                                this.statusChartData[1].records.push(kyc);
+                                this.statusChartData[1]['query'] = 'is_kyc_verified=false';
+                            } else {
+                                this.statusChartData[2].value += 1;
+                                this.statusChartData[2].records.push(kyc);
+                                this.statusChartData[2]['query'] = 'is_kyc_verified=false&kyc_check_count=0';
+                            }
                             break;
                         case 'passed':
                             this.statusChartData[0].value += 1;
@@ -177,7 +183,7 @@ export class KycComponent implements OnInit {
                         } else {
                             const tempObj = {
                                 name: kyc.kyc_check_count,
-                                value: 0,
+                                value: 1,
                                 records: [kyc],
                                 query: 'kyc_check_count=' + kyc.kyc_check_count
                             }

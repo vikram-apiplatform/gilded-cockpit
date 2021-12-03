@@ -28,22 +28,23 @@
                 <!--                        </div>-->
                 <!--                    </mat-expansion-panel>-->
                 <!--                </mat-accordion>-->
-                <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
+                <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
                     <!--                    <app-donut [data]="statusChartData" [header]="statusChartHeader"-->
                     <!--                               (drillDown)="showDrillDownDetails($event)"></app-donut>-->
-                    <app-barchart [data]="statusChartData" [header]="statusChartHeader" [xAxisLabel]="'Status'"
+                    <app-barchart [data]="statusChartData" [header]="statusChartHeader" [view]="[800, 380]"
+                                  [barPadding]="50" [showLegend]="false" [xAxisLabel]="'Status'"
                                   [yAxisLabel]="'No.of Users'"
                                   (drillDown)="showDrillDownDetails($event)"></app-barchart>
                 </div>
-                <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
-                    <!--                    <app-donut [data]="attemptsChartData" [header]="attemptsChartHeader"-->
-                    <!--                               [colorScheme]="attemptsColorScheme"-->
-                    <!--                               (drillDown)="showDrillDownDetails($event)"></app-donut>-->
-                    <app-barchart [data]="attemptsChartData" [header]="attemptsChartHeader"
-                                  [xAxisLabel]="'No.of Attempts'"
-                                  [yAxisLabel]="'No.of Users'"
-                                  (drillDown)="showDrillDownDetails($event)"></app-barchart>
-                </div>
+                <!--                <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">-->
+                <!--                    &lt;!&ndash;                    <app-donut [data]="attemptsChartData" [header]="attemptsChartHeader"&ndash;&gt;-->
+                <!--                    &lt;!&ndash;                               [colorScheme]="attemptsColorScheme"&ndash;&gt;-->
+                <!--                    &lt;!&ndash;                               (drillDown)="showDrillDownDetails($event)"></app-donut>&ndash;&gt;-->
+                <!--                    <app-barchart [data]="attemptsChartData" [header]="attemptsChartHeader"-->
+                <!--                                  [xAxisLabel]="'No.of Attempts'"-->
+                <!--                                  [yAxisLabel]="'No.of Users'"-->
+                <!--                                  (drillDown)="showDrillDownDetails($event)"></app-barchart>-->
+                <!--                </div>-->
             </div>
         </mat-expansion-panel>
     </mat-accordion>
@@ -60,13 +61,14 @@
     <!--        </tr>-->
     <!--    </table>-->
     <div *ngIf="!showDrillDown" class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
-        <app-chart-drill-down [apiUrl]="env.kycUrl" [includesParams]="false" [data]="kycDetails"
+        <app-chart-drill-down [apiUrl]="env.amlUrl" [includesParams]="false" [data]="kycDetails"
                               [kycHistory]="kycHistory" [isDrillDown]="false"
-                              [remediateKey]="'is_aml_verified'"
+                              [remediateKey]="'Response_Code'"
                               [expandKey]="'kyc_check_count'"
+                              [remediateIdentifiers]="remediateIdentifiers"
                               [fields]="columns"
                               (viewDocuments)="openDocumentViewer($event)"
-                              (viewRemediations)="openRemediations()"
+                              (viewRemediations)="openRemediations($event)"
                               (queryFilters)="applyFilters($event)"></app-chart-drill-down>
     </div>
 
@@ -227,8 +229,10 @@
     <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
         <!--        <app-chart-drilldown (hideDetails)="hideDrillDownDetails()" [data]="drillDownData"-->
         <!--                             [title]="drillDownTitle"></app-chart-drilldown>-->
-        <app-chart-drill-down (hideDetails)="hideDrillDownDetails()" [apiUrl]="env.kycUrl" [includesParams]="true"
+        <app-chart-drill-down (hideDetails)="hideDrillDownDetails()" [apiUrl]="env.amlUrl" [includesParams]="true"
                               [paramsToBePassed]="drillDownQueryParams" [data]="drillDownData" [kycHistory]="kycHistory"
+                              [fields]="columns"
+                              (viewRemediations)="openRemediations($event)"
                               (viewDocuments)="openDocumentViewer($event)" [title]="drillDownTitle"
                               (queryFilters)="applyFilters($event)"></app-chart-drill-down>
     </div>

@@ -50,4 +50,8 @@ export class APIService {
     postRemediationsData(payload) {
         return this._http.post(environment.apiHost + '/v1/remediations', payload, this.httpOptions).pipe(map(res => res));
     }
+
+    getAMLDetails(params = '') {
+        return this._http.get(environment.apiHost + '/v3/aml' + params, this.httpOptions).pipe(map(res => res));
+    }
 }

@@ -31,6 +31,7 @@ export class ChartDrillDownComponent implements OnInit, OnChanges {
     @Input() expandKey = '';
     @Input() fields = [];
     @Input() expandedTableFields = [];
+    @Input() remediateIdentifiers = [false];
     @Output() hideDetails: EventEmitter<any> = new EventEmitter<any>();
     @Output() queryFilters: EventEmitter<any> = new EventEmitter<any>();
     @Output() viewDocuments: EventEmitter<any> = new EventEmitter<any>();
@@ -54,6 +55,13 @@ export class ChartDrillDownComponent implements OnInit, OnChanges {
     expandedElement: any;
     showExpansionPanel = {};
     showAttributesFilter = false;
+    page = 1;
+    itemsPerPage = 20;
+    collectionSize: any;
+    tempCollectionSize: any;
+    currentPageDisplayed = 1;
+    selectedItemsPerPageIndex = 2;
+    isAllRecordsFetched = false;
 
     constructor(public _csvService: CsvService) {
     }
@@ -70,6 +78,8 @@ export class ChartDrillDownComponent implements OnInit, OnChanges {
         //     {item_id: 4, item_text: 'Navsari'},
         //     {item_id: 5, item_text: 'New Delhi'}
         // ];
+        this.collectionSize = this.data.length;
+        this.tempCollectionSize = this.filteredData.length;
         this.dropdownSettings = {
             singleSelection: false,
             idField: 'item_id',
@@ -349,6 +359,41 @@ export class ChartDrillDownComponent implements OnInit, OnChanges {
 
     showRemediations(record) {
         this.viewRemediations.emit(record);
+    }
+
+
+    lastPage() {
+        this.currentPageDisplayed = this.page;
+    }
+
+    setItemsPerPage() {
+        switch (this.selectedItemsPerPageIndex) {
+            case 1:
+                this.itemsPerPage = 10;
+                break;
+            case 2:
+                this.itemsPerPage = 20;
+                break;
+            case 3:
+                this.itemsPerPage = 40;
+                break;
+            case 4:
+                this.itemsPerPage = 60;
+                break;
+            case 5:
+                this.itemsPerPage = 100;
+                break;
+            default:
+                this.itemsPerPage = 20;
+        }
+
+        if (this.data && this.data.length && this.searchText === '' && !this.isAllRecordsFetched) {
+            this.lastPage();
+        }
+    }
+
+    getPageSymbol(current: number) {
+        return [10, 20, 40, 60, 100][current - 1];
     }
 
 }

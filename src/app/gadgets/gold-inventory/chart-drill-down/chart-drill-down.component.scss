@@ -738,6 +738,13 @@ th, td {
   justify-content: space-between;
 }
 
+.pagination {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+}
+
 //tr.example-detail-row {
 //  height: 0;
 //}

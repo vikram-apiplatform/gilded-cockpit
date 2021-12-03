@@ -20,7 +20,9 @@ export class BarchartComponent implements OnInit {
     @Input() header = '';
     @Input() xAxisLabel = '';
     @Input() yAxisLabel = '';
-    @Input() view: any[];
+    @Input() view = [400, 200];
+    @Input() barPadding = 100;
+    @Input() showLegend = false;
     @Input() colorScheme = {
         domain: ['#0cd057', '#ff3838', '#00acc1']
     };

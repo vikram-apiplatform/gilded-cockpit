@@ -12,6 +12,7 @@ export class RemediationsComponent implements OnInit {
 
 
     message: any;
+    accNo: any;
     remediationTableData: any;
     columns = [];
 
@@ -22,11 +23,12 @@ export class RemediationsComponent implements OnInit {
 
 
     ngOnInit() {
+        this.accNo = this.data.account_no ? this.data.account_no : this.data['Tracking_Id'];
         this.getRemediationsData()
     }
 
     getRemediationsData() {
-        this.apiService.getRemediationsData('?account_no=' + this.data.account_no + '&type=kyc').subscribe(response => {
+        this.apiService.getRemediationsData('?account_no=' + this.accNo + '&type=kyc').subscribe(response => {
             this.remediationTableData = response;
             // this.remediationTableData.sort((a, b) => {
             //     return <any>new Date(b.time).getTime() - <any>new Date(a.time).getTime();
@@ -45,7 +47,7 @@ export class RemediationsComponent implements OnInit {
     sendMessage() {
         const date = new Date();
         const payload = {
-            account_no: this.data.account_no,
+            account_no: this.accNo,
             time: Date.now(),
             note: this.message,
             type: 'kyc'
