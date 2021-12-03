@@ -68,9 +68,9 @@
             <div class="table100 ver1 m-b-110">
                 <div class="table100-body js-pscroll">
                     <table #mf="mfDataTable" [mfData]="filteredData" class="">
-                        <thead style="position: sticky !important; top: 0px; z-index: 99999">
+                        <thead style="position: sticky !important; top: 0px; z-index: 9">
                         <tr class="row100 head">
-                            <th *ngFor="let key of getKeys(mf.data[0]); let i=index" mfSortByChange>
+                            <th *ngFor="let key of itemList; let i=index" mfSortByChange>
                                 <div class="table-head"
                                      [ngClass]="i==0?'table-head-first-child':i==getKeys(filteredData[0]).length-1?'table-head-last-child':''"
                                      *ngIf="key!=='id' && itemList.includes(key)">
@@ -111,7 +111,7 @@
                         <tbody>
                         <ng-container *ngFor="let record of mf.data; let recordId=index">
                             <tr>
-                                <td *ngFor="let key of columns; let i=index">
+                                <td *ngFor="let key of itemList; let i=index">
                                     <div class="row100 body table-cell-data">
                                         <div class="row100 body cell-data" [ngClass]="i===0?'table-data-first-child':''"
                                              *ngIf="key!=='id' && key!==remediateKey && itemList.includes(key)">
@@ -128,11 +128,12 @@
                                              [matTooltip]="getActualData(record[key], key, title, recordId)"
                                              [ngClass]="i===0?'table-data-first-child':''"
                                              *ngIf="key===remediateKey && itemList.includes(key)">
+                                            {{record[key] ? 'PASS' : 'FAIL'}}
                                         </div>
                                         <div *ngIf="key===remediateKey && record[key]===false && itemList.includes(key)"
                                              class="row100 body">
                                             <button mat-button class="gilded-button remediate-button"
-                                                    (click)="showRemediations()">Remediate
+                                                    (click)="showRemediations(record)">Remediate
                                             </button>
                                         </div>
                                     </div>
@@ -155,9 +156,9 @@
                                                class="details-table">
                                             <thead>
                                             <tr class="row100 head">
-                                                <th *ngFor="let key of getKeys(mf.data[0]); let i=index"
+                                                <th *ngFor="let key of expandedTableFields; let i=index"
                                                     class="details-table-cell-header"
-                                                    [ngClass]="i==0?'table-head-first-child':i==getKeys(mf.data[0]).length-1?'table-head-last-child':''"
+                                                    [ngClass]="i==0?'table-head-first-child':i==expandedTableFields.length-1?'table-head-last-child':''"
                                                     mfSortByChange>
                                                     <div *ngIf="key!=='id' && key!=='account_no' && key!=='full_response' && key!=='filter_response' && key!=='required_response'"
                                                          class="table-head"
@@ -174,7 +175,7 @@
                                             </thead>
                                             <tbody>
                                             <tr *ngFor="let record of mf.data">
-                                                <td *ngFor="let key of getKeys(mf.data[0]); let i=index" mfSortByChange>
+                                                <td *ngFor="let key of expandedTableFields; let i=index" mfSortByChange>
                                                     <div *ngIf="key!=='id' && key!=='account_no' && key!=='full_response' && key!=='filter_response' && key!=='required_response'"
                                                          class="row100-body"
                                                          [ngClass]="i===0?'table-data-first-child':''">

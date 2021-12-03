@@ -593,13 +593,13 @@ th, td {
   padding-top: 0.5rem;
   top: 3.1rem;
   left: auto;
-  margin-left: 4rem;
+  //margin-left: 1rem;
   /* left: 3rem; */
   background-color: white;
   color: black;
   //height: 200px;
-  //width: 200px;
-  min-width: 14%;
+  width: 300px;
+  //min-width: 14%;
   z-index: 999;
   box-shadow: 0 1px 2px 0 rgba(34, 36, 38, 0.5);
 }
@@ -643,16 +643,22 @@ th, td {
 }
 
 .true {
-  height: 1rem;
-  width: 1rem;
   background-color: green;
+  color: white;
+  padding-top: 0.2rem;
+  padding-bottom: 0.2rem;
+  padding-left: 0.5rem;
+  padding-right: 0.5rem;
   border-radius: 5rem;
 }
 
 .false {
-  height: 1rem;
-  width: 1rem;
   background-color: red;
+  color: white;
+  padding-top: 0.2rem;
+  padding-bottom: 0.2rem;
+  padding-left: 0.5rem;
+  padding-right: 0.5rem;
   border-radius: 5rem;
 }
 

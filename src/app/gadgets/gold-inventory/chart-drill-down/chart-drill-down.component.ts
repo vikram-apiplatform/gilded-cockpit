@@ -29,15 +29,16 @@ export class ChartDrillDownComponent implements OnInit, OnChanges {
     @Input() kycHistory = [];
     @Input() remediateKey = '';
     @Input() expandKey = '';
+    @Input() fields = [];
+    @Input() expandedTableFields = [];
     @Output() hideDetails: EventEmitter<any> = new EventEmitter<any>();
     @Output() queryFilters: EventEmitter<any> = new EventEmitter<any>();
     @Output() viewDocuments: EventEmitter<any> = new EventEmitter<any>();
     @Output() viewRemediations: EventEmitter<any> = new EventEmitter<any>();
     itemList = [];
     filterData: any[];
-    columns = [];
     settings = {text: 'Select attribute(s) to search instantly'};
-
+    columns = [];
     dropdownList = [];
     dropdownSettings: IDropdownSettings;
     attributesDropdownSettings: IDropdownSettings;
@@ -107,8 +108,13 @@ export class ChartDrillDownComponent implements OnInit, OnChanges {
         this.showQueryFilter = {};
         this.queryFilterData = {};
         this.itemList = [];
-        this.columns = Object.keys(this.data[0]);
-        this.itemList = this.columns;
+        this.columns = JSON.parse(JSON.stringify(this.fields));
+        for (const key of Object.keys(this.data[0])) {
+            if (!this.columns.includes(key)) {
+                this.columns.push(key);
+            }
+        }
+        //this.itemList = this.columns;
         for (let t = 0; t < this.columns.length; t++) {
             // const tempObj = {};
             // tempObj['id'] = t;
@@ -116,7 +122,10 @@ export class ChartDrillDownComponent implements OnInit, OnChanges {
             // this.itemList.push(tempObj);
             this.dropdownList.push({item_id: t, item_text: this.columns[t]})
             this.attributesList.push({item_id: t, item_text: this.columns[t]})
-            this.attributesFilter.push({item_id: t, item_text: this.columns[t]})
+            if (this.fields.includes(this.columns[t])) {
+                this.itemList.push(this.columns[t]);
+                this.attributesFilter.push({item_id: t, item_text: this.columns[t]})
+            }
             this.showQueryFilter[this.columns[t]] = false;
             this.queryFilterData[this.columns[t]] = {
                 dropdownList: [],
@@ -217,7 +226,17 @@ export class ChartDrillDownComponent implements OnInit, OnChanges {
         for (let i = 0; i < words.length; i++) {
             words[i] = words[i][0].toUpperCase() + words[i].substr(1);
         }
-        return words.join(' ');
+        let formattedString = words.join(' ');
+        if (formattedString.includes('_')) {
+            formattedString = formattedString.split('_');
+            for (let i = 0; i < formattedString.length; i++) {
+                formattedString[i] = formattedString[i][0].toUpperCase() + formattedString[i].substr(1);
+            }
+            if (formattedString.length > 1) {
+                return formattedString.join(' ');
+            }
+        }
+        return formattedString;
     }
 
     toggleQueryFilter(key) {
@@ -231,7 +250,8 @@ export class ChartDrillDownComponent implements OnInit, OnChanges {
     }
 
     getQueryFilterStyle(i) {
-        return (-i * 1.2 + 'rem');
+        //return (-i * (this.itemList.length - i * 0.1) + 'rem');
+        return (-i * 1.8) + 'rem';
     }
 
     applyQueryFilters(queryKey, shouldToggleQueryFilter = true) {
@@ -251,7 +271,8 @@ export class ChartDrillDownComponent implements OnInit, OnChanges {
                 if (queryParams !== '?') {
                     queryParams += '&';
                 }
-                queryParams += key + '.in='
+                // queryParams += key + '.in='
+                queryParams += key + '='
             }
             for (let i = 0; i < this.queryFilterData[key].filterData.length; i++) {
                 queryParams += this.queryFilterData[key].filterData[i].item_text;
@@ -326,8 +347,8 @@ export class ChartDrillDownComponent implements OnInit, OnChanges {
         this.viewDocuments.emit({accountNumber: accNo, attemptNumber: attemptNo});
     }
 
-    showRemediations() {
-        this.viewRemediations.emit();
+    showRemediations(record) {
+        this.viewRemediations.emit(record);
     }
 
 }

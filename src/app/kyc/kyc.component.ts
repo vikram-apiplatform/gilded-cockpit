@@ -69,6 +69,8 @@ export class KycComponent implements OnInit {
     drillDownData: any;
     drillDownTitle = '';
     drillDownQueryParams = '';
+    columns = ['account_no', 'full_name', 'email_id', 'mobile_no', 'country', 'is_kyc_verified', 'kyc_check_count'];
+    kycHistoryColumns = ['date_created', 'last_updated', 'request_id', 'name', 'doc_type', 'reason', 'docInfo']
 
     constructor(public apiService: APIService, public dialog: MatDialog) {
     }
@@ -214,12 +216,26 @@ export class KycComponent implements OnInit {
                             this.attemptsChartData.push(attemptsData[attemptsKey]);
                         }
                     }
+
+                    this.attemptsChartData.sort((a, b) => {
+                        if (a.name > b.name) {
+                            return 1;
+                        }
+                        return -1;
+                    });
                 }
                 this.isDataloading = false;
                 console.log(this.statusChartData);
                 console.log(this.attemptsChartData);
             }
         })
+    }
+
+    sortArray(a, b, key) {
+        if (a[key] < b[key]) {
+            return 1;
+        }
+        return -1;
     }
 
     getKeys(obj) {
@@ -277,8 +293,9 @@ export class KycComponent implements OnInit {
         })
     }
 
-    openRemediations() {
+    openRemediations(record) {
         const dialogRef = this.dialog.open(RemediationsComponent, {
+            data: record,
             width: '70%',
             height: '80%'
         })

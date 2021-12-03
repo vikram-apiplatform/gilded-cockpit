@@ -69,6 +69,7 @@ export class AmlComponent implements OnInit {
     drillDownData: any;
     drillDownTitle = '';
     drillDownQueryParams = '';
+    columns = ['account_no', 'full_name', 'email_id', 'mobile_no', 'country', 'is_rdc_verified', 'is_aml_verified'];
 
     constructor(public apiService: APIService, public dialog: MatDialog) {
     }

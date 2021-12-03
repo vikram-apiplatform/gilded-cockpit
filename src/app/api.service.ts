@@ -42,4 +42,12 @@ export class APIService {
     getKycHistory(params = '') {
         return this._http.get(environment.gildedHost + '/v1/data/' + environment.partner + '/' + environment.account + '/' + 'kycDetails' + params, this.gildedHttpOptions).pipe(map(res => res));
     }
+
+    getRemediationsData(params) {
+        return this._http.get(environment.apiHost + '/v1/remediations' + params, this.httpOptions).pipe(map(res => res));
+    }
+
+    postRemediationsData(payload) {
+        return this._http.post(environment.apiHost + '/v1/remediations', payload, this.httpOptions).pipe(map(res => res));
+    }
 }
