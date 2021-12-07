@@ -55,12 +55,18 @@ export class ChartDrillDownComponent implements OnInit, OnChanges {
     expandedElement: any;
     showExpansionPanel = {};
     showAttributesFilter = false;
+    startDate: any;
+    endDate: any;
+    today: any = new Date();
+    minStartDate = '2015-01-01';
+    minEndDate = '2015-01-01';
+    maxEndDate: any = new Date();
     page = 1;
-    itemsPerPage = 20;
+    itemsPerPage = 10;
     collectionSize: any;
     tempCollectionSize: any;
     currentPageDisplayed = 1;
-    selectedItemsPerPageIndex = 2;
+    selectedItemsPerPageIndex = 1;
     isAllRecordsFetched = false;
 
     constructor(public _csvService: CsvService) {
@@ -132,7 +138,12 @@ export class ChartDrillDownComponent implements OnInit, OnChanges {
             // this.itemList.push(tempObj);
             this.dropdownList.push({item_id: t, item_text: this.columns[t]})
             this.attributesList.push({item_id: t, item_text: this.columns[t]})
-            if (this.fields.includes(this.columns[t])) {
+            if (this.fields && this.fields.length) {
+                if (this.fields.includes(this.columns[t])) {
+                    this.itemList.push(this.columns[t]);
+                    this.attributesFilter.push({item_id: t, item_text: this.columns[t]})
+                }
+            } else {
                 this.itemList.push(this.columns[t]);
                 this.attributesFilter.push({item_id: t, item_text: this.columns[t]})
             }
@@ -362,6 +373,44 @@ export class ChartDrillDownComponent implements OnInit, OnChanges {
     }
 
 
+    selectStartDate() {
+        if (this.endDate !== undefined && this.startDate > this.endDate) {
+            this.endDate = '';
+        }
+        if ((this.startDate !== '' && this.startDate !== undefined) && (this.endDate !== '' && this.endDate !== undefined)) {
+            this.applyDateFilters();
+        }
+        if (this.startDate === '' || this.startDate === undefined) {
+            this.filteredData = this.data;
+        }
+        this.minEndDate = this.startDate;
+    }
+
+    selectEndDate() {
+        if ((this.startDate !== '' && this.startDate !== undefined) && (this.endDate !== '' && this.endDate !== undefined)) {
+            this.applyDateFilters();
+        }
+        if (this.endDate === '' || this.endDate === undefined) {
+            this.filteredData = this.data;
+        }
+    }
+
+    applyDateFilters() {
+        console.log(this.startDate, this.endDate)
+        let dateFilteredData = [];
+        for (let i = 0; i < this.data.length; i++) {
+            let date_created = this.data[i]['date_created'];
+            date_created = date_created.slice(0, 10);
+            if (date_created >= this.startDate && date_created <= this.endDate) {
+                dateFilteredData.push(this.data[i]);
+            }
+        }
+        this.filterData = [];
+        console.log('Filtered Data-->', dateFilteredData);
+        this.filteredData = dateFilteredData;
+    }
+
+
     lastPage() {
         this.currentPageDisplayed = this.page;
     }
@@ -384,7 +433,7 @@ export class ChartDrillDownComponent implements OnInit, OnChanges {
                 this.itemsPerPage = 100;
                 break;
             default:
-                this.itemsPerPage = 20;
+                this.itemsPerPage = 10;
         }
 
         if (this.data && this.data.length && this.searchText === '' && !this.isAllRecordsFetched) {

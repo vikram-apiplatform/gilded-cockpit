@@ -215,7 +215,7 @@ th, td {
 }
 
 .table100-body {
-  max-height: 585px;
+  //max-height: 585px;
   min-height: 50vh;
   overflow: auto;
 }
@@ -579,6 +579,39 @@ th, td {
 
 :host ::ng-deep .multiselect-dropdown .dropdown-btn .dropdown-multiselect__caret {
   padding-bottom: 0.5rem !important;
+}
+
+.date-filter-container {
+  //width: 100%;
+  display: flex;
+  flex-flow: row nowrap;
+  margin-left: 2rem;
+  padding-bottom: 1rem;
+}
+
+.start-date-filter {
+  width: 15%;
+}
+
+.end-date-filter {
+  width: 15%;
+}
+
+.date-input {
+  border: none;
+  background-color: white;
+  padding: 0.2rem;
+  border-bottom: 2px solid skyblue;
+  border-radius: 0.2rem;
+  margin-top: 0.3rem;
+  color: black;
+}
+
+.date-text {
+  //width: 6%;
+  padding: 0.5rem;
+  margin-top: 0.2rem;
+  font-weight: bold;
 }
 
 .table-key-text {

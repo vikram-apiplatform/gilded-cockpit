@@ -11,6 +11,22 @@
 <!--[(ngModel)]="selectedItems"-->
 <!--(onSelect)="onItemSelect($event)"-->
 <!--(onSelectAll)="onSelectAll($event)"-->
+
+<div class="date-filter-container">
+    <div class="date-text"> From</div>
+    <div class="start-date-filter">
+        <input type="date" class="form-control date-input" id="startDate" (input)="selectStartDate()"
+               min="{{minStartDate}}"
+               max="{{today | date:'yyyy-MM-dd'}}" [(ngModel)]="startDate">
+    </div>
+    <div class="date-text">To</div>
+    <div class="end-date-filter">
+        <input type="date" class="form-control date-input" id="endDate" (input)="selectEndDate()" min="{{minEndDate}}"
+               max="{{today | date:'yyyy-MM-dd'}}" [(ngModel)]="endDate">
+    </div>
+
+</div>
+
 <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 filter-container">
     <!--    <div class="col-lg-2 col-md-2 col-sm-1 col-xs-1">-->
     <!--        <button (click)="toggleAttributesFilter()" mat-button class="gilded-button">Fileds</button>-->
@@ -19,6 +35,23 @@
     <!--                <mat-checkbox>{{col}}</mat-checkbox>-->
     <!--            </div>-->
     <!--        </div>-->
+    <!--    </div>-->
+    <!--    <div class="col-lg-2 col-md-2 col-sm-12 col-xs-12 date-filter-container">-->
+    <!--&lt;!&ndash;        <div class="date-text"> From</div>&ndash;&gt;-->
+    <!--        <div class="start-date-filter">-->
+    <!--            From-->
+    <!--            <input type="date" class="form-control date-input" id="startDate" (input)="selectStartDate()"-->
+    <!--                   min="{{minStartDate}}"-->
+    <!--                   max="{{today | date:'yyyy-MM-dd'}}" [(ngModel)]="startDate">-->
+    <!--        </div>-->
+    <!--&lt;!&ndash;        <div class="date-text">To</div>&ndash;&gt;-->
+    <!--        <div class="end-date-filter">-->
+    <!--            To-->
+    <!--            <input type="date" class="form-control date-input" id="endDate" (input)="selectEndDate()"-->
+    <!--                   min="{{minEndDate}}"-->
+    <!--                   max="{{today | date:'yyyy-MM-dd'}}" [(ngModel)]="endDate">-->
+    <!--        </div>-->
+
     <!--    </div>-->
     <div class="col-lg-4 col-md-4 col-sm-6 col-xs-12">
         <ng-multiselect-dropdown
@@ -318,7 +351,8 @@
     <div class="pagination">
         <ngb-pagination [(page)]="page"
                         [pageSize]="itemsPerPage"
-                        [collectionSize]="searchText!==''?tempCollectionSize:collectionSize" [maxSize]="5"
+                        [collectionSize]="filteredData.length"
+                        [maxSize]="5"
                         (pageChange)="lastPage()"
                         aria-label="Default pagination"></ngb-pagination>
         <ngb-pagination [collectionSize]="5" [pageSize]="1" [ellipses]="false" [maxSize]="5"
