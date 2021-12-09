@@ -40,7 +40,44 @@ export class APIService {
     }
 
     getKycHistory(params = '') {
-        return this._http.get(environment.gildedHost + '/v1/data/' + environment.partner + '/' + environment.account + '/' + 'kycDetails' + params, this.gildedHttpOptions).pipe(map(res => res));
+        // return this._http.get(environment.gildedHost + '/v1/data/' + environment.partner + '/' + environment.account + '/' + 'kycDetails' + params, this.gildedHttpOptions).pipe(map(res => res));
+        return this._http.get(environment.gildedHost + '/v1/data/' + environment.partner + '/' + environment.account + '/' + 'gildedKYCDetails' + params, this.gildedHttpOptions).pipe(map(res => res));
+    }
+
+    getKycInfo(params = '') {
+        // return this._http.get(environment.gildedHost + '/v1/data/' + environment.partner + '/' + environment.account + '/' + 'kycDetails' + params, this.gildedHttpOptions).pipe(map(res => res));
+        return this._http.get(environment.gildedHost + '/v1/data/' + environment.partner + '/' + environment.account + '/' + 'gildedKYCInfo' + params, this.gildedHttpOptions).pipe(map(res => res));
+    }
+
+    getKycResponseDetails(params = '') {
+        // return this._http.get(environment.gildedHost + '/v1/data/' + environment.partner + '/' + environment.account + '/' + 'kycDetails' + params, this.gildedHttpOptions).pipe(map(res => res));
+        return this._http.get(environment.gildedHost + '/v1/data/' + environment.partner + '/' + environment.account + '/' + 'gildedKYCResponseDetails' + params, this.gildedHttpOptions).pipe(map(res => res));
+    }
+
+    getKycSuccessCount() {
+        return this._http.get(environment.gildedHost + '/' + environment.partner + '/' + environment.account + '/v1/' + 'getKYCSuccessCount', this.gildedHttpOptions).pipe(map(res => res));
+    }
+
+    getKycFailedCount() {
+        return this._http.get(environment.gildedHost + '/' + environment.partner + '/' + environment.account + '/v1/' + 'getKYCFailureCount', this.gildedHttpOptions).pipe(map(res => res));
+    }
+
+    getKycNotAttemptedCount() {
+        return this._http.get(environment.gildedHost + '/' + environment.partner + '/' + environment.account + '/v1/' + 'getKYCNotAttemptedCount', this.gildedHttpOptions).pipe(map(res => res));
+    }
+
+    getKycAttemptsCount() {
+        return this._http.get(environment.gildedHost + '/' + environment.partner + '/' + environment.account + '/v1/' + 'kycAttempts', this.gildedHttpOptions).pipe(map(res => res));
+    }
+
+    getAmlStatus(){
+        return this._http.get(environment.gildedHost + '/' + environment.partner + '/' + environment.account + '/v1/' + 'getAMLStatus', this.gildedHttpOptions).pipe(map(res => res));
+    }
+
+    getAttributeValues(key, type) {
+        if (type === 'kyc') {
+            return this._http.get(environment.gildedHost + '/' + environment.partner + '/' + environment.account + '/v1/' + 'getAttributeValues?attribute=' + key, this.gildedHttpOptions).pipe(map(res => res));
+        }
     }
 
     getRemediationsData(params) {

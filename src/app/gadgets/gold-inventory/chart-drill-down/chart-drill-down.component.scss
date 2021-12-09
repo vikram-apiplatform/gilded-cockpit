@@ -598,10 +598,10 @@ th, td {
 }
 
 .date-input {
-  border: none;
+  //border: none;
   background-color: white;
   padding: 0.2rem;
-  border-bottom: 2px solid skyblue;
+  //border-bottom: 2px solid skyblue;
   border-radius: 0.2rem;
   margin-top: 0.3rem;
   color: black;
@@ -611,7 +611,7 @@ th, td {
   //width: 6%;
   padding: 0.5rem;
   margin-top: 0.2rem;
-  font-weight: bold;
+  //font-weight: bold;
 }
 
 .table-key-text {
@@ -625,13 +625,13 @@ th, td {
   padding: 1rem;
   padding-top: 0.5rem;
   top: 3.1rem;
-  left: auto;
+  //left: auto;
   //margin-left: 1rem;
   /* left: 3rem; */
   background-color: white;
   color: black;
   //height: 200px;
-  width: 300px;
+  width: 350px;
   //min-width: 14%;
   z-index: 999;
   box-shadow: 0 1px 2px 0 rgba(34, 36, 38, 0.5);
@@ -676,7 +676,7 @@ th, td {
 }
 
 .true {
-  background-color: green;
+  background-color: rgb(12, 180, 87);
   color: white;
   padding-top: 0.2rem;
   padding-bottom: 0.2rem;
@@ -686,7 +686,7 @@ th, td {
 }
 
 .false {
-  background-color: red;
+  background-color: rgb(255, 56, 56);
   color: white;
   padding-top: 0.2rem;
   padding-bottom: 0.2rem;
@@ -704,6 +704,14 @@ th, td {
 
 :host ::ng-deep .glyphicon {
   color: white;
+}
+
+:host ::ng-deep .dropdown-list {
+  min-height: 200px !important;
+}
+
+:host ::ng-deep .item2 {
+  min-height: 200px !important;
 }
 
 .toggle-detail-text {
@@ -771,12 +779,25 @@ th, td {
   justify-content: space-between;
 }
 
+.dataStatistics {
+  //display: flex;
+  //flex-direction: row;
+  //justify-content: space-between;
+  //padding-bottom: 0.2rem;
+  font-size: 1rem;
+}
+
+.example-chip-list {
+  width: 100%;
+}
+
 .pagination {
   display: flex;
   flex-direction: row;
   justify-content: space-between;
   align-items: center;
 }
+
 
 //tr.example-detail-row {
 //  height: 0;

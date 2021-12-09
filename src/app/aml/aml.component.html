@@ -80,6 +80,7 @@
                               [expandKey]="'kyc_check_count'"
                               [remediateIdentifiers]="remediateIdentifiers"
                               [fields]="columns"
+                              [type]="'aml'"
                               (viewDocuments)="openDocumentViewer($event)"
                               (viewRemediations)="openRemediations($event)"
                               (queryFilters)="applyFilters($event)"></app-chart-drill-down>
@@ -245,6 +246,7 @@
         <app-chart-drill-down (hideDetails)="hideDrillDownDetails()" [apiUrl]="env.amlUrl" [includesParams]="true"
                               [paramsToBePassed]="drillDownQueryParams" [data]="drillDownData" [kycHistory]="kycHistory"
                               [fields]="columns"
+                              [type]="'aml'"
                               (viewRemediations)="openRemediations($event)"
                               (viewDocuments)="openDocumentViewer($event)" [title]="drillDownTitle"
                               (queryFilters)="applyFilters($event)"></app-chart-drill-down>

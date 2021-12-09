@@ -61,6 +61,8 @@ import {MatDatepickerModule} from '@angular/material/datepicker';
 import {MatNativeDateModule} from '@angular/material/core';
 import { BarchartComponent } from './gold-inventory/barchart/barchart.component';
 import {NgbPaginationModule} from '@ng-bootstrap/ng-bootstrap';
+import {MatChipsModule} from '@angular/material/chips';
+import {MatCardModule} from '@angular/material/card';
 
 // todo gadget
 
@@ -92,7 +94,9 @@ import {NgbPaginationModule} from '@ng-bootstrap/ng-bootstrap';
         MatTooltipModule,
         MatDatepickerModule,
         MatNativeDateModule,
-        NgbPaginationModule
+        NgbPaginationModule,
+        MatChipsModule,
+        MatCardModule
     ],
     declarations: [
         TodoGadgetComponent,  // todo gadget

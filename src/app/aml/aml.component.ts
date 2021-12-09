@@ -116,10 +116,39 @@ export class AmlComponent implements OnInit {
     ngOnInit() {
         this.drillDownData = [];
         this.getKYC();
-        this.getKycHistory();
+        //this.getKycHistory();
     }
 
     getKYC() {
+
+        this.apiService.getAmlStatus().subscribe(response => {
+            let amlStatus: any;
+            amlStatus = response;
+            console.log(amlStatus);
+            let statusData = {}
+            if (amlStatus && amlStatus.length) {
+                for (const status of amlStatus) {
+                    if (statusData && statusData[status]) {
+
+                    }
+                }
+                for (let i = 0; i < this.statusChartData.length; i++) {
+                    for (let j = 0; j < amlStatus.length; j++) {
+                        if (amlStatus[j]['Response_Code'] === this.statusChartData[i].name) {
+                            this.statusChartData[i].value = amlStatus[j]['USERS'];
+                        }
+                    }
+                    // if (statusData[this.statusChartData[i].name]) {
+                    //     this.statusChartData[i] = statusData[this.statusChartData[i].name]
+                    // }
+                }
+            }
+            this.isDataloading = false;
+            console.log(this.statusChartData);
+        }, error => {
+            this.isDataloading = false;
+        })
+
         this.apiService.getAMLDetails().subscribe(response => {
             this.kycDetails = response;
             console.log(this.kycDetails);
@@ -261,38 +290,39 @@ export class AmlComponent implements OnInit {
             //     console.log(this.attemptsChartData);
             // }
 
-            let statusData = {}
-            if (this.kycDetails && this.kycDetails.length) {
-                for (const kyc of this.kycDetails) {
-                    if (kyc['Response_Code']) {
-                        if (statusData && statusData[kyc['Response_Code']]) {
-                            statusData[kyc['Response_Code']].value += 1;
-                            statusData[kyc['Response_Code']].records.push(kyc);
-                        } else {
-                            const tempObj = {
-                                name: kyc['Response_Code'],
-                                value: 0,
-                                records: [kyc],
-                                query: 'Response_Code=' + kyc['Response_Code']
-                            }
-                            statusData[kyc['Response_Code']] = tempObj;
-                        }
-                    }
-                }
-                // if (statusData && Object.keys(statusData).length) {
-                //     for (const statisKey of Object.keys(statusData)) {
-                //         this.statusChartData.push(statusData[statisKey]);
-                //     }
-                // }
-                for (let i = 0; i < this.statusChartData.length; i++) {
-                    if (statusData[this.statusChartData[i].name]) {
-                        this.statusChartData[i] = statusData[this.statusChartData[i].name]
-                    }
-                }
-                this.isDataloading = false;
-                console.log(this.statusChartData);
-                console.log(this.attemptsChartData);
-            }
+
+            // let statusData = {}
+            // if (this.kycDetails && this.kycDetails.length) {
+            //     for (const kyc of this.kycDetails) {
+            //         if (kyc['Response_Code']) {
+            //             if (statusData && statusData[kyc['Response_Code']]) {
+            //                 statusData[kyc['Response_Code']].value += 1;
+            //                 statusData[kyc['Response_Code']].records.push(kyc);
+            //             } else {
+            //                 const tempObj = {
+            //                     name: kyc['Response_Code'],
+            //                     value: 0,
+            //                     records: [kyc],
+            //                     query: 'Response_Code=' + kyc['Response_Code']
+            //                 }
+            //                 statusData[kyc['Response_Code']] = tempObj;
+            //             }
+            //         }
+            //     }
+            //     // if (statusData && Object.keys(statusData).length) {
+            //     //     for (const statisKey of Object.keys(statusData)) {
+            //     //         this.statusChartData.push(statusData[statisKey]);
+            //     //     }
+            //     // }
+            //     for (let i = 0; i < this.statusChartData.length; i++) {
+            //         if (statusData[this.statusChartData[i].name]) {
+            //             this.statusChartData[i] = statusData[this.statusChartData[i].name]
+            //         }
+            //     }
+            //     this.isDataloading = false;
+            //     console.log(this.statusChartData);
+            //     console.log(this.attemptsChartData);
+            // }
             //         switch (kyc.is_aml_verified) {
             //             case true:
             //                 this.statusChartData[0].value += 1;

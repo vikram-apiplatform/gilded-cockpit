@@ -81,6 +81,8 @@
                               [expandKey]="'kyc_check_count'"
                               [fields]="columns"
                               [expandedTableFields]="kycHistoryColumns"
+                              [type]="'kyc'"
+                              (viewExpandedTable)="openExpandedTable($event)"
                               (viewDocuments)="openDocumentViewer($event)"
                               (viewRemediations)="openRemediations($event)"
                               (queryFilters)="applyFilters($event)"></app-chart-drill-down>
@@ -260,6 +262,8 @@
                               [expandKey]="'kyc_check_count'"
                               [fields]="columns"
                               [expandedTableFields]="kycHistoryColumns"
+                              [type]="'kyc'"
+                              (viewExpandedTable)="openExpandedTable($event)"
                               (viewDocuments)="openDocumentViewer($event)"
                               (viewRemediations)="openRemediations($event)"
                               [title]="drillDownTitle"

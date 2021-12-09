@@ -2,7 +2,10 @@ import {Component, EventEmitter, Input, OnChanges, OnInit, Output} from '@angula
 import {IDropdownSettings} from 'ng-multiselect-dropdown/multiselect.model';
 import {FilterPipe} from '../../../filter.pipe';
 import {CsvService} from '../../../csv.service';
+import {APIService} from '../../../api.service';
 import {animate, state, style, transition, trigger} from '@angular/animations';
+import {COMMA, ENTER} from '@angular/cdk/keycodes';
+import {MatChipInputEvent} from '@angular/material/chips';
 
 declare let $;
 
@@ -32,8 +35,10 @@ export class ChartDrillDownComponent implements OnInit, OnChanges {
     @Input() fields = [];
     @Input() expandedTableFields = [];
     @Input() remediateIdentifiers = [false];
+    @Input() type: any;
     @Output() hideDetails: EventEmitter<any> = new EventEmitter<any>();
     @Output() queryFilters: EventEmitter<any> = new EventEmitter<any>();
+    @Output() viewExpandedTable: EventEmitter<any> = new EventEmitter<any>();
     @Output() viewDocuments: EventEmitter<any> = new EventEmitter<any>();
     @Output() viewRemediations: EventEmitter<any> = new EventEmitter<any>();
     itemList = [];
@@ -61,6 +66,8 @@ export class ChartDrillDownComponent implements OnInit, OnChanges {
     minStartDate = '2015-01-01';
     minEndDate = '2015-01-01';
     maxEndDate: any = new Date();
+    currentOffset = 0;
+    limit = 10;
     page = 1;
     itemsPerPage = 10;
     collectionSize: any;
@@ -68,12 +75,18 @@ export class ChartDrillDownComponent implements OnInit, OnChanges {
     currentPageDisplayed = 1;
     selectedItemsPerPageIndex = 1;
     isAllRecordsFetched = false;
+    isDataLoading = true;
+    queryParams = ''
+    showChipSelector = false;
+    filterQueryContainerPos = '300px';
+    readonly separatorKeysCodes = [ENTER, COMMA];
 
-    constructor(public _csvService: CsvService) {
+    constructor(public _csvService: CsvService, public apiService: APIService) {
     }
 
-    ngOnInit() {
-        this.filteredData = this.data;
+    async ngOnInit() {
+        await this.getData();
+        //this.filteredData = this.data;
         this.populateFilters();
         this.populateQueryFiltersData();
 
@@ -84,8 +97,8 @@ export class ChartDrillDownComponent implements OnInit, OnChanges {
         //     {item_id: 4, item_text: 'Navsari'},
         //     {item_id: 5, item_text: 'New Delhi'}
         // ];
-        this.collectionSize = this.data.length;
-        this.tempCollectionSize = this.filteredData.length;
+        //this.collectionSize = this.data.length;
+        //this.tempCollectionSize = this.filteredData.length;
         this.dropdownSettings = {
             singleSelection: false,
             idField: 'item_id',
@@ -114,6 +127,32 @@ export class ChartDrillDownComponent implements OnInit, OnChanges {
             defaultOpen: true,
             allowSearchFilter: true
         };
+    }
+
+    getData(url = '') {
+        this.isDataLoading = true;
+        return new Promise((resolve, reject) => {
+            if (url === '') {
+                url = this.apiUrl + '?pagination=true&offset=' + this.currentOffset + '&limit=' + this.limit;
+            } else {
+                url += '&pagination=true&offset=' + this.currentOffset + '&limit=' + this.limit;
+            }
+            //url = this.apiUrl + '?pagination=true&offset=' + this.currentOffset + '&limit=' + this.limit;
+
+            this.apiService.getData(url).subscribe(response => {
+                console.log(response);
+                let items: any;
+                items = response;
+                this.data = items[0].data;
+                this.filteredData = items[0].data;
+                this.collectionSize = items[0]._pages.totalRows;
+                this.isDataLoading = false;
+                resolve(true);
+            }, error => {
+                this.isDataLoading = false;
+                resolve(error);
+            })
+        })
     }
 
     populateFilters() {
@@ -262,17 +301,86 @@ export class ChartDrillDownComponent implements OnInit, OnChanges {
 
     toggleQueryFilter(key) {
         if (!this.showQueryFilter[key]) {
-            Object.keys(this.showQueryFilter).forEach(queryKey => {
-                this.showQueryFilter[queryKey] = false
-            });
-            $('.filter-query').css({'top': '5rem !important'});
+            this.queryFilterData[key].dropdownList = [];
+            if (!this.queryFilterData[key].dropdownList.length) {
+                if (this.type === 'aml') {
+                    this.showChipSelector = true;
+                    Object.keys(this.showQueryFilter).forEach(queryKey => {
+                        this.showQueryFilter[queryKey] = false
+                    });
+                    this.showQueryFilter[key] = true;
+                } else {
+                    this.apiService.getAttributeValues(key, this.type).subscribe(response => {
+                        console.log(response);
+                        let attributeValues: any;
+                        attributeValues = response;
+                        if (attributeValues && attributeValues.length && attributeValues.length < 10000) {
+                            for (let i = 0; i < attributeValues.length; i++) {
+                                let keys = Object.keys(attributeValues[i]);
+                                if (key === 'is_kyc_verified') {
+                                    if (attributeValues[i][keys[0]]) {
+                                        this.queryFilterData[key].dropdownList.push({item_id: i, item_text: 'Pass'});
+                                    } else if (attributeValues[i][keys[0]] === 0) {
+                                        this.queryFilterData[key].dropdownList.push({item_id: i, item_text: 'Fail'});
+                                    } else {
+                                        this.queryFilterData[key].dropdownList.push({item_id: i, item_text: attributeValues[i][keys[0]]});
+                                    }
+                                } else {
+                                    this.queryFilterData[key].dropdownList.push({item_id: i, item_text: attributeValues[i][keys[0]]});
+                                }
+                            }
+                            this.showChipSelector = false;
+                            console.log(this.queryFilterData);
+                        } else {
+                            this.showChipSelector = true;
+                        }
+                        Object.keys(this.showQueryFilter).forEach(queryKey => {
+                            this.showQueryFilter[queryKey] = false
+                        });
+                        this.showQueryFilter[key] = true;
+                    });
+                }
+            }
+            const filterPos = document.getElementById('data-table');
+            console.log(filterPos.offsetWidth);
+            // $('.filter-query-container').css({'left': filterPos.offsetLeft})
+            // $('.filter-query-container').css({'top': '50rem !important'});
+        } else {
+            this.showQueryFilter[key] = false;
         }
-        this.showQueryFilter[key] = !this.showQueryFilter[key];
+    }
+
+    getOffset(el) {
+        const rect = el.getBoundingClientRect();
+        return {
+            left: rect.left + window.scrollX,
+            top: rect.top + window.scrollY
+        };
     }
 
     getQueryFilterStyle(i) {
         //return (-i * (this.itemList.length - i * 0.1) + 'rem');
-        return (-i * 1.8) + 'rem';
+        //return (-i * 1.8) + 'rem';
+        const table = document.getElementById('data-table');
+        console.log(table.offsetWidth);
+        console.log(this.itemList[i]);
+        const filter = document.getElementById(this.itemList[i]);
+        console.log(this.getOffset(filter))
+        console.log(filter.offsetLeft)
+        console.log(filter.clientLeft);
+        let leftPos = filter.offsetLeft
+        if (leftPos + 350 > table.offsetWidth) {
+            while (leftPos + 350 > table.offsetWidth) {
+                leftPos -= 1;
+            }
+            leftPos = -leftPos;
+        }
+        if (this.getOffset(filter).left + 350 > table.offsetWidth) {
+            return (-((this.getOffset(filter).left + 350) - table.offsetWidth) + 'px');
+        }
+        return ('0px');
+        //return (this.getOffset(filter).left + 'px');
+        //return (leftPos + 'px');
     }
 
     applyQueryFilters(queryKey, shouldToggleQueryFilter = true) {
@@ -296,7 +404,17 @@ export class ChartDrillDownComponent implements OnInit, OnChanges {
                 queryParams += key + '='
             }
             for (let i = 0; i < this.queryFilterData[key].filterData.length; i++) {
-                queryParams += this.queryFilterData[key].filterData[i].item_text;
+                if (key === 'is_kyc_verified') {
+                    if (this.queryFilterData[key].filterData[i].item_text === 'Pass') {
+                        queryParams += 1;
+                    } else if (this.queryFilterData[key].filterData[i].item_text === 'Fail') {
+                        queryParams += 0;
+                    } else {
+                        queryParams += this.queryFilterData[key].filterData[i].item_text;
+                    }
+                } else {
+                    queryParams += this.queryFilterData[key].filterData[i].item_text;
+                }
                 if (i + 1 !== this.queryFilterData[key].filterData.length) {
                     queryParams += ',';
                 }
@@ -304,7 +422,10 @@ export class ChartDrillDownComponent implements OnInit, OnChanges {
             }
         }
         console.log(queryParams);
-        this.queryFilters.emit(queryParams);
+        this.queryParams = queryParams;
+        this.currentOffset = 0;
+        this.getData(this.apiUrl + queryParams);
+        //this.queryFilters.emit(queryParams);
         // console.log(this.queryFilterData);
         // //for (const key of Object.keys(this.queryFilterData)) {
         // const orig_data = this.queryFilteredData.length ? this.queryFilteredData : this.filteredData;
@@ -357,6 +478,9 @@ export class ChartDrillDownComponent implements OnInit, OnChanges {
     // }
 
     toggleExpansionPanel(index) {
+        if (!this.showExpansionPanel[index]) {
+            this.viewExpandedTable.emit(this.filteredData[index]);
+        }
         this.showExpansionPanel[index] = !this.showExpansionPanel[index];
     }
 
@@ -364,14 +488,26 @@ export class ChartDrillDownComponent implements OnInit, OnChanges {
         this.showAttributesFilter = !this.showAttributesFilter;
     }
 
-    showDocuments(accNo, attemptNo) {
-        this.viewDocuments.emit({accountNumber: accNo, attemptNumber: attemptNo});
+    showDocuments(historyRecord, userRecord) {
+        this.viewDocuments.emit({historyRecord: historyRecord, userRecord: userRecord});
     }
 
     showRemediations(record) {
         this.viewRemediations.emit(record);
     }
 
+
+    addQuery(event: MatChipInputEvent, key) {
+        const value = (event.value || '').trim();
+        this.queryFilterData[key].dropdownList.push({item_id: this.queryFilterData[key].dropdownList.length, item_text: value})
+        this.queryFilterData[key].filterData.push({item_id: this.queryFilterData[key].filterData.length, item_text: value})
+        event.input.value = '';
+    }
+
+    removeQuery(key, index) {
+        this.queryFilterData[key].dropdownList.splice(index, 1);
+        this.queryFilterData[key].filterData.splice(index, 1);
+    }
 
     selectStartDate() {
         if (this.endDate !== undefined && this.startDate > this.endDate) {
@@ -408,11 +544,35 @@ export class ChartDrillDownComponent implements OnInit, OnChanges {
         this.filterData = [];
         console.log('Filtered Data-->', dateFilteredData);
         this.filteredData = dateFilteredData;
+
+
+        // console.log(this.startDate, this.endDate)
+        // let fromDate = this.startDate + 'T00:00:00';
+        // let toDate = this.endDate + 'T23:59:59';
+        // let dateFilteredData: any = [];
+        // this.apiService.getKycDataByDateRange('?date_created.gt=' + fromDate + '&date_created.lt=' + toDate).subscribe(response => {
+        //     console.log('Get KYC Data By Date Range', response);
+        //     dateFilteredData = response;
+        //     this.filteredData = [];
+        //     console.log('Filtered Data-->', dateFilteredData);
+        //     this.filteredData = dateFilteredData;
+        // });
     }
 
 
     lastPage() {
-        this.currentPageDisplayed = this.page;
+        this.currentOffset = (this.page - 1) * this.itemsPerPage;
+        this.limit = this.itemsPerPage;
+        if (this.queryParams === '') {
+            this.getData();
+        } else {
+            this.getData(this.apiUrl + this.queryParams);
+        }
+        Object.keys(this.showExpansionPanel).forEach(index => {
+            this.showExpansionPanel[index] = false;
+        });
+        this.currentPageDisplayed = 1;
+        //this.currentPageDisplayed = this.page;
     }
 
     setItemsPerPage() {
