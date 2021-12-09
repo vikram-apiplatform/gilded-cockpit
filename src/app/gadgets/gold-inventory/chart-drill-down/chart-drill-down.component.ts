@@ -143,9 +143,11 @@ export class ChartDrillDownComponent implements OnInit, OnChanges {
                 console.log(response);
                 let items: any;
                 items = response;
-                this.data = items[0].data;
-                this.filteredData = items[0].data;
-                this.collectionSize = items[0]._pages.totalRows;
+                if (items && items.length) {
+                    this.data = items[0].data;
+                    this.filteredData = items[0].data;
+                    this.collectionSize = items[0]._pages.totalRows;
+                }
                 this.isDataLoading = false;
                 resolve(true);
             }, error => {
@@ -385,7 +387,7 @@ export class ChartDrillDownComponent implements OnInit, OnChanges {
 
     applyQueryFilters(queryKey, shouldToggleQueryFilter = true) {
         //this.queryFilteredData = [];
-        let queryParams = '';
+        let queryParams = this.queryParams;
         for (const key of Object.keys(this.queryFilterData)) {
             if (queryParams === '') {
                 queryParams += '?';
@@ -550,7 +552,18 @@ export class ChartDrillDownComponent implements OnInit, OnChanges {
         // let fromDate = this.startDate + 'T00:00:00';
         // let toDate = this.endDate + 'T23:59:59';
         // let dateFilteredData: any = [];
-        // this.apiService.getKycDataByDateRange('?date_created.gt=' + fromDate + '&date_created.lt=' + toDate).subscribe(response => {
+        // let params = '';
+        // if (this.queryParams !== '') {
+        //     params += '&date_created.gt=' + fromDate + '&date_created.lt=' + toDate;
+        //     //this.queryParams += params;
+        // } else {
+        //     params += '?date_created.gt=' + fromDate + '&date_created.lt=' + toDate
+        //     //this.queryParams = params;
+        // }
+        // this.currentOffset = 0;
+        // this.limit = 10;
+        // this.getData(this.apiUrl + params);
+        // this.apiService.getData(this.apiUrl + '?date_created.gt=' + fromDate + '&date_created.lt=' + toDate).subscribe(response => {
         //     console.log('Get KYC Data By Date Range', response);
         //     dateFilteredData = response;
         //     this.filteredData = [];
