@@ -113,7 +113,6 @@ export class AddGadgetComponent implements AfterViewInit {
                 me.gadgetObjectList.push(item);
                 me.gadgetObjectTitleList.push(item.name);
             });
-            console.log(this.gadgetObjectList);
             const facetTagProcess = new FacetTagProcessor(this.gadgetObjectList);
             this.facetTags = facetTagProcess.getFacetTags();
         });

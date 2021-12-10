@@ -140,42 +140,52 @@
                                          [ngStyle]="{'margin-left':getQueryFilterStyle(i)}"
                                          class="filter-query-container filter-query">
                                         <div class="query-filter-action-container">
-                                            <button mat-button class="gilded-button" (click)="clearFilter(key)">Clear
+                                            <button [disabled]="filterLoading || !(queryFilterData[key] && queryFilterData[key].filterData && queryFilterData[key].filterData.length)" mat-raised-button class="gilded-button" (click)="clearFilter(key)">Clear
                                             </button>
-                                            <button mat-button class="gilded-button" (click)="applyQueryFilters(key)">
+                                            <button [disabled]="filterLoading" mat-raised-button class="gilded-button" (click)="applyQueryFilters(key)">
                                                 Apply
                                             </button>
                                         </div>
-                                        <mat-form-field *ngIf="showChipSelector" class="example-chip-list"
-                                                        appearance="outline">
-                                            <mat-label>Enter {{getReadableFormat(key)}}</mat-label>
-                                            <mat-chip-list #chipList aria-label="Fruit selection">
-                                                <mat-chip
-                                                        *ngFor="let query of queryFilterData[key].filterData; let j=index"
-                                                        [selectable]="false"
-                                                        [removable]="true" (removed)="removeQuery(key, j)">
-                                                    {{query.item_text}}
-                                                    <button matChipRemove
-                                                            style="display: flex;justify-content: center;align-items: center;color: black;border-radius: 3rem;">
-                                                        <i class="fa fa-remove"></i>
-                                                    </button>
-                                                </mat-chip>
-                                                <input placeholder="New {{getReadableFormat(key)}}"
-                                                       [matChipInputFor]="chipList"
-                                                       [matChipInputSeparatorKeyCodes]="separatorKeysCodes"
-                                                       [matChipInputAddOnBlur]="false"
-                                                       (matChipInputTokenEnd)="addQuery($event, key)">
-                                            </mat-chip-list>
-                                        </mat-form-field>
-                                        <div *ngIf="!showChipSelector" class="query-filter-selector">
-                                            <ng-multiselect-dropdown
-                                                    [placeholder]="'Select ' + getReadableFormat(key) + ' to filter'"
-                                                    [settings]="showQueryFilter && showQueryFilter[key]?queryFilterDropdownSettings:null"
-                                                    [data]="queryFilterData[key].dropdownList"
-                                                    [(ngModel)]="queryFilterData[key].filterData"
-                                            >
-                                            </ng-multiselect-dropdown>
+                                        <div *ngIf="filterLoading">
+                                            <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12 text-center">
+                                                <div style="height: 6vh;display: flex;align-items: center;margin-left: 44%;">
+                                                    <div>
+                                                        <img src="assets/images/loading.gif" height="40"/>
+                                                    </div>
+                                                </div>
+                                            </div>
                                         </div>
+                                        <ng-container *ngIf="!filterLoading">
+                                            <mat-form-field *ngIf="showChipSelector" class="example-chip-list"
+                                                            appearance="outline">
+                                                <mat-label>Enter {{getReadableFormat(key)}}</mat-label>
+                                                <mat-chip-list #chipList aria-label="Fruit selection">
+                                                    <mat-chip
+                                                            *ngFor="let query of queryFilterData[key].filterData; let j=index"
+                                                            [selectable]="false"
+                                                            [removable]="true" (removed)="removeQuery(key, j)">
+                                                        {{query.item_text}}
+                                                        <button matChipRemove
+                                                                style="display: flex;justify-content: center;align-items: center;color: black;border-radius: 3rem;">
+                                                            <i class="fa fa-remove"></i>
+                                                        </button>
+                                                    </mat-chip>
+                                                    <input placeholder="New {{getReadableFormat(key)}}"
+                                                           [matChipInputFor]="chipList"
+                                                           [matChipInputSeparatorKeyCodes]="separatorKeysCodes"
+                                                           [matChipInputAddOnBlur]="false"
+                                                           (matChipInputTokenEnd)="addQuery($event, key)">
+                                                </mat-chip-list>
+                                            </mat-form-field>
+                                            <div *ngIf="!showChipSelector" class="query-filter-selector">
+                                                <ng-multiselect-dropdown
+                                                        [placeholder]="'Select ' + getReadableFormat(key) + ' to filter'"
+                                                        [settings]="showQueryFilter && showQueryFilter[key]?queryFilterDropdownSettings:null"
+                                                        [data]="queryFilterData[key].dropdownList"
+                                                        [(ngModel)]="queryFilterData[key].filterData">
+                                                </ng-multiselect-dropdown>
+                                            </div>
+                                        </ng-container>
                                     </div>
                                 </th>
                                 <!--                            <th>-->
@@ -197,10 +207,31 @@
                                                     <div *ngIf="record[key]===null">null</div>
                                                     <div>
                                                         <i class="show-details-icon"
-                                                           [ngClass]="!showExpansionPanel[recordId]?'fa fa-eye':'fa fa-eye-slash'"
+                                                           [ngClass]="showExpansionPanel[recordId] === 'show-btn' ? 'fa fa-eye' : 'fa fa-eye-slash'"
                                                            (click)="toggleExpansionPanel(recordId)"
-                                                           *ngIf="key===expandKey && record[expandKey] && record[expandKey]>0"></i>
+                                                           *ngIf="key===expandKey && record[expandKey] && record[expandKey]>0 && (showExpansionPanel[recordId] === 'show-btn' || showExpansionPanel[recordId] === 'hide-btn')"></i>
+                                                        <div *ngIf="key===expandKey && showExpansionPanel[recordId] === 'loading'" >
+                                                            <div>
+                                                                <img src="assets/images/loading.gif" height="20"/>
+                                                            </div>
+                                                        </div>
                                                     </div>
+<!--                                                    <div style="align-content: center">-->
+<!--                                                        <span style="width: 50%; float: right"*ngIf="record[key]!==null">{{getActualData(record[key], key, title, recordId)}}</span>-->
+<!--                                                        <span style="width: 50%; float: left">-->
+<!--                                                            <div>-->
+<!--                                                                <i class="show-details-icon"-->
+<!--                                                                    [ngClass]="showExpansionPanel[recordId] === 'show-btn' ? 'fa fa-eye' : 'fa fa-eye-slash'"-->
+<!--                                                                    (click)="toggleExpansionPanel(recordId)"-->
+<!--                                                                    *ngIf="key===expandKey && record[expandKey] && record[expandKey]>0 && (showExpansionPanel[recordId] === 'show-btn' || showExpansionPanel[recordId] === 'hide-btn')"></i>-->
+<!--                                                                <div *ngIf="key===expandKey && showExpansionPanel[recordId] === 'loading'" >-->
+<!--                                                                    <div>-->
+<!--                                                                        <img src="assets/images/loading.gif" height="20"/>-->
+<!--                                                                    </div>-->
+<!--                                                                </div>-->
+<!--                                                            </div>-->
+<!--                                                        </span>-->
+<!--                                                    </div>-->
                                                 </div>
                                                 <div class="row100 body {{record[key]}}"
                                                      [matTooltip]="getActualData(record[key], key, title, recordId)"
@@ -227,7 +258,7 @@
                                         <!--                                    </div>-->
                                         <!--                                </td>-->
                                     </tr>
-                                    <tr *ngIf="showExpansionPanel[recordId] && kycHistory && kycHistory[record.id]"
+                                    <tr *ngIf="showExpansionPanel[recordId] === 'hide-btn' && kycHistory && kycHistory[record.id]"
                                         style="margin:1rem">
                                         <td [colSpan]="columns.length + 1">
                                             <div class="details-table-container">

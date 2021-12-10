@@ -147,7 +147,7 @@
             (click)="toggleViewRawData()">
         View Raw Data
     </button>
-    <button *ngIf="viewRawData" mat-button class="gilded-button" style="float: right; margin-top: 0.2rem"
+    <button *ngIf="viewRawData && dataAvailable" mat-button class="gilded-button" style="float: right; margin-top: 0.2rem"
             (click)="toggleViewRawData()">
         Back
     </button>

@@ -15,6 +15,7 @@ export class KycComponent implements OnInit {
 
     kycDetails: any;
     kycHistory = {};
+    showExpansionPanel = {};
     env = environment;
     statusChartData = [
         {
@@ -95,8 +96,6 @@ export class KycComponent implements OnInit {
             'double_check_response': null
         }
 
-        console.log(JSON.parse(data.full_response));
-
         this.drillDownData = [];
         this.getKYCStats();
         this.getKYC();
@@ -105,7 +104,6 @@ export class KycComponent implements OnInit {
 
     getKYCStats() {
         this.apiService.getKycSuccessCount().subscribe(response => {
-            console.log(response);
             let successCount: any;
             successCount = response;
             if (successCount && successCount.length) {
@@ -113,7 +111,6 @@ export class KycComponent implements OnInit {
             }
         })
         this.apiService.getKycFailedCount().subscribe(response => {
-            console.log(response);
             let failedCount: any;
             failedCount = response;
             if (failedCount && failedCount.length) {
@@ -121,7 +118,6 @@ export class KycComponent implements OnInit {
             }
         })
         this.apiService.getKycNotAttemptedCount().subscribe(response => {
-            console.log(response);
             let notAttemptedCount: any;
             notAttemptedCount = response;
             if (notAttemptedCount && notAttemptedCount.length) {
@@ -129,7 +125,6 @@ export class KycComponent implements OnInit {
             }
         })
         this.apiService.getKycAttemptsCount().subscribe(resp => {
-            console.log(resp);
             let attemptsCount: any;
             attemptsCount = resp;
             if (attemptsCount && attemptsCount.length) {
@@ -144,7 +139,6 @@ export class KycComponent implements OnInit {
     getKYC() {
         this.apiService.getKYCDetails().subscribe(response => {
             this.kycDetails = response;
-            console.log(this.kycDetails);
             //this.attemptsChartData = [];
             let attemptsData = {};
             // if (this.kycDetails && this.kycDetails.length) {
@@ -197,8 +191,6 @@ export class KycComponent implements OnInit {
             //         }
             //     }
             //     this.isDataloading = false;
-            //     console.log(this.statusChartData);
-            //     console.log(this.attemptsChartData);
             // }
 
             if (this.kycDetails && this.kycDetails.length) {
@@ -291,8 +283,6 @@ export class KycComponent implements OnInit {
                     // });
                 }
                 this.isDataloading = false;
-                console.log(this.statusChartData);
-                console.log(this.attemptsChartData);
             }
         })
     }
@@ -311,7 +301,6 @@ export class KycComponent implements OnInit {
     showDrillDownDetails(data) {
         this.showDrillDown = false;
         this.drillDownData = data.records;
-        console.log(this.drillDownData);
         this.drillDownTitle = data.title;
         this.drillDownQueryParams = data.query;
         this.showDrillDown = true;
@@ -324,7 +313,6 @@ export class KycComponent implements OnInit {
     applyFilters(params) {
         const url = environment.kycUrl + params;
         this.apiService.getData(url).subscribe(response => {
-            console.log(response);
             if (this.showDrillDown) {
                 this.drillDownData = response;
             } else {
@@ -335,7 +323,6 @@ export class KycComponent implements OnInit {
 
     getKycHistory() {
         this.apiService.getKycHistory().subscribe(response => {
-            console.log(response);
             let tempKycHhistory: any;
             tempKycHhistory = response;
             for (const kycHistory of tempKycHhistory) {
@@ -346,14 +333,15 @@ export class KycComponent implements OnInit {
                     this.kycHistory[kycHistory.account_no].push(kycHistory);
                 }
             }
-            console.log(this.kycHistory);
         })
     }
 
-    openExpandedTable(record) {
+    openExpandedTable(event) {
+        const record = event.record;
+        const index = event.index;
         if (!this.kycHistory[record.id]) {
+            this.showExpansionPanel[index] = 'loading'
             this.apiService.getKycHistory('?user_id=' + record.id).subscribe(response => {
-                console.log(response);
                 let tempKycHistory: any;
                 tempKycHistory = response;
                 if (tempKycHistory && tempKycHistory.length) {
@@ -366,38 +354,48 @@ export class KycComponent implements OnInit {
                             this.kycHistory[kycHistory.user_id].push(kycHistory);
                         }
                     }
+                    this.showExpansionPanel[index] = 'hide-btn'
                 } else {
-                    this.apiService.getKycResponseDetails('?user_id=' + record.id).subscribe(resp => {
-                        console.log(resp);
+                    this.apiService.getKycResponseDetails('?user_id=' + record.id).subscribe(async resp => {
                         let tempResponseDetails: any;
                         tempResponseDetails = resp;
                         if (tempResponseDetails && tempResponseDetails.length) {
-                            for (let i = 0; i < tempResponseDetails.length; i++) {
-                                this.apiService.getKycInfo('?request_id=' + tempResponseDetails[i].request_id).subscribe(res => {
-                                    let tempKycInfo: any;
-                                    tempKycInfo = res;
-                                    console.log(tempKycInfo);
-                                    tempResponseDetails[i]['full_response'] = tempKycInfo[0].json_data;
-                                    tempResponseDetails[i]['name'] = record.full_name;
-                                    if (this.kycHistory[tempResponseDetails[i].user_id]) {
-                                        this.kycHistory[tempResponseDetails[i].user_id].push(tempResponseDetails[i]);
-                                    } else {
-                                        this.kycHistory[tempResponseDetails[i].user_id] = [];
-                                        this.kycHistory[tempResponseDetails[i].user_id].push(tempResponseDetails[i]);
-                                    }
-                                })
-                            }
+
+                            await Promise.all(tempResponseDetails.map(async (tempResponseDetail) => {
+                                return new Promise(async (resolve, reject) => {
+                                    this.apiService.getKycInfo('?request_id=' + tempResponseDetail.request_id).subscribe(res => {
+                                        let tempKycInfo: any;
+                                        tempKycInfo = res;
+                                        tempResponseDetail['full_response'] = tempKycInfo[0].json_data;
+                                        tempResponseDetail['name'] = record.full_name;
+                                        tempResponseDetail['doc_type'] = tempKycInfo[0].json_data ? JSON.parse(tempKycInfo[0].json_data).original_kyc_info ? JSON.parse(tempKycInfo[0].json_data).original_kyc_info.doc_type : '' : '';
+                                        if (this.kycHistory[tempResponseDetail.user_id]) {
+                                            this.kycHistory[tempResponseDetail.user_id].push(tempResponseDetail);
+                                        } else {
+                                            this.kycHistory[tempResponseDetail.user_id] = [];
+                                            this.kycHistory[tempResponseDetail.user_id].push(tempResponseDetail);
+                                        }
+                                        resolve('success');
+                                    }, error => {
+                                        resolve('success');
+                                    })
+                                });
+                            })).then(async (results) => {
+                                this.showExpansionPanel[index] = 'hide-btn';
+                            });
+
+                        } else {
+                            this.showExpansionPanel[index] = 'hide-btn'
                         }
-                        console.log(tempResponseDetails);
                     })
                 }
-                console.log(this.kycHistory);
             })
+        } else {
+            this.showExpansionPanel[index] = 'hide-btn'
         }
     }
 
     openDocumentViewer(doc) {
-        console.log(doc)
         const dialogRef = this.dialog.open(KycDocumentViewerComponent, {
             data: doc,
             width: '70%',
@@ -430,14 +428,19 @@ export class KycDocumentViewerComponent {
     viewRawData = false;
     rawData: any;
 
+    dataAvailable = false;
+
     constructor(@Inject(MAT_DIALOG_DATA) public data: any, public dialogRef: MatDialogRef<KycDocumentViewerComponent>, public apiService: APIService) {
         dialogRef.disableClose = true;
-        console.log(this.data);
-        console.log(JSON.parse(this.data.historyRecord.full_response));
         this.docInfo = JSON.parse(this.data.historyRecord.full_response);
         this.userInfo = this.docInfo.original_kyc_info;
         this.photoInfo = this.docInfo.photo;
         this.verifiedAgentInfo = this.docInfo.verified_agent;
+        if (this.docInfo.original_kyc_info) {
+            this.dataAvailable = true
+        } else {
+            this.viewRawData = true;
+        }
         this.rawData = JSON.stringify(this.data.historyRecord);
         //this.getDocInfo();
     }
@@ -449,10 +452,8 @@ export class KycDocumentViewerComponent {
                 this.apiService.getKycInfo('?user_id=' + this.data.userRecord.id).subscribe(res => {
                     let info: any;
                     info = res;
-                    console.log(info);
                 })
             }
-            console.log(this.docInfo);
         })
     }
 

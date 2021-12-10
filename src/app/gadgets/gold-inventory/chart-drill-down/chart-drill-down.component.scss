@@ -648,7 +648,7 @@ th, td {
 }
 
 .query-filter-selector {
-  margin-top: 0.2rem;
+  margin-top: 0.4rem;
 }
 
 .download-icon {
@@ -682,7 +682,8 @@ th, td {
   padding-bottom: 0.2rem;
   padding-left: 0.5rem;
   padding-right: 0.5rem;
-  border-radius: 5rem;
+  border-radius: 4px;
+  font-size: 8px;
 }
 
 .false {
@@ -692,7 +693,8 @@ th, td {
   padding-bottom: 0.2rem;
   padding-left: 0.5rem;
   padding-right: 0.5rem;
-  border-radius: 5rem;
+  border-radius: 4px;
+  font-size: 8px;
 }
 
 .notAttempted {
@@ -788,6 +790,7 @@ th, td {
 }
 
 .example-chip-list {
+  margin-top: 0.4rem;
   width: 100%;
 }
 

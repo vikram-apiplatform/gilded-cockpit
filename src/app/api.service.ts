@@ -44,6 +44,11 @@ export class APIService {
         return this._http.get(environment.gildedHost + '/v1/data/' + environment.partner + '/' + environment.account + '/' + 'gildedKYCDetails' + params, this.gildedHttpOptions).pipe(map(res => res));
     }
 
+    getKycUser(params = '') {
+        // return this._http.get(environment.gildedHost + '/v1/data/' + environment.partner + '/' + environment.account + '/' + 'kycDetails' + params, this.gildedHttpOptions).pipe(map(res => res));
+        return this._http.get(environment.gildedHost + '/v1/data/' + environment.partner + '/' + environment.account + '/' + 'gildedKYCUser' + params, this.gildedHttpOptions).pipe(map(res => res));
+    }
+
     getKycInfo(params = '') {
         // return this._http.get(environment.gildedHost + '/v1/data/' + environment.partner + '/' + environment.account + '/' + 'kycDetails' + params, this.gildedHttpOptions).pipe(map(res => res));
         return this._http.get(environment.gildedHost + '/v1/data/' + environment.partner + '/' + environment.account + '/' + 'gildedKYCInfo' + params, this.gildedHttpOptions).pipe(map(res => res));

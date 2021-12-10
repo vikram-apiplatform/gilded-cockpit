@@ -58,7 +58,7 @@ export class ChartDrillDownComponent implements OnInit, OnChanges {
     attributesList = [];
     attributesFilter = [];
     expandedElement: any;
-    showExpansionPanel = {};
+    @Input() showExpansionPanel = {};
     showAttributesFilter = false;
     startDate: any;
     endDate: any;
@@ -78,6 +78,7 @@ export class ChartDrillDownComponent implements OnInit, OnChanges {
     isDataLoading = true;
     queryParams = ''
     showChipSelector = false;
+    filterLoading = true;
     filterQueryContainerPos = '300px';
     readonly separatorKeysCodes = [ENTER, COMMA];
 
@@ -140,15 +141,15 @@ export class ChartDrillDownComponent implements OnInit, OnChanges {
             //url = this.apiUrl + '?pagination=true&offset=' + this.currentOffset + '&limit=' + this.limit;
 
             this.apiService.getData(url).subscribe(response => {
-                console.log(response);
                 let items: any;
                 items = response;
-                if (items && items.length) {
+                if (items && items.length >= 0) {
                     this.data = items[0].data;
                     this.filteredData = items[0].data;
                     this.collectionSize = items[0]._pages.totalRows;
                 }
                 this.isDataLoading = false;
+                this.populateQueryFiltersData();
                 resolve(true);
             }, error => {
                 this.isDataLoading = false;
@@ -197,7 +198,6 @@ export class ChartDrillDownComponent implements OnInit, OnChanges {
     }
 
     ngOnChanges() {
-        console.log(this.data);
         this.filteredData = this.data;
         if (this.includesParams) {
             this.populateFilters();
@@ -260,7 +260,7 @@ export class ChartDrillDownComponent implements OnInit, OnChanges {
 
     populateQueryFiltersData() {
         for (let i = 0; i < this.filteredData.length; i++) {
-            this.showExpansionPanel[i] = false;
+            this.showExpansionPanel[i] = 'show-btn';
             for (const key of Object.keys(this.filteredData[i])) {
                 if (!this.queryFilterData[key]) {
                     this.queryFilterData[key] = {
@@ -312,8 +312,12 @@ export class ChartDrillDownComponent implements OnInit, OnChanges {
                     });
                     this.showQueryFilter[key] = true;
                 } else {
+                    this.filterLoading = true;
+                    Object.keys(this.showQueryFilter).forEach(queryKey => {
+                        this.showQueryFilter[queryKey] = false
+                    });
+                    this.showQueryFilter[key] = true;
                     this.apiService.getAttributeValues(key, this.type).subscribe(response => {
-                        console.log(response);
                         let attributeValues: any;
                         attributeValues = response;
                         if (attributeValues && attributeValues.length && attributeValues.length < 10000) {
@@ -325,26 +329,29 @@ export class ChartDrillDownComponent implements OnInit, OnChanges {
                                     } else if (attributeValues[i][keys[0]] === 0) {
                                         this.queryFilterData[key].dropdownList.push({item_id: i, item_text: 'Fail'});
                                     } else {
-                                        this.queryFilterData[key].dropdownList.push({item_id: i, item_text: attributeValues[i][keys[0]]});
+                                        if (attributeValues[i][keys[0]] !== null) {
+                                            this.queryFilterData[key].dropdownList.push({
+                                                item_id: i,
+                                                item_text: attributeValues[i][keys[0]]
+                                            });
+                                        }
                                     }
                                 } else {
-                                    this.queryFilterData[key].dropdownList.push({item_id: i, item_text: attributeValues[i][keys[0]]});
+                                    if (attributeValues[i][keys[0]] !== null) {
+                                        this.queryFilterData[key].dropdownList.push({item_id: i, item_text: attributeValues[i][keys[0]]});
+                                    }
                                 }
                             }
                             this.showChipSelector = false;
-                            console.log(this.queryFilterData);
                         } else {
                             this.showChipSelector = true;
                         }
-                        Object.keys(this.showQueryFilter).forEach(queryKey => {
-                            this.showQueryFilter[queryKey] = false
-                        });
-                        this.showQueryFilter[key] = true;
+                        this.filterLoading = false;
+
                     });
                 }
             }
             const filterPos = document.getElementById('data-table');
-            console.log(filterPos.offsetWidth);
             // $('.filter-query-container').css({'left': filterPos.offsetLeft})
             // $('.filter-query-container').css({'top': '50rem !important'});
         } else {
@@ -364,12 +371,7 @@ export class ChartDrillDownComponent implements OnInit, OnChanges {
         //return (-i * (this.itemList.length - i * 0.1) + 'rem');
         //return (-i * 1.8) + 'rem';
         const table = document.getElementById('data-table');
-        console.log(table.offsetWidth);
-        console.log(this.itemList[i]);
         const filter = document.getElementById(this.itemList[i]);
-        console.log(this.getOffset(filter))
-        console.log(filter.offsetLeft)
-        console.log(filter.clientLeft);
         let leftPos = filter.offsetLeft
         if (leftPos + 350 > table.offsetWidth) {
             while (leftPos + 350 > table.offsetWidth) {
@@ -387,7 +389,7 @@ export class ChartDrillDownComponent implements OnInit, OnChanges {
 
     applyQueryFilters(queryKey, shouldToggleQueryFilter = true) {
         //this.queryFilteredData = [];
-        let queryParams = this.queryParams;
+        let queryParams = '';
         for (const key of Object.keys(this.queryFilterData)) {
             if (queryParams === '') {
                 queryParams += '?';
@@ -423,7 +425,6 @@ export class ChartDrillDownComponent implements OnInit, OnChanges {
                 //tempFilteredData = tempFilteredData.concat(this.filterPipe.transform(orig_data, searchText.item_text, tempObj));
             }
         }
-        console.log(queryParams);
         this.queryParams = queryParams;
         this.currentOffset = 0;
         this.getData(this.apiUrl + queryParams);
@@ -454,22 +455,18 @@ export class ChartDrillDownComponent implements OnInit, OnChanges {
     }
 
     onAttributeSelect(attribute) {
-        console.log(attribute);
         this.itemList.push(attribute.item_text);
     }
 
     onAttributeDeSelect(attribute) {
-        console.log(attribute);
         this.itemList = this.itemList.filter(item => item !== attribute.item_text);
     }
 
     onAttributeSelectAll(attribute) {
-        console.log(attribute);
         this.itemList = this.columns;
     }
 
     onAttributeDeSelectAll(attribute) {
-        console.log(attribute);
         this.itemList = [];
     }
 
@@ -480,10 +477,12 @@ export class ChartDrillDownComponent implements OnInit, OnChanges {
     // }
 
     toggleExpansionPanel(index) {
-        if (!this.showExpansionPanel[index]) {
-            this.viewExpandedTable.emit(this.filteredData[index]);
+        if (this.showExpansionPanel[index] === 'show-btn') {
+            this.viewExpandedTable.emit({record: this.filteredData[index], index: index});
+        } else {
+            this.showExpansionPanel[index] = 'show-btn';
         }
-        this.showExpansionPanel[index] = !this.showExpansionPanel[index];
+        // this.showExpansionPanel[index] = !this.showExpansionPanel[index];
     }
 
     toggleAttributesFilter() {
@@ -534,7 +533,6 @@ export class ChartDrillDownComponent implements OnInit, OnChanges {
     }
 
     applyDateFilters() {
-        console.log(this.startDate, this.endDate)
         let dateFilteredData = [];
         for (let i = 0; i < this.data.length; i++) {
             let date_created = this.data[i]['date_created'];
@@ -544,11 +542,8 @@ export class ChartDrillDownComponent implements OnInit, OnChanges {
             }
         }
         this.filterData = [];
-        console.log('Filtered Data-->', dateFilteredData);
         this.filteredData = dateFilteredData;
 
-
-        // console.log(this.startDate, this.endDate)
         // let fromDate = this.startDate + 'T00:00:00';
         // let toDate = this.endDate + 'T23:59:59';
         // let dateFilteredData: any = [];
@@ -564,10 +559,8 @@ export class ChartDrillDownComponent implements OnInit, OnChanges {
         // this.limit = 10;
         // this.getData(this.apiUrl + params);
         // this.apiService.getData(this.apiUrl + '?date_created.gt=' + fromDate + '&date_created.lt=' + toDate).subscribe(response => {
-        //     console.log('Get KYC Data By Date Range', response);
         //     dateFilteredData = response;
         //     this.filteredData = [];
-        //     console.log('Filtered Data-->', dateFilteredData);
         //     this.filteredData = dateFilteredData;
         // });
     }
@@ -582,7 +575,7 @@ export class ChartDrillDownComponent implements OnInit, OnChanges {
             this.getData(this.apiUrl + this.queryParams);
         }
         Object.keys(this.showExpansionPanel).forEach(index => {
-            this.showExpansionPanel[index] = false;
+            this.showExpansionPanel[index] = 'show-btn';
         });
         this.currentPageDisplayed = 1;
         //this.currentPageDisplayed = this.page;

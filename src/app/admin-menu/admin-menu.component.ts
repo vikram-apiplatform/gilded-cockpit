@@ -225,15 +225,11 @@ export class AdminMenuComponent implements OnInit {
     }
 
     ngOnInit() {
-        console.log('Init');
-        console.log(this._router);
         this.activeRoute = this.location['_platformStrategy']['_platformLocation'].location.pathname;
-        console.log(this.location['_platformStrategy']['_platformLocation'].location.pathname);
         // if (this.location['_platformStrategy']['_platformLocation'].location.pathname) {
         //     this._router.navigateByUrl(this.location['_platformStrategy']['_platformLocation'].location.pathname);
         // }
         this.listener.drillDownListener.subscribe(data => {
-            console.log(data);
             this.showDrillDown = data.showDrillDown;
             this.drillDownData = data.drillDownData;
             this.drillDownTitle = data.drillDownTitle;
@@ -270,8 +266,6 @@ export class AdminMenuComponent implements OnInit {
 
                 });
 
-                console.log(this.dashboardList);
-
                 if (selectedBoard === '') {
                     this.selectedBoard = this.dashboardList[0];
                     this.defaultActiveMenu = this.adminMenu[0].submenu[0].key;
@@ -297,14 +291,11 @@ export class AdminMenuComponent implements OnInit {
         let gridEventSubscription = this._menuEventService.listenForGridEvents().subscribe((event: IEvent) => {
 
             const edata = event['data'];
-            console.log('eventListener');
             switch (event['name']) {
                 case 'boardUpdateEvent':
-                    console.log('updateBoard');
                     this.updateDashboardMenu(edata);
                     break;
                 case 'drillDownEvent':
-                    console.log('drilldown');
                     break;
             }
 
@@ -315,13 +306,10 @@ export class AdminMenuComponent implements OnInit {
     }
 
     menuItemSelected(menuItem) {
-        console.log(menuItem.parent);
-        console.log(this.activeMenu);
         this.activeMenu = menuItem.parent;
         if (menuItem.parent === 'Dashboard') {
             //this._router.navigateByUrl('cockpit');
             this.selectedBoard = menuItem.child;
-            console.log(this._menuEventService);
             this._menuEventService.raiseMenuEvent({name: 'boardSelectEvent', data: menuItem.child});
             //if (this.activeMenu !== 'Dashboard') {
             //}
