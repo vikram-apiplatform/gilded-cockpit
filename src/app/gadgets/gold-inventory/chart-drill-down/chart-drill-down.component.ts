@@ -287,6 +287,9 @@ export class ChartDrillDownComponent implements OnInit, OnChanges {
     }
 
     getReadableFormat(key) {
+        if (key === 'kyc_check_count') {
+            return 'KYC Attempts'
+        }
         const formattedKey = key.replace(/([a-z])([A-Z])/g, '$1 $2');
         const words = formattedKey.split(' ');
         for (let i = 0; i < words.length; i++) {
@@ -431,7 +434,13 @@ export class ChartDrillDownComponent implements OnInit, OnChanges {
         }
         this.queryParams = queryParams;
         this.currentOffset = 0;
-        this.getData(this.apiUrl + queryParams);
+        console.log(this.startDate);
+        console.log(this.endDate);
+        if (this.startDate && this.endDate) {
+            this.applyDateFilters();
+        } else {
+            this.getData(this.apiUrl + queryParams);
+        }
         //this.queryFilters.emit(queryParams);
         // console.log(this.queryFilterData);
         // //for (const key of Object.keys(this.queryFilterData)) {
@@ -523,6 +532,7 @@ export class ChartDrillDownComponent implements OnInit, OnChanges {
         }
         if (this.startDate === '' || this.startDate === undefined) {
             this.filteredData = this.data;
+            this.applyQueryFilters('', false);
         }
         this.minEndDate = this.startDate;
     }
@@ -533,40 +543,42 @@ export class ChartDrillDownComponent implements OnInit, OnChanges {
         }
         if (this.endDate === '' || this.endDate === undefined) {
             this.filteredData = this.data;
+            this.applyQueryFilters('', false);
         }
     }
 
     applyDateFilters() {
-        let dateFilteredData = [];
-        for (let i = 0; i < this.data.length; i++) {
-            let date_created = this.data[i]['date_created'];
-            date_created = date_created.slice(0, 10);
-            if (date_created >= this.startDate && date_created <= this.endDate) {
-                dateFilteredData.push(this.data[i]);
-            }
-        }
-        this.filterData = [];
-        this.filteredData = dateFilteredData;
-
-        // let fromDate = this.startDate + 'T00:00:00';
-        // let toDate = this.endDate + 'T23:59:59';
-        // let dateFilteredData: any = [];
-        // let params = '';
-        // if (this.queryParams !== '') {
-        //     params += '&date_created.gt=' + fromDate + '&date_created.lt=' + toDate;
-        //     //this.queryParams += params;
-        // } else {
-        //     params += '?date_created.gt=' + fromDate + '&date_created.lt=' + toDate
-        //     //this.queryParams = params;
+        // let dateFilteredData = [];
+        // for (let i = 0; i < this.data.length; i++) {
+        //     let date_created = this.data[i]['date_created'];
+        //     date_created = date_created.slice(0, 10);
+        //     if (date_created >= this.startDate && date_created <= this.endDate) {
+        //         dateFilteredData.push(this.data[i]);
+        //     }
         // }
-        // this.currentOffset = 0;
-        // this.limit = 10;
-        // this.getData(this.apiUrl + params);
+        // this.filterData = [];
+        // this.filteredData = dateFilteredData;
+
+        let fromDate = this.startDate + 'T00:00:00';
+        let toDate = this.endDate + 'T23:59:59';
+        let dateFilteredData: any = [];
+        let params = '';
+        if (this.queryParams !== '') {
+            //params = this.queryParams;
+            params += '&date_created.gt=' + fromDate + '&date_created.lt=' + toDate;
+            this.queryParams += params;
+        } else {
+            params += '?date_created.gt=' + fromDate + '&date_created.lt=' + toDate
+            this.queryParams = params;
+        }
+        this.currentOffset = 0;
+        this.getData(this.apiUrl + this.queryParams);
         // this.apiService.getData(this.apiUrl + '?date_created.gt=' + fromDate + '&date_created.lt=' + toDate).subscribe(response => {
         //     dateFilteredData = response;
         //     this.filteredData = [];
         //     this.filteredData = dateFilteredData;
         // });
+
     }
 
 
