@@ -124,7 +124,7 @@
                             <tr class="row100 head">
                                 <th *ngFor="let key of itemList; let i=index" mfSortByChange>
                                     <div class="table-head"
-                                         [ngClass]="i==0?'table-head-first-child':i==getKeys(filteredData[0]).length-1?'table-head-last-child':''"
+                                         [ngClass]="i==0?'table-head-first-child':i==itemList.length-1?'table-head-last-child':''"
                                          *ngIf="itemList.includes(key)">
                                         <mfDefaultSorter by="{{key}}"><span
                                                 class="table-key-text">{{getReadableFormat(key)}}</span>
@@ -140,9 +140,12 @@
                                          [ngStyle]="{'margin-left':getQueryFilterStyle(i)}"
                                          class="filter-query-container filter-query">
                                         <div class="query-filter-action-container">
-                                            <button [disabled]="filterLoading || !(queryFilterData[key] && queryFilterData[key].filterData && queryFilterData[key].filterData.length)" mat-raised-button class="gilded-button" (click)="clearFilter(key)">Clear
+                                            <button [disabled]="filterLoading || !(queryFilterData[key] && queryFilterData[key].filterData && queryFilterData[key].filterData.length)"
+                                                    mat-raised-button class="gilded-button" (click)="clearFilter(key)">
+                                                Clear
                                             </button>
-                                            <button [disabled]="filterLoading" mat-raised-button class="gilded-button" (click)="applyQueryFilters(key)">
+                                            <button [disabled]="filterLoading" mat-raised-button class="gilded-button"
+                                                    (click)="applyQueryFilters(key)">
                                                 Apply
                                             </button>
                                         </div>
@@ -194,7 +197,7 @@
                             </tr>
                             </thead>
                             <tbody>
-                            <ng-container *ngIf="!isDataLoading">
+                            <ng-container *ngIf="!isDataLoading && filteredData && filteredData.length">
                                 <ng-container
                                         *ngFor="let record of mf.data| slice: (currentPageDisplayed-1) * itemsPerPage : currentPageDisplayed * itemsPerPage; let recordId=index">
                                     <tr>
@@ -210,28 +213,28 @@
                                                            [ngClass]="showExpansionPanel[recordId] === 'show-btn' ? 'fa fa-eye' : 'fa fa-eye-slash'"
                                                            (click)="toggleExpansionPanel(recordId)"
                                                            *ngIf="key===expandKey && record[expandKey] && record[expandKey]>0 && (showExpansionPanel[recordId] === 'show-btn' || showExpansionPanel[recordId] === 'hide-btn')"></i>
-                                                        <div *ngIf="key===expandKey && showExpansionPanel[recordId] === 'loading'" >
+                                                        <div *ngIf="key===expandKey && showExpansionPanel[recordId] === 'loading'">
                                                             <div>
                                                                 <img src="assets/images/loading.gif" height="20"/>
                                                             </div>
                                                         </div>
                                                     </div>
-<!--                                                    <div style="align-content: center">-->
-<!--                                                        <span style="width: 50%; float: right"*ngIf="record[key]!==null">{{getActualData(record[key], key, title, recordId)}}</span>-->
-<!--                                                        <span style="width: 50%; float: left">-->
-<!--                                                            <div>-->
-<!--                                                                <i class="show-details-icon"-->
-<!--                                                                    [ngClass]="showExpansionPanel[recordId] === 'show-btn' ? 'fa fa-eye' : 'fa fa-eye-slash'"-->
-<!--                                                                    (click)="toggleExpansionPanel(recordId)"-->
-<!--                                                                    *ngIf="key===expandKey && record[expandKey] && record[expandKey]>0 && (showExpansionPanel[recordId] === 'show-btn' || showExpansionPanel[recordId] === 'hide-btn')"></i>-->
-<!--                                                                <div *ngIf="key===expandKey && showExpansionPanel[recordId] === 'loading'" >-->
-<!--                                                                    <div>-->
-<!--                                                                        <img src="assets/images/loading.gif" height="20"/>-->
-<!--                                                                    </div>-->
-<!--                                                                </div>-->
-<!--                                                            </div>-->
-<!--                                                        </span>-->
-<!--                                                    </div>-->
+                                                    <!--                                                    <div style="align-content: center">-->
+                                                    <!--                                                        <span style="width: 50%; float: right"*ngIf="record[key]!==null">{{getActualData(record[key], key, title, recordId)}}</span>-->
+                                                    <!--                                                        <span style="width: 50%; float: left">-->
+                                                    <!--                                                            <div>-->
+                                                    <!--                                                                <i class="show-details-icon"-->
+                                                    <!--                                                                    [ngClass]="showExpansionPanel[recordId] === 'show-btn' ? 'fa fa-eye' : 'fa fa-eye-slash'"-->
+                                                    <!--                                                                    (click)="toggleExpansionPanel(recordId)"-->
+                                                    <!--                                                                    *ngIf="key===expandKey && record[expandKey] && record[expandKey]>0 && (showExpansionPanel[recordId] === 'show-btn' || showExpansionPanel[recordId] === 'hide-btn')"></i>-->
+                                                    <!--                                                                <div *ngIf="key===expandKey && showExpansionPanel[recordId] === 'loading'" >-->
+                                                    <!--                                                                    <div>-->
+                                                    <!--                                                                        <img src="assets/images/loading.gif" height="20"/>-->
+                                                    <!--                                                                    </div>-->
+                                                    <!--                                                                </div>-->
+                                                    <!--                                                            </div>-->
+                                                    <!--                                                        </span>-->
+                                                    <!--                                                    </div>-->
                                                 </div>
                                                 <div class="row100 body {{record[key]}}"
                                                      [matTooltip]="getActualData(record[key], key, title, recordId)"
@@ -304,6 +307,19 @@
                                     </tr>
                                 </ng-container>
                             </ng-container>
+                            <ng-container *ngIf="!isDataLoading && (!filteredData || !filteredData.length)">
+                                <td [colSpan]="itemList.length" class="text-center">
+                                    <div style="height: 80vh;
+                          display: flex;
+                          align-items: center;
+                          margin-left: 48%;">
+                                        <div class="no-data-text">
+                                            No data found
+                                        </div>
+                                    </div>
+                                </td>
+                            </ng-container>
+                            </tbody>
                             <div *ngIf="isDataLoading">
                                 <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12 text-center">
                                     <div style="height: 80vh;
@@ -316,7 +332,6 @@
                                     </div>
                                 </div>
                             </div>
-                            </tbody>
                         </table>
 
                         <!--                    <table #mf="mfDataTable" mat-table [dataSource]="filteredData" multiTemplateDataRows [mfData]="filteredData" class="">-->

@@ -143,13 +143,17 @@ export class ChartDrillDownComponent implements OnInit, OnChanges {
             this.apiService.getData(url).subscribe(response => {
                 let items: any;
                 items = response;
-                if (items && items.length >= 0) {
+                console.log(items);
+                if (items && items.length > 0) {
                     this.data = items[0].data;
                     this.filteredData = items[0].data;
                     this.collectionSize = items[0]._pages.totalRows;
+                } else {
+                    this.filteredData = [];
+                    this.collectionSize = 0;
                 }
                 this.isDataLoading = false;
-                this.populateQueryFiltersData();
+                //this.populateQueryFiltersData();
                 resolve(true);
             }, error => {
                 this.isDataLoading = false;
