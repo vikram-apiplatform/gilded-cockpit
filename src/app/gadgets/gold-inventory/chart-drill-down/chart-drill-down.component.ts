@@ -80,6 +80,8 @@ export class ChartDrillDownComponent implements OnInit, OnChanges {
     showChipSelector = false;
     filterLoading = true;
     filterQueryContainerPos = '300px';
+    lastSortedKey = '';
+    lastSortedOrder = 'desc';
     readonly separatorKeysCodes = [ENTER, COMMA];
 
     constructor(public _csvService: CsvService, public apiService: APIService) {
@@ -434,6 +436,8 @@ export class ChartDrillDownComponent implements OnInit, OnChanges {
         }
         this.queryParams = queryParams;
         this.currentOffset = 0;
+        this.currentPageDisplayed = 1;
+        this.page = 1;
         console.log(this.startDate);
         console.log(this.endDate);
         if (this.startDate && this.endDate) {
@@ -581,14 +585,48 @@ export class ChartDrillDownComponent implements OnInit, OnChanges {
 
     }
 
+    sortByKey(key) {
+        let params = '';
+        if (this.lastSortedOrder === 'desc') {
+            if (this.queryParams !== '') {
+                params = this.queryParams + '&sort=+' + key;
+            } else {
+                params = '?sort=+' + key;
+            }
+            this.lastSortedOrder = 'asc';
+        } else {
+            if (this.queryParams !== '') {
+                params = this.queryParams + '&sort=-' + key;
+            } else {
+                params = '?sort=-' + key;
+            }
+            this.lastSortedOrder = 'desc';
+        }
+        //this.queryParams = params;
+        this.lastSortedKey = key;
+        //this.currentOffset = 0;
+        //this.page = 1;
+        this.getData(this.apiUrl + params);
+    }
+
 
     lastPage() {
         this.currentOffset = (this.page - 1) * this.itemsPerPage;
         this.limit = this.itemsPerPage;
         if (this.queryParams === '') {
-            this.getData();
+            if (this.lastSortedKey === '') {
+                this.getData();
+            } else {
+                this.lastSortedOrder === 'asc' ? this.lastSortedOrder = 'desc' : this.lastSortedOrder = 'asc'
+                this.sortByKey(this.lastSortedKey);
+            }
         } else {
-            this.getData(this.apiUrl + this.queryParams);
+            if (this.lastSortedKey === '') {
+                this.getData(this.apiUrl + this.queryParams);
+            } else {
+                this.lastSortedOrder === 'asc' ? this.lastSortedOrder = 'desc' : this.lastSortedOrder = 'asc'
+                this.sortByKey(this.lastSortedKey);
+            }
         }
         Object.keys(this.showExpansionPanel).forEach(index => {
             this.showExpansionPanel[index] = 'show-btn';

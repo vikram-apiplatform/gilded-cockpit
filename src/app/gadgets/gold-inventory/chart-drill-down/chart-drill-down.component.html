@@ -126,7 +126,7 @@
                                     <div class="table-head"
                                          [ngClass]="i==0?'table-head-first-child':i==itemList.length-1?'table-head-last-child':''"
                                          *ngIf="itemList.includes(key)">
-                                        <mfDefaultSorter by="{{key}}"><span
+                                        <mfDefaultSorter (click)="sortByKey(key)" by="{{i}}"><span
                                                 class="table-key-text">{{getReadableFormat(key)}}</span>
                                         </mfDefaultSorter>
                                         <i id="{{key}}" class="fa fa-filter filter-icon"
