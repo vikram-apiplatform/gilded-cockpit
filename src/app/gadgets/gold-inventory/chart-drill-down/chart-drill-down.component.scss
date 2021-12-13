@@ -195,8 +195,8 @@ th, td {
 }
 
 .table100-body td {
-  padding-top: 16px;
-  padding-bottom: 16px;
+  padding-top: 12px;
+  padding-bottom: 12px;
   white-space: nowrap;
 }
 
@@ -235,7 +235,8 @@ th, td {
 
 .table100.ver1 td {
   /*font-size: 15px;*/
-  color: #808080;
+  //color: #808080;
+  font-family: system-ui;
   line-height: 1.4;
 }
 
@@ -585,16 +586,16 @@ th, td {
   //width: 100%;
   display: flex;
   flex-flow: row nowrap;
-  margin-left: 2rem;
+  //margin-left: 2rem;
   padding-bottom: 1rem;
 }
 
 .start-date-filter {
-  width: 15%;
+  //width: 15%;
 }
 
 .end-date-filter {
-  width: 15%;
+  //width: 15%;
 }
 
 .date-input {
@@ -603,8 +604,8 @@ th, td {
   padding: 0.2rem;
   //border-bottom: 2px solid skyblue;
   border-radius: 0.2rem;
-  margin-top: 0.3rem;
-  color: black;
+  //margin-top: 0.3rem;
+  color: #808080;
 }
 
 .date-text {
@@ -653,7 +654,9 @@ th, td {
 
 .download-icon {
   font-size: 1.5rem;
+  margin-left: 1.5rem;
   cursor: pointer;
+  color: #808080;
 }
 
 .filter-icon {
@@ -794,9 +797,19 @@ th, td {
   width: 100%;
 }
 
-.no-data-text{
+.no-data-text {
   font-size: 1rem;
   font-weight: bold;
+}
+
+.no-padding {
+  padding: 0px;
+}
+
+.filter-label {
+  font-weight: bold;
+  font-size: 0.8rem;
+  display: none;
 }
 
 .pagination {

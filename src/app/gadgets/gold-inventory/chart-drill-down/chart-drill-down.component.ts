@@ -108,7 +108,7 @@ export class ChartDrillDownComponent implements OnInit, OnChanges {
             textField: 'item_text',
             selectAllText: 'Select All',
             unSelectAllText: 'UnSelect All',
-            itemsShowLimit: 5,
+            itemsShowLimit: 2,
             allowSearchFilter: true
         };
         this.attributesDropdownSettings = {
@@ -117,7 +117,7 @@ export class ChartDrillDownComponent implements OnInit, OnChanges {
             textField: 'item_text',
             selectAllText: 'Select All',
             unSelectAllText: 'UnSelect All',
-            itemsShowLimit: 3,
+            itemsShowLimit: 2,
             allowSearchFilter: true
         };
         this.queryFilterDropdownSettings = {
@@ -315,6 +315,7 @@ export class ChartDrillDownComponent implements OnInit, OnChanges {
             this.queryFilterData[key].dropdownList = [];
             if (!this.queryFilterData[key].dropdownList.length) {
                 if (this.type === 'aml') {
+                    this.filterLoading = false;
                     this.showChipSelector = true;
                     Object.keys(this.showQueryFilter).forEach(queryKey => {
                         this.showQueryFilter[queryKey] = false

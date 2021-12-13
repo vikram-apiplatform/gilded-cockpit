@@ -58,6 +58,7 @@ input {
 .ui.menu .item{
     padding-left: 1.5rem;
     padding-right: 1.5rem;
+    /*color: rgba(100,100,100,0.5);*/
 }
 
 .gold-rate-container {

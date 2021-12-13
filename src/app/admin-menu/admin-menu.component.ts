@@ -132,14 +132,14 @@ export class AdminMenuComponent implements OnInit {
             route: '',
             submenu: []
         },
-        {
-            name: 'Downloads',
-            iconClass: 'fa fa-cloud-download',
-            active: false,
-            toolTip: 'Platform Experience',
-            route: '',
-            submenu: []
-        },
+        // {
+        //     name: 'Downloads',
+        //     iconClass: 'fa fa-cloud-download',
+        //     active: false,
+        //     toolTip: 'Platform Experience',
+        //     route: '',
+        //     submenu: []
+        // },
         // {
         //     name: 'Exceptions Management',
         //     iconClass: 'fa fa-user-secret',
@@ -175,14 +175,14 @@ export class AdminMenuComponent implements OnInit {
             route: 'aml',
             submenu: []
         },
-        {
-            name: 'Transactions',
-            iconClass: 'fa fa-usd',
-            active: false,
-            toolTip: 'Platform Experience',
-            route: '',
-            submenu: []
-        },
+        // {
+        //     name: 'Transactions',
+        //     iconClass: 'fa fa-usd',
+        //     active: false,
+        //     toolTip: 'Platform Experience',
+        //     route: '',
+        //     submenu: []
+        // },
         {
             name: 'Inventory',
             iconClass: 'fa fa-briefcase',
@@ -211,14 +211,14 @@ export class AdminMenuComponent implements OnInit {
                 toolTip: 'Order Form'
             }]
         },
-        {
-            name: 'PayTM',
-            iconClass: 'fa fa-money',
-            active: false,
-            toolTip: 'Platform Experience',
-            route: '',
-            submenu: []
-        },
+        // {
+        //     name: 'PayTM',
+        //     iconClass: 'fa fa-money',
+        //     active: false,
+        //     toolTip: 'Platform Experience',
+        //     route: '',
+        //     submenu: []
+        // },
     ]
 
     constructor(public _configurationService: ConfigurationService, public _menuEventService: MenuEventService, public _router: Router, public location: Location, public listener: ListenerService) {
@@ -237,6 +237,8 @@ export class AdminMenuComponent implements OnInit {
         this.updateDashboardMenu('');
         this._menuEventService.unSubscribeAll();
         this.setupEventListeners();
+        this.menuItemSelected({parent: 'KYC', child: '', route: 'kyc'});
+        this.defaultActiveMenu = 'KYC'
     }
 
     updateDashboardMenu(selectedBoard: string) {

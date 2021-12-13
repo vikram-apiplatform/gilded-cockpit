@@ -13,6 +13,7 @@ export class RemediationsComponent implements OnInit {
 
     message: any;
     accNo: any;
+    name: any;
     remediationTableData: any;
     columns = [];
 
@@ -24,6 +25,7 @@ export class RemediationsComponent implements OnInit {
 
     ngOnInit() {
         this.accNo = this.data.account_no ? this.data.account_no : this.data['Tracking_Id'];
+        this.name = this.data.full_name ? this.data.full_name : this.data['Inquiry_Name'];
         this.getRemediationsData()
     }
 

@@ -12,23 +12,23 @@
 <!--(onSelect)="onItemSelect($event)"-->
 <!--(onSelectAll)="onSelectAll($event)"-->
 <mat-card>
-    <div class="date-filter-container">
-        <div class="date-text"> From</div>
-        <div class="start-date-filter">
-            <input type="date" class="form-control date-input" id="startDate" (input)="selectStartDate()"
-                   min="{{minStartDate}}"
-                   max="{{today | date:'yyyy-MM-dd'}}" [(ngModel)]="startDate">
-        </div>
-        <div class="date-text">To</div>
-        <div class="end-date-filter">
-            <input type="date" class="form-control date-input" id="endDate" (input)="selectEndDate()"
-                   min="{{minEndDate}}"
-                   max="{{today | date:'yyyy-MM-dd'}}" [(ngModel)]="endDate">
-        </div>
+    <!--    <div class="date-filter-container">-->
+    <!--        <div class="date-text"> From</div>-->
+    <!--        <div class="start-date-filter">-->
+    <!--            <input type="date" class="form-control date-input" id="startDate" (input)="selectStartDate()"-->
+    <!--                   min="{{minStartDate}}"-->
+    <!--                   max="{{today | date:'yyyy-MM-dd'}}" [(ngModel)]="startDate">-->
+    <!--        </div>-->
+    <!--        <div class="date-text">To</div>-->
+    <!--        <div class="end-date-filter">-->
+    <!--            <input type="date" class="form-control date-input" id="endDate" (input)="selectEndDate()"-->
+    <!--                   min="{{minEndDate}}"-->
+    <!--                   max="{{today | date:'yyyy-MM-dd'}}" [(ngModel)]="endDate">-->
+    <!--        </div>-->
 
-    </div>
+    <!--    </div>-->
 
-    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 filter-container">
+    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 filter-container no-padding">
         <!--    <div class="col-lg-2 col-md-2 col-sm-1 col-xs-1">-->
         <!--        <button (click)="toggleAttributesFilter()" mat-button class="gilded-button">Fileds</button>-->
         <!--        <div *ngIf="showAttributesFilter" class="filter-query-container">-->
@@ -54,20 +54,26 @@
         <!--        </div>-->
 
         <!--    </div>-->
-        <div class="col-lg-4 col-md-4 col-sm-6 col-xs-12">
-            <ng-multiselect-dropdown
-                    [placeholder]="'Select attribute(s) to view'"
-                    [settings]="attributesDropdownSettings"
-                    [data]="attributesList"
-                    [(ngModel)]="attributesFilter"
-                    (onSelect)="onAttributeSelect($event)"
-                    (onDeSelect)="onAttributeDeSelect($event)"
-                    (onSelectAll)="onAttributeSelectAll($event)"
-                    (onDeSelectAll)="onAttributeDeSelectAll($event)"
-            >
-            </ng-multiselect-dropdown>
+        <div class="col-lg-4 col-md-6 col-sm-6 col-xs-12 no-padding">
+            <div class="filter-label" style="margin-left: 0.5rem">Date Range</div>
+            <div class="date-filter-container">
+                <div class="date-text"> From</div>
+                <div class="start-date-filter">
+                    <input type="date" class="form-control date-input" id="startDate" (input)="selectStartDate()"
+                           min="{{minStartDate}}"
+                           max="{{today | date:'yyyy-MM-dd'}}" [(ngModel)]="startDate">
+                </div>
+                <div class="date-text">To</div>
+                <div class="end-date-filter">
+                    <input type="date" class="form-control date-input" id="endDate" (input)="selectEndDate()"
+                           min="{{minEndDate}}"
+                           max="{{today | date:'yyyy-MM-dd'}}" [(ngModel)]="endDate">
+                </div>
+            </div>
+
         </div>
-        <div class="col-lg-4 col-md-4 col-sm-6 col-xs-12">
+        <div style="margin-left: -3.8rem" class="col-lg-3 col-md-6 col-sm-6 col-xs-12">
+            <div class="filter-label">Select multiple attributes to search instantly</div>
             <ng-multiselect-dropdown
                     [placeholder]="'Select attribute(s) to search instantly'"
                     [settings]="dropdownSettings"
@@ -76,14 +82,34 @@
             >
             </ng-multiselect-dropdown>
         </div>
-        <div class="col-lg-3 col-md-3 col-sm-11 col-xs-11 filter-action">
-            <input [(ngModel)]="searchText" (ngModelChange)="checkFilter()" class="form-control searchNode"
-                   name="searchText" placeholder="Enter the text to filter rows on multiple attributes"
-                   type="text">
+        <div class="col-lg-2 col-md-6 col-sm-6 col-xs-12 no-padding">
+            <div class="filter-label">Enter Search text</div>
+            <div class="filter-action">
+                <input [(ngModel)]="searchText" (ngModelChange)="checkFilter()" class="form-control searchNode"
+                       name="searchText" placeholder="Enter the text to filter rows on multiple attributes"
+                       type="text">
+            </div>
         </div>
-        <div class="col-lg-1 col-md-1 col-sm-1 col-xs-1 filter-action">
-            <i (click)="download()" class="fa fa-download download-icon"></i>
+        <div class="col-lg-3 col-md-6 col-sm-6 col-xs-12 no-padding">
+            <div class="filter-label">Select Fields to be viewed</div>
+            <div class="filter-action">
+                <ng-multiselect-dropdown
+                        [placeholder]="'Select attribute(s) to view'"
+                        [settings]="attributesDropdownSettings"
+                        [data]="attributesList"
+                        [(ngModel)]="attributesFilter"
+                        (onSelect)="onAttributeSelect($event)"
+                        (onDeSelect)="onAttributeDeSelect($event)"
+                        (onSelectAll)="onAttributeSelectAll($event)"
+                        (onDeSelectAll)="onAttributeDeSelectAll($event)"
+                >
+                </ng-multiselect-dropdown>
+                <i (click)="download()" class="fa fa-download download-icon"></i>
+            </div>
         </div>
+        <!--        <div class="col-lg-1 col-md-1 col-sm-1 col-xs-1 filter-action">-->
+        <!--            <i (click)="download()" class="fa fa-download download-icon"></i>-->
+        <!--        </div>-->
         <!--    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">-->
         <!--        <mat-label>Enter a date range</mat-label>-->
         <!--        <mat-date-range-input>-->

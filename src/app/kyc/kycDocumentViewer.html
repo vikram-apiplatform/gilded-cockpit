@@ -147,7 +147,8 @@
             (click)="toggleViewRawData()">
         View Raw Data
     </button>
-    <button *ngIf="viewRawData && dataAvailable" mat-button class="gilded-button" style="float: right; margin-top: 0.2rem"
+    <button *ngIf="viewRawData && dataAvailable" mat-button class="gilded-button"
+            style="float: right; margin-top: 0.2rem"
             (click)="toggleViewRawData()">
         Back
     </button>
@@ -177,6 +178,12 @@
                         <!--                        <h4 class="text-right">Profile Settings</h4>-->
                     </div>
                     <div class="row mt-2">
+                        <div class="col-md-6 form-field"><label class="labels">Account Number</label><input type="text"
+                                                                                                            disabled
+                                                                                                            class="form-control"
+                                                                                                            placeholder="NA"
+                                                                                                            value="{{data.userRecord.account_no}}">
+                        </div>
                         <div class="col-md-6 form-field"><label class="labels">Name</label><input type="text"
                                                                                                   disabled
                                                                                                   class="form-control"
@@ -191,6 +198,12 @@
                         <!--                        </div>-->
                     </div>
                     <div class="row mt-3">
+                        <div class="col-md-12 form-field"><label class="labels">Request Id</label><input type="text"
+                                                                                                         disabled
+                                                                                                         class="form-control"
+                                                                                                         placeholder="NA"
+                                                                                                         value="{{data.historyRecord.request_id}}">
+                        </div>
                         <div class="col-md-12 form-field"><label class="labels">Mobile Number</label><input type="text"
                                                                                                             disabled
                                                                                                             class="form-control"

@@ -21,5 +21,7 @@ export const environment = {
     partner: 'dev-gilded',
     account: 'dev-gilded',
     // kycUrl: apiHostUrl + '/v1/kyc'
-    kycUrl: gildedHostUrl + '/v1/data/dev-gilded/dev-gilded/user'
+    kycUrl: gildedHostUrl + '/v1/data/dev-gilded/dev-gilded/gildedUser',
+    // amlUrl: apiHostUrl + '/v3/aml'
+    amlUrl: gildedHostUrl + '/v3/data/dev-gilded/dev-gilded/aml'
 };

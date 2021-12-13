@@ -9,9 +9,9 @@
     <!--    </app-typeahead-input>-->
     <div class="gold-rate-container">
         <div class="gold-rate-header">
-<!--            <div class="gold-rate-icon">-->
-<!--                <i class="fa fa-usd"></i>-->
-<!--            </div>-->
+            <!--            <div class="gold-rate-icon">-->
+            <!--                <i class="fa fa-usd"></i>-->
+            <!--            </div>-->
             <div class="gold-rate-text">
                 Gold Today
             </div>
@@ -27,26 +27,26 @@
         </div>
     </div>
 
-<!--    <div class="ui secondary inverted pointing menu board">-->
-<!--        &lt;!&ndash;        <a *ngFor="let board of dashboardList; let i = index" class="item"&ndash;&gt;-->
-<!--        &lt;!&ndash;           [ngClass]="{'active':board == selectedBoard}"&ndash;&gt;-->
-<!--        &lt;!&ndash;           (click)="emitBoardSelectEvent(board)">&ndash;&gt;-->
-<!--        &lt;!&ndash;            {{board}}&ndash;&gt;-->
-<!--        &lt;!&ndash;        </a>&ndash;&gt;-->
-<!--        <a class="item"-->
-<!--           [ngClass]="'active'"-->
-<!--           (click)="emitBoardSelectEvent(selectedBoard)">-->
-<!--            {{selectedBoard}}-->
-<!--        </a>-->
-<!--    </div>-->
+    <!--    <div class="ui secondary inverted pointing menu board">-->
+    <!--        &lt;!&ndash;        <a *ngFor="let board of dashboardList; let i = index" class="item"&ndash;&gt;-->
+    <!--        &lt;!&ndash;           [ngClass]="{'active':board == selectedBoard}"&ndash;&gt;-->
+    <!--        &lt;!&ndash;           (click)="emitBoardSelectEvent(board)">&ndash;&gt;-->
+    <!--        &lt;!&ndash;            {{board}}&ndash;&gt;-->
+    <!--        &lt;!&ndash;        </a>&ndash;&gt;-->
+    <!--        <a class="item"-->
+    <!--           [ngClass]="'active'"-->
+    <!--           (click)="emitBoardSelectEvent(selectedBoard)">-->
+    <!--            {{selectedBoard}}-->
+    <!--        </a>-->
+    <!--    </div>-->
 
 
     <div class="right inverted menu">
 
-        <a *ngFor="let alert of alerts" class="item" [matTooltip]="alert.name">
+        <a *ngFor="let alert of alerts" style="opacity: 0.5;" class="item" [matTooltip]="alert.name">
             <i class="alert-icon" [ngClass]="alert.icon"></i>
             <div class="floating ui red label">
-                <span style="font-size: 0.8rem; font-weight: normal">{{alert.notifications}}</span>
+                <span style="font-size: 0.8rem; font-weight: normal; opacity: 0.5">{{alert.notifications}}</span>
             </div>
         </a>
 
@@ -65,11 +65,18 @@
         <!--        </a>-->
 
 
-        <a *ngIf="env.menu.notification" class="item"
-           (click)="toggleNotificationSideBar()">
+        <!--        <a *ngIf="env.menu.notification" class="item"-->
+        <!--           (click)="toggleNotificationSideBar()">-->
+        <!--            <i class="inverted alarm icon alert-icon"></i>-->
+        <!--            <div class="floating ui red label">-->
+        <!--                <span style="font-size: 0.8rem; font-weight: normal">4</span>-->
+        <!--            </div>-->
+        <!--        </a>-->
+
+        <a *ngIf="env.menu.notification" style="opacity: 0.5;" class="item">
             <i class="inverted alarm icon alert-icon"></i>
             <div class="floating ui red label">
-                <span style="font-size: 0.8rem; font-weight: normal">4</span>
+                <span style="font-size: 0.8rem; font-weight: normal; opacity: 0.5">4</span>
             </div>
         </a>
 
