@@ -232,7 +232,24 @@
                                                 <div class="row100 body cell-data"
                                                      [ngClass]="i===0?'table-data-first-child':''"
                                                      *ngIf="key!==remediateKey && itemList.includes(key)">
-                                                    <div *ngIf="record[key]!==null">{{getActualData(record[key], key, title, recordId)}}</div>
+                                                    <div *ngIf="record[key]!==null">
+                                                        <div *ngIf="key!=='RDC_Result_Codes'">
+                                                            {{getActualData(record[key], key, title, recordId)}}
+                                                        </div>
+                                                        <div *ngIf="key==='RDC_Result_Codes'">
+                                                            <mat-chip-list aria-orientation="horizontal">
+                                                                <mat-chip *ngFor="let code of getRDCCodes(record[key])"
+                                                                          [matTooltip]="getRDCCodeValue(code)"
+                                                                          matTooltipClass="RDCCodeTooltip"
+                                                                >{{code}}
+                                                                </mat-chip>
+                                                            </mat-chip-list>
+                                                        </div>
+                                                        <ng-template #tooltipContent>
+                                                            <p>Hi</p>
+                                                            <p>Hi</p>
+                                                        </ng-template>
+                                                    </div>
                                                     <div *ngIf="record[key]===null">null</div>
                                                     <div>
                                                         <i class="show-details-icon"

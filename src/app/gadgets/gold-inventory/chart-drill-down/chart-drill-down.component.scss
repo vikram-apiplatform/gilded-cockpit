@@ -812,6 +812,29 @@ th, td {
   display: none;
 }
 
+:host ::ng-deep .mat-chip-list-wrapper {
+  //flex-wrap: nowrap !important;
+  display: block;
+}
+
+:host ::ng-deep .mat-chip.mat-standard-chip {
+  font-size: 0.7rem !important;
+  min-height: 1.8rem !important;
+}
+
+:host ::ng-deep .mat-chip-list-wrapper .mat-standard-chip {
+  padding: 5px !important;
+}
+
+//:host ::ng-deep .mat-tooltip {
+//  white-space: pre-line !important;
+//}
+
+::ng-deep .RDCCodeTooltip {
+  white-space: pre-line;
+  max-width: 450px !important;
+}
+
 .pagination {
   display: flex;
   flex-direction: row;

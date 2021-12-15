@@ -221,7 +221,7 @@ export class AdminMenuComponent implements OnInit {
         // },
     ]
 
-    constructor(public _configurationService: ConfigurationService, public _menuEventService: MenuEventService, public _router: Router, public location: Location, public listener: ListenerService) {
+    constructor(public _configurationService: ConfigurationService, public _menuEventService: MenuEventService, public _router: Router, public _route: ActivatedRoute, public location: Location, public listener: ListenerService) {
     }
 
     ngOnInit() {
@@ -229,12 +229,21 @@ export class AdminMenuComponent implements OnInit {
         // if (this.location['_platformStrategy']['_platformLocation'].location.pathname) {
         //     this._router.navigateByUrl(this.location['_platformStrategy']['_platformLocation'].location.pathname);
         // }
+        this._route.queryParams.subscribe(params => {
+            console.log('Hi');
+            if (params && params.board) {
+                console.log(params.board);
+                this.selectedBoard = params.board;
+                this._menuEventService.raiseMenuEvent({name: 'boardSelectEvent', data: this.selectedBoard});
+            }
+        })
+        console.log('Hi');
         this.listener.drillDownListener.subscribe(data => {
             this.showDrillDown = data.showDrillDown;
             this.drillDownData = data.drillDownData;
             this.drillDownTitle = data.drillDownTitle;
         })
-        this.updateDashboardMenu('');
+        this.updateDashboardMenu(this.selectedBoard);
         this._menuEventService.unSubscribeAll();
         this.setupEventListeners();
         this.menuItemSelected({parent: 'KYC', child: '', route: 'kyc'});
@@ -279,12 +288,12 @@ export class AdminMenuComponent implements OnInit {
                     //this.boardSelect(selectedBoard);
                     this.selectedBoard = selectedBoard;
                 }
-                if (this.activeRoute) {
-                    if (this.activeRoute !== '/cockpit') {
-                        this.activeMenu = '';
-                        this._router.navigateByUrl(this.activeRoute);
-                    }
-                }
+                // if (this.activeRoute) {
+                //     if (this.activeRoute !== '/cockpit') {
+                //         this.activeMenu = '';
+                //         this._router.navigateByUrl(this.activeRoute);
+                //     }
+                // }
             }
         });
     }
@@ -309,15 +318,18 @@ export class AdminMenuComponent implements OnInit {
 
     menuItemSelected(menuItem) {
         this.activeMenu = menuItem.parent;
+
         if (menuItem.parent === 'Dashboard') {
             //this._router.navigateByUrl('cockpit');
             this.selectedBoard = menuItem.child;
             this._menuEventService.raiseMenuEvent({name: 'boardSelectEvent', data: menuItem.child});
+            this._router.navigateByUrl(menuItem.route + '?board=' + menuItem.child);
             //if (this.activeMenu !== 'Dashboard') {
             //}
 
+        } else {
+            this._router.navigateByUrl(menuItem.route);
         }
-        this._router.navigateByUrl(menuItem.route);
         // switch (menuItem.parent) {
         //     case 'Exceptions Management':
         //         this._router.navigateByUrl('kyc');

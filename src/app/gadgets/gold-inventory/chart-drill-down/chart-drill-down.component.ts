@@ -6,6 +6,7 @@ import {APIService} from '../../../api.service';
 import {animate, state, style, transition, trigger} from '@angular/animations';
 import {COMMA, ENTER} from '@angular/cdk/keycodes';
 import {MatChipInputEvent} from '@angular/material/chips';
+import {RDCResultCodes} from '../../../../assets/data/rdc-result-codes';
 
 declare let $;
 
@@ -610,6 +611,33 @@ export class ChartDrillDownComponent implements OnInit, OnChanges {
         this.getData(this.apiUrl + params);
     }
 
+    getRDCCodes(codes) {
+        return codes.split('; ');
+    }
+
+    getRDCCodeValue(code) {
+        const codes = code.split(':');
+        let value = '';
+        for (const rdcCode of codes) {
+            if (RDCResultCodes[rdcCode]) {
+                value += rdcCode + ': (' + RDCResultCodes[rdcCode].value + ')\n\n';
+                // value += RDCResultCodes[rdcCode].value + '\n';
+                value += RDCResultCodes[rdcCode].description + '\n\n\n';
+            }
+        }
+
+        // return `${codes[0]}:\n
+        // ${RDCResultCodes[codes[0]] ? RDCResultCodes[codes[0]].value : ''}
+        // ${RDCResultCodes[codes[0]] ? RDCResultCodes[codes[0]].description : ''}
+        //
+        //
+        // ${codes[1]}:
+        // ${RDCResultCodes[codes[1]] ? RDCResultCodes[codes[1]].value : ''}
+        // ${RDCResultCodes[codes[1]] ? RDCResultCodes[codes[1]].description : ''}
+        // `
+
+        return value;
+    }
 
     lastPage() {
         this.currentOffset = (this.page - 1) * this.itemsPerPage;
