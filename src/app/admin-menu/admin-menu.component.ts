@@ -184,6 +184,20 @@ export class AdminMenuComponent implements OnInit {
         //     submenu: []
         // },
         {
+            name: 'Monitors',
+            iconClass: 'fa fa-desktop',
+            active: false,
+            toolTip: 'Monitors',
+            route: '',
+            submenu: [{
+                name: 'Service Availability',
+                key: 'serviceavailability',
+                icon: 'fa fa-heartbeat',
+                route: 'automation',
+                toolTip: 'Service Availability'
+            }]
+        },
+        {
             name: 'Inventory',
             iconClass: 'fa fa-briefcase',
             active: false,
@@ -230,14 +244,12 @@ export class AdminMenuComponent implements OnInit {
         //     this._router.navigateByUrl(this.location['_platformStrategy']['_platformLocation'].location.pathname);
         // }
         this._route.queryParams.subscribe(params => {
-            console.log('Hi');
             if (params && params.board) {
                 console.log(params.board);
                 this.selectedBoard = params.board;
                 this._menuEventService.raiseMenuEvent({name: 'boardSelectEvent', data: this.selectedBoard});
             }
         })
-        console.log('Hi');
         this.listener.drillDownListener.subscribe(data => {
             this.showDrillDown = data.showDrillDown;
             this.drillDownData = data.drillDownData;

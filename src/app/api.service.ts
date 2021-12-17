@@ -96,4 +96,24 @@ export class APIService {
     getAMLDetails(params = '') {
         return this._http.get(environment.apiHost + '/v3/aml' + params, this.httpOptions).pipe(map(res => res));
     }
+
+    getAutomationResults(query) {
+
+        let apiURL = 'https://dev-gilded.gateway.apiplatform.io/v1/automationBuilds';
+        if (query) {
+            apiURL = apiURL + '?' + query;
+        }
+        return this._http.get(apiURL, this.httpOptions)
+            .pipe(map(res => res));
+    }
+
+    getAutomationBuildResults(query) {
+
+        let apiURL = 'https://dev-gilded.gateway.apiplatform.io/v1/automationTests';
+        if (query) {
+            apiURL = apiURL + '?' + query;
+        }
+        return this._http.get(apiURL, this.httpOptions)
+            .pipe(map(res => res));
+    }
 }

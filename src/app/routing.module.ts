@@ -11,6 +11,7 @@ import {DynamicFormBuilderComponent} from './dynamic-form-builder/dynamic-form-b
 import {OrderFormComponent} from './order-form/order-form.component';
 import {PlaceOrderComponent} from './order-cmp/place-order/place-order.component';
 import {OrderManagementComponent} from './order-cmp/order-management/order-management.component';
+import {AutomationReportComponent} from './automation-report/automation-report.component';
 
 export const routes: Routes = [
     {
@@ -51,6 +52,11 @@ export const routes: Routes = [
     {
         path: 'aml',
         component: AmlComponent,
+        runGuardsAndResolvers: 'always'
+    },
+    {
+        path: 'automation',
+        component: AutomationReportComponent,
         runGuardsAndResolvers: 'always'
     },
     {

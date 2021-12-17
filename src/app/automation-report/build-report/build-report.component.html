@@ -1,0 +1,302 @@
+
+<div>
+    <mat-sidenav-container class="sidenav-full" style="height: 81vh;">
+        <mat-sidenav #sidenav opened mode="side" position="start" role="navigation" class="sidenav-wv" style="width: 240px">
+
+            <div fxLayout="column" class="sidenav-normal">
+                <mat-toolbar class="nav-bar-h" (click)="currentActiveIndex=-1"> Tests
+<!--                    <li class="dropdown filter-icon"><a class="dropdown-toggle" data-toggle="dropdown" aria-expanded="false"><i class="fa fa-filter"></i></a>-->
+<!--                        <ul id="status-toggle" class="dropdown-menu dropdown-md p-v-0" x-placement="left" style="position: absolute; will-change: transform; left: -140px;;">-->
+<!--                            <a class="dropdown-item {{getSelectedFilter('pass')}}" (click)="testCaseFilter = ['success']; setTestCaseFilter()"><span>Pass</span><span class="status success"></span></a>-->
+<!--                            <a class="dropdown-item {{getSelectedFilter('fail')}}" (click)="testCaseFilter = ['failed']; setTestCaseFilter()"><span>Fail</span><span class="status danger"></span></a>-->
+<!--                            <a class="dropdown-item {{getSelectedFilter('skip')}}" (click)="testCaseFilter = ['skipped']; setTestCaseFilter()"><span>Skip</span><span class="status warning "></span></a>-->
+<!--                            <div class="dropdown-divider"></div>-->
+<!--                            <a (click)="testCaseFilter = ['success', 'failed', 'skipped']; setTestCaseFilter()" class="dropdown-item"><span>Clear</span><span class="pull-right"><i class="fa fa-close"></i></span></a>-->
+<!--                        </ul>-->
+<!--                    </li>-->
+                </mat-toolbar>
+                <mat-nav-list>
+                    <mat-list-item *ngFor="let testCase of testCases; let i = index" class="list-item" [ngClass]="i===currentActiveIndex?'lt-i-active':''" (click)="setCurrentTestCase(i)">
+                        <a aria-controls="profile"
+                           role="tab" data-toggle="tab" style="width: 100%"><div class="nav-li-h">{{testCase['name']}}</div>
+                            <div class="nav-li-sb">{{getDate(testCase['startedAt'])}}<span class="badge test-case {{testCase['status']}}">{{getStatusName(testCase['status'])}}</span></div></a>
+                    </mat-list-item>
+                </mat-nav-list>
+            </div>
+        </mat-sidenav>
+        <mat-sidenav-content>
+            <div style="padding-left: 5px">
+                <ng-container *ngIf="currentActiveIndex === -1">
+                    <mat-toolbar role="toolbar" class="main-header mat-elevation-z1 sticky-header">
+                        <mat-toolbar-row>
+                            Gilded Web App automation
+                        </mat-toolbar-row>
+                    </mat-toolbar>
+
+                    <div class="side-container">
+                        <div class="col-lg-3 col-md-3"></div>
+                        <mat-card class="col-lg-6 col-md-6">
+                            <span style="font-size: 14px"><b>Tests</b></span>
+                            <div>
+                                <canvas baseChart
+                                        [data]="chartData"
+                                        [labels]="chartLabels"
+                                        [chartType]="chartType"
+                                        [colors]="colors"
+                                        [options]="chartOptions"
+                                        (chartHover)="chartHovered($event)"
+                                        (chartClick)="chartClicked($event)"></canvas>
+                            </div>
+                        </mat-card>
+                        <div class="col-lg-3 col-md-3"></div>
+                    </div>
+                </ng-container>
+
+                <ng-container *ngIf="currentActiveIndex > -1">
+                    <div class="info">
+                        <h5 class="test-info-header">{{testCases[currentActiveIndex]['name']}}</h5>
+                        <span class="badge start-date" matTooltip="Start Time">{{getDate(testCases[currentActiveIndex]['startedAt'])}}</span>
+                        <span class="badge end-date" matTooltip="End Time">{{getDate(testCases[currentActiveIndex]['endedAt'])}}</span>
+                        <span class="badge duration" matTooltip="Duration">{{testCases[currentActiveIndex]['endedAt'] - testCases[currentActiveIndex]['startedAt']}} ms</span>
+                    </div>
+
+                    <div class="side-container">
+
+                        <div *ngIf="currentTestCaseDataLoading" class="col-md-12 col-lg-12 col-sm-12 col-xs-12 text-center">
+                            <div style="height: 60vh;
+                          display: flex;
+                          align-items: center;
+                          margin-left: 48%;">
+                                <div>
+                                    <img src="assets/images/loading.gif" height="50"/>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div *ngIf="!currentTestCaseDataLoading" class="col-md-12 col-lg-12 col-sm-12 col-xs-12 text-center p-0 logs-container">
+                            <table class="table-striped table">
+                                <tr>
+                                    <th style="width: 10%;text-align: center;">Status</th>
+                                    <th style="width: 15%;text-align: center;">Timestamp</th>
+                                    <th>Message</th>
+                                </tr>
+                                <ng-container *ngFor="let msg of currentTestCaseData['logs'] let i=index">
+                                    <tr>
+                                        <td><span class="badge {{msg['type']}}">{{getStatusName(msg['type'])}}</span></td>
+                                        <td>{{getTime(msg['timeStamp'])}}</td>
+                                        <td style="text-align: left">{{msg['message']}}</td>
+                                    </tr>
+                                </ng-container>
+
+                                <ng-container *ngIf="currentTestCaseData['status'] === 'failed' || currentTestCaseData['status'] === 'skipped'">
+                                    <tr>
+                                        <td><span class="badge {{currentTestCaseData['status']}}">{{getStatusName(currentTestCaseData['status'])}}</span></td>
+                                        <td>{{getTime(currentTestCaseData['endedAt'])}}</td>
+                                        <td style="text-align: left">{{currentTestCaseData['errorMessage']}}<br>
+                                            <span class="badge view-img" (click)="openBase64Img(currentTestCaseData['screenshot'])">View Screenshot</span></td>
+                                    </tr>
+                                </ng-container>
+
+                                <ng-container *ngIf="currentTestCaseData['status'] === 'success'">
+                                    <tr>
+                                        <td><span class="badge {{currentTestCaseData['status']}}">{{getStatusName(currentTestCaseData['status'])}}</span></td>
+                                        <td>{{getTime(currentTestCaseData['endedAt'])}}</td>
+                                        <td style="text-align: left"></td>
+                                    </tr>
+                                </ng-container>
+                            </table>
+                        </div>
+                    </div>
+                </ng-container>
+
+            </div>
+        </mat-sidenav-content>
+    </mat-sidenav-container>
+</div>
+
+
+
+<!--<div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">-->
+<!--    <h1 *ngIf="isDialogBox" style="font-weight: bolder;text-align: center;" mat-dialog-title><span style="color: #FF672D">{{reportTitle}}</span> REPORT<span style="float: right"><i-->
+<!--            class="fa fa-close" style="font-size:16px !important; color: red" [mat-dialog-close]="'cancel'"></i></span></h1>-->
+<!--    <h1 *ngIf="!isDialogBox" style="font-weight: bolder;text-align: center;" mat-dialog-title> Test Results for <span style="color: #FF672D">{{reportTitle}}</span></h1>-->
+<!--    <div *ngIf="totalTests === 0" class="default-body border_top">Testcases not found.</div>-->
+<!--    <div *ngIf="totalTests > 0" class="row">-->
+<!--        &lt;!&ndash;    <div class = "col-md-1 col-lg-1 col-sm-12 col-xs-12 border_right border_top">&ndash;&gt;-->
+<!--        &lt;!&ndash;    <nav class="myNavBar">&ndash;&gt;-->
+<!--        &lt;!&ndash;        <ul class="navbar-primary-menu" aria-multiselectable="true">&ndash;&gt;-->
+<!--        &lt;!&ndash;            <li *ngFor="let option of sideNavButtons">&ndash;&gt;-->
+<!--        &lt;!&ndash;                <a href="#cat{{option.name}}" (click) = sideNavButtonClick(option) data-toggle="collapse" aria-expanded="true"&ndash;&gt;-->
+<!--        &lt;!&ndash;                   aria-controls="cat1" class="collapsed"><i class="fa {{option.icon}}"></i></a>&ndash;&gt;-->
+<!--        &lt;!&ndash;            </li>&ndash;&gt;-->
+<!--        &lt;!&ndash;        </ul>&ndash;&gt;-->
+<!--        &lt;!&ndash;    </nav>&ndash;&gt;-->
+<!--        &lt;!&ndash;    </div>&ndash;&gt;-->
+<!--        <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12 result-content" >-->
+<!--            &lt;!&ndash;         *ngIf="showDashboardData">&ndash;&gt;-->
+
+<!--            <mat-expansion-panel  [expanded]="true" class="col-lg-12 col-md-12" style="margin-left: auto;margin-right: auto;">-->
+<!--                <mat-expansion-panel-header>-->
+<!--                    Test Metrics-->
+<!--                </mat-expansion-panel-header>-->
+<!--                <div class="col-lg-12 col-md-12">-->
+<!--                    <div class="col-lg-4 col-md-4 chart-row">-->
+<!--                        <mat-card class="col-lg-12 col-md-12">-->
+<!--                            <span>Tests</span>-->
+<!--                            &lt;!&ndash;<div id="barChartContainer" style="height: 370px; max-width: 920px; margin-left:auto;margin-right:auto;"></div>&ndash;&gt;-->
+<!--                            <div>-->
+<!--                                <canvas baseChart-->
+<!--                                        [data]="chartData"-->
+<!--                                        [labels]="chartLabels"-->
+<!--                                        [chartType]="chartType"-->
+<!--                                        [colors]="colors"-->
+<!--                                        [options]="options"-->
+<!--                                        (chartHover)="chartHovered($event)"-->
+<!--                                        (chartClick)="chartClicked($event)"></canvas>-->
+<!--                            </div>-->
+
+<!--                        </mat-card>-->
+<!--                    </div>-->
+<!--                    <div class="col-lg-4 col-md-4 chart-row">-->
+<!--                        <mat-card class="col-lg-12 col-md-12">-->
+<!--                            <span>Assertions</span>-->
+<!--                            &lt;!&ndash;<div id="barChartContainer" style="height: 370px; max-width: 920px; margin-left:auto;margin-right:auto;"></div>&ndash;&gt;-->
+<!--                            <div>-->
+<!--                                <canvas baseChart-->
+<!--                                        [data]="assertionChartData"-->
+<!--                                        [labels]="chartLabels"-->
+<!--                                        [chartType]="chartType"-->
+<!--                                        [colors]="colors"-->
+<!--                                        [options]="assertionOptions"-->
+<!--                                        (chartHover)="chartHovered($event)"-->
+<!--                                        (chartClick)="chartClicked($event)"></canvas>-->
+<!--                            </div>-->
+
+<!--                        </mat-card>-->
+<!--                    </div>-->
+<!--                    <div class="col-lg-4 col-md-4">-->
+<!--                        <div class="col-lg-12 col-md-12 metrics-row">-->
+<!--                            <div class="col-lg-5 col-md-6 metrics-box mat-elevation-z4">-->
+<!--                                <table class="tiles-metrics">-->
+<!--                                    <thead>-->
+<!--                                    <tr>-->
+<!--                                        <th class="metrics-th" rowspan="2"><span-->
+<!--                                                class="metric-highlight">{{totalTests}}</span>-->
+<!--                                            <br> Total Tests-->
+<!--                                        </th>-->
+<!--                                    </tr>-->
+<!--                                    </thead>-->
+<!--                                </table>-->
+<!--                            </div>-->
+<!--                            <div class="col-lg-5 col-md-6 metrics-box mat-elevation-z4">-->
+<!--                                <table class="tiles-metrics">-->
+<!--                                    <thead>-->
+<!--                                    <tr>-->
+<!--                                        <th class="metrics-th" rowspan="2"><span-->
+<!--                                                class="metric-highlight">{{totalPassedTests}}</span>-->
+<!--                                            <br> Total Passed-->
+<!--                                        </th>-->
+<!--                                    </tr>-->
+<!--                                    </thead>-->
+<!--                                </table>-->
+<!--                            </div>-->
+<!--                        </div>-->
+
+<!--                        <div class="col-lg-12 col-md-12 metrics-row">-->
+<!--                            <div class="col-lg-5 col-md-6 metrics-box mat-elevation-z4">-->
+<!--                                <table class="tiles-metrics">-->
+<!--                                    <thead>-->
+<!--                                    <tr>-->
+<!--                                        <th class="metrics-th" rowspan="2"><span-->
+<!--                                                class="metric-highlight">{{totalFailedTests}}</span>-->
+<!--                                            <br> Total Failed-->
+<!--                                        </th>-->
+<!--                                    </tr>-->
+<!--                                    </thead>-->
+<!--                                </table>-->
+<!--                            </div>-->
+<!--                            <div class="col-lg-5 col-md-6 metrics-box mat-elevation-z4">-->
+<!--                                <table class="tiles-metrics">-->
+<!--                                    <thead>-->
+<!--                                    <tr>-->
+<!--                                        <th class="metrics-th" rowspan="2"><span-->
+<!--                                                class="metric-highlight">{{totalSkippedTests}}</span>-->
+<!--                                            <br>Total Skipped-->
+<!--                                        </th>-->
+<!--                                    </tr>-->
+<!--                                    </thead>-->
+<!--                                </table>-->
+<!--                            </div>-->
+<!--                        </div>-->
+<!--                    </div>-->
+<!--                </div>-->
+
+
+
+<!--            </mat-expansion-panel>-->
+
+<!--            <div class="col-lg-12 col-md-12 test-case-container">-->
+<!--                <div class="col-lg-3 col-md-3 testcase-nav">-->
+<!--                    <div class="title-header">-->
+<!--                    <span>Testcases-->
+<!--                    <li class="dropdown filter-icon"><a class="dropdown-toggle" data-toggle="dropdown" aria-expanded="false"><i class="fa fa-filter"></i></a>-->
+
+<!--                    <ul id="status-toggle" class="dropdown-menu dropdown-md p-v-0" x-placement="bottom-start" style="position: absolute; will-change: transform; left: 0px;">-->
+<!--                        <a class="dropdown-item {{getSelectedFilter('pass')}}" (click)="setTestCaseFilter(['success'])"><span>Pass</span><span class="status success"></span></a>-->
+<!--                        <a class="dropdown-item {{getSelectedFilter('fail')}}" (click)="setTestCaseFilter(['failure'])"><span>Fail</span><span class="status danger"></span></a>-->
+<!--                        <a class="dropdown-item {{getSelectedFilter('skip')}}" (click)="setTestCaseFilter(['skipped'])"><span>Skip</span><span class="status warning "></span></a>-->
+<!--                        <div class="dropdown-divider"></div>-->
+<!--                        <a (click)="setTestCaseFilter(['success', 'failure', 'skipped'])" class="dropdown-item"><span>Clear</span><span class="pull-right"><i class="fa fa-close"></i></span></a>-->
+<!--                    </ul>-->
+<!--                    </li></span>-->
+<!--                    </div>-->
+<!--                    <div *ngFor="let testCase of testCases" [ngClass]="currentTestCase===testCase['class']?'selected':'notSelected'"-->
+<!--                         (click)="setCurrentTestCase(testCase)">-->
+<!--                        <b>{{testCase['name']}}</b>-->
+<!--                        <div style="font-size: 10px; margin-top: 7px">{{getTime(currentTestcaseResponse['startTime'])}}<span class="badge test-case {{testCase['status']}}">{{getStatusName(testCase['status'])}}</span></div>-->
+<!--                    </div>-->
+<!--                </div>-->
+<!--                <div *ngIf="noTestFlag" class="default-body">Testcases not found for current filter.</div>-->
+<!--                <div *ngIf="!noTestFlag" class="col-lg-9 col-md-9">-->
+<!--                    <div class="info">-->
+<!--                        <h5 class="test-info-header">{{currentTestcaseResponse['name']}}</h5>-->
+<!--                        <span class="badge start-date" matTooltip="Start Time">{{getDate(currentTestcaseResponse['startTime'])}}</span>-->
+<!--                        <span class="badge end-date" matTooltip="End Time">{{getDate(currentTestcaseResponse['endTime'])}}</span>-->
+<!--                        <span class="badge duration" matTooltip="Duration">{{currentTestcaseResponse['apiResponse']['timeInMillis']}} ms</span>-->
+<!--                    </div>-->
+<!--                    <table class="table-striped table">-->
+<!--                        <tr>-->
+<!--                            <th style="width: 10%;">Status</th>-->
+<!--                            <th>Field</th>-->
+<!--                            <th>Expected</th>-->
+<!--                            <th>Actual Value</th>-->
+<!--                        </tr>-->
+<!--                        <ng-container *ngFor="let assertion of currentTestcaseResponse['rules']['rules'] let i=index">-->
+<!--                            <tr>-->
+<!--                                <td><span class="badge {{assertion['result']['status']}}">{{getStatusName(assertion['result']['status'])}}</span></td>-->
+<!--                                <td>{{assertion['leftOperand']['field']}}</td>-->
+<!--                                <td>(Actual Value) {{assertion['operator']}} ({{assertion['result']['leftOperandValue']}})</td>-->
+<!--                                <td>{{assertion['result']['rightOperandValue']}}</td>-->
+<!--                            </tr>-->
+<!--                        </ng-container>-->
+<!--                    </table>-->
+<!--                </div>-->
+<!--            </div>-->
+
+<!--        </div>-->
+
+<!--        <div class="col-md-11 col-lg-11 col-sm-12 col-xs-12 border_top" *ngIf="showFailureData">-->
+
+<!--            <div class="col-lg-3 col-md-3 testcase-nav">-->
+<!--                <div class="title-header">-->
+<!--                    <span>Errors</span>-->
+<!--                </div>-->
+<!--                <div *ngFor="let exception of exceptions"-->
+<!--                >-->
+<!--                    <b>{{exception}}</b>-->
+<!--                </div>-->
+<!--            </div>-->
+<!--        </div>-->
+
+<!--    </div>-->
+<!--</div>-->

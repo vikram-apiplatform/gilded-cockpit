@@ -8,7 +8,7 @@ import {HttpClientJsonpModule, HttpClientModule} from '@angular/common/http';
 import {DetailModule} from './detail/detail.module';
 import {MenuModule} from './menu/menu.module';
 import {BoardModule} from './board/board.module';
-import {MatButtonModule, MatCardModule, MatIconModule, MatProgressBarModule} from '@angular/material';
+import {MatButtonModule, MatCardModule, MatIconModule, MatProgressBarModule, MatToolbarModule} from '@angular/material';
 import {MatSidenavModule} from '@angular/material/sidenav';
 import {LeftpanelComponent} from './leftpanel/leftpanel.component';
 import {AdminMenuComponent} from './admin-menu/admin-menu.component';
@@ -44,6 +44,11 @@ import {MatExpansionModule} from '@angular/material/expansion';
 import {KycDocumentViewerComponent} from './kyc/kyc.component';
 import { AmlComponent } from './aml/aml.component';
 import { RemediationsComponent } from './remediations/remediations.component';
+import {ImageViewerComponent} from './image-viewer/image-viewer.component';
+import {AutomationReportComponent} from './automation-report/automation-report.component';
+import {BuildReportComponent} from './automation-report/build-report/build-report.component';
+import {MatListModule} from '@angular/material/list';
+import {ChartsModule} from 'ng2-charts';
 
 @NgModule({
     imports: [
@@ -77,7 +82,10 @@ import { RemediationsComponent } from './remediations/remediations.component';
         ErrorHandlerModule,
         GadgetModule,
         MatProgressBarModule,
-        MatExpansionModule
+        MatExpansionModule,
+        MatToolbarModule,
+        MatListModule,
+        ChartsModule
     ],
     declarations: [
         AppComponent,
@@ -99,10 +107,13 @@ import { RemediationsComponent } from './remediations/remediations.component';
         FilterPipe,
         KycDocumentViewerComponent,
         AmlComponent,
-        RemediationsComponent
+        RemediationsComponent,
+        ImageViewerComponent,
+        AutomationReportComponent,
+        BuildReportComponent,
     ],
     providers: [APIService, LeftpanelComponent, KycDocumentViewerComponent],
-    entryComponents: [AttributeDescriptionComponent, KycDocumentViewerComponent, RemediationsComponent],
+    entryComponents: [AttributeDescriptionComponent, KycDocumentViewerComponent, RemediationsComponent, ImageViewerComponent],
     exports: [
         ChartDrilldownComponent
     ],
