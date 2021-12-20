@@ -156,7 +156,7 @@ export class ChartDrillDownComponent implements OnInit, OnChanges {
                     this.collectionSize = 0;
                 }
                 this.isDataLoading = false;
-                //this.populateQueryFiltersData();
+                this.populateQueryFiltersData();
                 resolve(true);
             }, error => {
                 this.isDataLoading = false;
@@ -268,20 +268,20 @@ export class ChartDrillDownComponent implements OnInit, OnChanges {
     populateQueryFiltersData() {
         for (let i = 0; i < this.filteredData.length; i++) {
             this.showExpansionPanel[i] = 'show-btn';
-            for (const key of Object.keys(this.filteredData[i])) {
-                if (!this.queryFilterData[key]) {
-                    this.queryFilterData[key] = {
-                        dropdownList: [],
-                        filterData: []
-                    }
-                }
-                if (!this.queryFilterData[key]['dropdownList'].filter(queryFilter => queryFilter.item_text === this.filteredData[i][key]).length) {
-                    this.queryFilterData[key]['dropdownList'].push({item_id: i, item_text: this.filteredData[i][key]});
-                }
-                // if (!this.queryFilterData[key]['dropdownList'].includes({item_id: i, item_text: this.filteredData[i][key]})) {
-                //     this.queryFilterData[key]['dropdownList'].push({item_id: i, item_text: this.filteredData[i][key]});
-                // }
-            }
+            // for (const key of Object.keys(this.filteredData[i])) {
+            //     if (!this.queryFilterData[key]) {
+            //         this.queryFilterData[key] = {
+            //             dropdownList: [],
+            //             filterData: []
+            //         }
+            //     }
+            //     if (!this.queryFilterData[key]['dropdownList'].filter(queryFilter => queryFilter.item_text === this.filteredData[i][key]).length) {
+            //         this.queryFilterData[key]['dropdownList'].push({item_id: i, item_text: this.filteredData[i][key]});
+            //     }
+            //     // if (!this.queryFilterData[key]['dropdownList'].includes({item_id: i, item_text: this.filteredData[i][key]})) {
+            //     //     this.queryFilterData[key]['dropdownList'].push({item_id: i, item_text: this.filteredData[i][key]});
+            //     // }
+            // }
         }
     }
 
@@ -340,12 +340,12 @@ export class ChartDrillDownComponent implements OnInit, OnChanges {
                                     } else if (attributeValues[i][keys[0]] === 0) {
                                         this.queryFilterData[key].dropdownList.push({item_id: i, item_text: 'Fail'});
                                     } else {
-                                        if (attributeValues[i][keys[0]] !== null) {
-                                            this.queryFilterData[key].dropdownList.push({
-                                                item_id: i,
-                                                item_text: attributeValues[i][keys[0]]
-                                            });
-                                        }
+                                        //if (attributeValues[i][keys[0]] !== null) {
+                                        this.queryFilterData[key].dropdownList.push({
+                                            item_id: i,
+                                            item_text: attributeValues[i][keys[0]]
+                                        });
+                                        // }
                                     }
                                 } else {
                                     if (attributeValues[i][keys[0]] !== null) {
@@ -443,7 +443,7 @@ export class ChartDrillDownComponent implements OnInit, OnChanges {
         console.log(this.startDate);
         console.log(this.endDate);
         if (this.startDate && this.endDate) {
-            this.applyDateFilters();
+            this.applyDateFilters(this.queryParams);
         } else {
             this.getData(this.apiUrl + queryParams);
         }
@@ -534,7 +534,7 @@ export class ChartDrillDownComponent implements OnInit, OnChanges {
             this.endDate = '';
         }
         if ((this.startDate !== '' && this.startDate !== undefined) && (this.endDate !== '' && this.endDate !== undefined)) {
-            this.applyDateFilters();
+            this.applyDateFilters(this.queryParams);
         }
         if (this.startDate === '' || this.startDate === undefined) {
             this.filteredData = this.data;
@@ -545,7 +545,7 @@ export class ChartDrillDownComponent implements OnInit, OnChanges {
 
     selectEndDate() {
         if ((this.startDate !== '' && this.startDate !== undefined) && (this.endDate !== '' && this.endDate !== undefined)) {
-            this.applyDateFilters();
+            this.applyDateFilters(this.queryParams);
         }
         if (this.endDate === '' || this.endDate === undefined) {
             this.filteredData = this.data;
@@ -553,7 +553,7 @@ export class ChartDrillDownComponent implements OnInit, OnChanges {
         }
     }
 
-    applyDateFilters() {
+    applyDateFilters(queryParams) {
         // let dateFilteredData = [];
         // for (let i = 0; i < this.data.length; i++) {
         //     let date_created = this.data[i]['date_created'];
@@ -569,16 +569,16 @@ export class ChartDrillDownComponent implements OnInit, OnChanges {
         let toDate = this.endDate + 'T23:59:59';
         let dateFilteredData: any = [];
         let params = '';
-        if (this.queryParams !== '') {
-            //params = this.queryParams;
+        if (queryParams !== '') {
+            params = queryParams;
             params += '&date_created.gt=' + fromDate + '&date_created.lt=' + toDate;
-            this.queryParams += params;
+            //this.queryParams += params;
         } else {
             params += '?date_created.gt=' + fromDate + '&date_created.lt=' + toDate
-            this.queryParams = params;
+            //this.queryParams = params;
         }
         this.currentOffset = 0;
-        this.getData(this.apiUrl + this.queryParams);
+        this.getData(this.apiUrl + params);
         // this.apiService.getData(this.apiUrl + '?date_created.gt=' + fromDate + '&date_created.lt=' + toDate).subscribe(response => {
         //     dateFilteredData = response;
         //     this.filteredData = [];
@@ -608,7 +608,12 @@ export class ChartDrillDownComponent implements OnInit, OnChanges {
         this.lastSortedKey = key;
         //this.currentOffset = 0;
         //this.page = 1;
-        this.getData(this.apiUrl + params);
+        if (this.startDate && this.endDate) {
+            this.applyDateFilters(params);
+        } else {
+            this.getData(this.apiUrl + params);
+        }
+        //this.getData(this.apiUrl + params);
     }
 
     getRDCCodes(codes) {
@@ -644,14 +649,24 @@ export class ChartDrillDownComponent implements OnInit, OnChanges {
         this.limit = this.itemsPerPage;
         if (this.queryParams === '') {
             if (this.lastSortedKey === '') {
-                this.getData();
+                if (this.startDate && this.endDate) {
+                    this.applyDateFilters(this.queryParams);
+                } else {
+                    this.getData();
+                }
+                //this.getData();
             } else {
                 this.lastSortedOrder === 'asc' ? this.lastSortedOrder = 'desc' : this.lastSortedOrder = 'asc'
                 this.sortByKey(this.lastSortedKey);
             }
         } else {
             if (this.lastSortedKey === '') {
-                this.getData(this.apiUrl + this.queryParams);
+                if (this.startDate && this.endDate) {
+                    this.applyDateFilters(this.queryParams);
+                } else {
+                    this.getData(this.apiUrl + this.queryParams);
+                }
+                // this.getData(this.apiUrl + this.queryParams);
             } else {
                 this.lastSortedOrder === 'asc' ? this.lastSortedOrder = 'desc' : this.lastSortedOrder = 'asc'
                 this.sortByKey(this.lastSortedKey);

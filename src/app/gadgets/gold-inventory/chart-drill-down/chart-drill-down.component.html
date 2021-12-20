@@ -59,7 +59,8 @@
             <div class="date-filter-container">
                 <div class="date-text"> From</div>
                 <div class="start-date-filter">
-                    <input type="date" class="form-control date-input" id="startDate" (input)="selectStartDate()"
+                    <input type="date" class="form-control date-input" id="startDate"
+                           (input)="selectStartDate()"
                            min="{{minStartDate}}"
                            max="{{today | date:'yyyy-MM-dd'}}" [(ngModel)]="startDate">
                 </div>
