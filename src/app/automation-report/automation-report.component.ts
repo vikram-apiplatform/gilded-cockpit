@@ -67,7 +67,7 @@ export class AutomationReportComponent implements OnInit {
   constructor(public confPost: APIService) { }
 
   ngOnInit() {
-    this.confPost.getAutomationResults( 'partner=' + this.partner + '&buildStatus=success&sort=-startedAt').subscribe(response => {
+    this.confPost.getAutomationResults( 'partner=' + 'dev-gilded' + '&buildStatus=success&sort=-startedAt').subscribe(response => {
       this.buildsData = response;
       this.setChartData();
       if (this.buildsData.length === 0) {

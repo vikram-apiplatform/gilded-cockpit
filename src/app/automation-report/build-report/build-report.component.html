@@ -1,6 +1,6 @@
 
 <div>
-    <mat-sidenav-container class="sidenav-full" style="height: 81vh;">
+    <mat-sidenav-container class="sidenav-full" style="height: 80vh;">
         <mat-sidenav #sidenav opened mode="side" position="start" role="navigation" class="sidenav-wv" style="width: 240px">
 
             <div fxLayout="column" class="sidenav-normal">
@@ -15,11 +15,11 @@
 <!--                        </ul>-->
 <!--                    </li>-->
                 </mat-toolbar>
-                <mat-nav-list>
+                <mat-nav-list style="padding-top: 55px;">
                     <mat-list-item *ngFor="let testCase of testCases; let i = index" class="list-item" [ngClass]="i===currentActiveIndex?'lt-i-active':''" (click)="setCurrentTestCase(i)">
                         <a aria-controls="profile"
                            role="tab" data-toggle="tab" style="width: 100%"><div class="nav-li-h">{{testCase['name']}}</div>
-                            <div class="nav-li-sb">{{getDate(testCase['startedAt'])}}<span class="badge test-case {{testCase['status']}}">{{getStatusName(testCase['status'])}}</span></div></a>
+                            <div class="nav-li-sb">{{getDate(testCase['startedAt'], true)}}<span class="badge test-case {{testCase['status']}}">{{getStatusName(testCase['status'])}}</span></div></a>
                     </mat-list-item>
                 </mat-nav-list>
             </div>
@@ -34,21 +34,61 @@
                     </mat-toolbar>
 
                     <div class="side-container">
-                        <div class="col-lg-3 col-md-3"></div>
-                        <mat-card class="col-lg-6 col-md-6">
-                            <span style="font-size: 14px"><b>Tests</b></span>
-                            <div>
-                                <canvas baseChart
-                                        [data]="chartData"
-                                        [labels]="chartLabels"
-                                        [chartType]="chartType"
-                                        [colors]="colors"
-                                        [options]="chartOptions"
-                                        (chartHover)="chartHovered($event)"
-                                        (chartClick)="chartClicked($event)"></canvas>
+
+                        <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12 card-row" >
+                            <div fxLayout="row wrap">
+                                <div class="col-md-3 col-lg-3 col-sm-3 col-xs-3">
+                                    <mat-card class="card-m">
+                                        <div class = "col-md-12 col-lg-12 col-sm-12 col-xs-12">
+                                            <label class = "form-field-label"> Started </label><br>
+                                            {{getDate(this.buildData['startedAt'])}}
+                                        </div>
+                                    </mat-card>
+                                </div>
+                                <div class="col-md-3 col-lg-3 col-sm-3 col-xs-3">
+                                    <mat-card class="card-m">
+                                        <div class = "col-md-12 col-lg-12 col-sm-12 col-xs-12">
+                                            <label class = "form-field-label"> Ended </label><br>
+                                            {{getDate(this.buildData['endedAt'])}}
+                                        </div>
+                                    </mat-card>
+                                </div>
+                                <div class="col-md-3 col-lg-3 col-sm-3 col-xs-3">
+                                    <mat-card class="card-m">
+                                        <div class = "col-md-12 col-lg-12 col-sm-12 col-xs-12">
+                                            <label class = "form-field-label"> Tests Passed </label><br>
+                                            {{this.buildData['passed']}}
+                                        </div>
+                                    </mat-card>
+                                </div>
+                                <div class="col-md-3 col-lg-3 col-sm-3 col-xs-3">
+                                    <mat-card class="card-m">
+                                        <div class = "col-md-12 col-lg-12 col-sm-12 col-xs-12">
+                                            <label class = "form-field-label"> Tests Failed </label><br>
+                                            {{this.buildData['failed']}}
+                                        </div>
+                                    </mat-card>
+                                </div>
                             </div>
-                        </mat-card>
-                        <div class="col-lg-3 col-md-3"></div>
+                        </div>
+
+                        <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12 card-row">
+                            <div fxLayout="row wrap" class="chart-container">
+                                <mat-card class="col-lg-6 col-md-6">
+                                    <span style="font-size: 14px"><b>Tests</b></span>
+                                    <div>
+                                        <canvas baseChart
+                                                [data]="chartData"
+                                                [labels]="chartLabels"
+                                                [chartType]="chartType"
+                                                [colors]="colors"
+                                                [options]="chartOptions"
+                                                (chartHover)="chartHovered($event)"
+                                                (chartClick)="chartClicked($event)"></canvas>
+                                    </div>
+                                </mat-card>
+                            </div>
+                        </div>
                     </div>
                 </ng-container>
 

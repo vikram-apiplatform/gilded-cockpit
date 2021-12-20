@@ -238,11 +238,32 @@ export class BuildReportComponent implements OnInit, OnChanges {
     this.currentFailedTestCase = testCase.class;
   }
 
-  getDate(val) {
+  getDate1(val) {
     if (val) {
       return this.timeConverter(val);
     }
     return '';
+  }
+
+  getDate(timeStamp, dateWithSlash = false) {
+    if (timeStamp) {
+      const date_ob = new Date(timeStamp);
+      let hours = date_ob.getHours();
+      const minutes = ('0' + date_ob.getMinutes()).slice(-2);
+      const seconds = ('0' + date_ob.getSeconds()).slice(-2);
+      const ampm = hours >= 12 ? 'PM' : 'AM';
+      hours = hours % 12;
+      hours = hours ? hours : 12;
+
+
+      if (dateWithSlash) {
+        return (date_ob.getMonth() + '/' + date_ob.getDate()) + '/' + date_ob.getFullYear() + ' ' + hours + ':' + minutes + ':' + seconds + ' ' + ampm;
+      } else {
+        return (date_ob.toDateString()) + ' ' + hours + ':' + minutes + ':' + seconds + ' ' + ampm;
+      }
+    } else {
+      return '-';
+    }
   }
 
   timeConverter(ts) {

@@ -34,7 +34,7 @@
 
                     <div fxLayout="column" class="sidenav-normal">
                         <mat-toolbar class="nav-bar-h" (click)="currentActiveIndex=-1"> Build History</mat-toolbar>
-                        <mat-nav-list>
+                        <mat-nav-list style="padding-top: 55px;">
                             <mat-list-item *ngFor="let result of buildsData; let i = index" class="list-item" [ngClass]="i===currentActiveIndex?'lt-i-active':''" (click)="setResult(result['id'], i)">
                                 <a
                                     aria-controls="profile"
@@ -54,22 +54,22 @@
                             </mat-toolbar>
 
                             <div class="side-container">
-                                <div class="col-lg-3 col-md-3"></div>
-                                <mat-card class="col-lg-6 col-md-6">
-                                    <span style="font-size: 14px"><b>Test Result Trend</b></span>
-                                    <div>
-                                        <canvas baseChart width="250" height="250"
-                                                [datasets]="lineChartData"
-                                                [labels]="lineChartLabels"
-                                                [options]="lineChartOptions"
-                                                [colors]="lineChartColors"
-                                                [legend]="lineChartLegend"
-                                                [chartType]="lineChartType"
-                                                [plugins]="lineChartPlugins">
-                                        </canvas>
-                                    </div>
-                                </mat-card>
-                                <div class="col-lg-3 col-md-3"></div>
+                                <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12 card-row chart-container">
+                                    <mat-card class="col-lg-6 col-md-6">
+                                        <span style="font-size: 14px"><b>Test Result Trend</b></span>
+                                        <div>
+                                            <canvas baseChart width="250" height="250"
+                                                    [datasets]="lineChartData"
+                                                    [labels]="lineChartLabels"
+                                                    [options]="lineChartOptions"
+                                                    [colors]="lineChartColors"
+                                                    [legend]="lineChartLegend"
+                                                    [chartType]="lineChartType"
+                                                    [plugins]="lineChartPlugins">
+                                            </canvas>
+                                        </div>
+                                    </mat-card>
+                                </div>
                             </div>
                         </ng-container>
 

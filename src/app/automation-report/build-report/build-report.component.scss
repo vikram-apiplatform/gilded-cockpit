@@ -139,6 +139,7 @@ mat-expansion-panel-header {
   background: linear-gradient(120deg, #1e2e3d 0, #ff672d 100%);
   width: 91px;
   font-size: 10px!important;
+  cursor: pointer;
 }
 
 .badge.success {
@@ -239,7 +240,7 @@ mat-expansion-panel-header {
 
 .logs-container {
   overflow: auto;
-  height: 75vh;
+  height: 74vh;
 }
 
 .nav-bar-h {
@@ -249,10 +250,11 @@ mat-expansion-panel-header {
   color: black;
   z-index: 1;
   cursor: pointer;
+  position: absolute;
 }
 
 .side-container {
-  height: 82vh;
+  height: 72vh;
   margin-top: 10px
 }
 
@@ -283,4 +285,19 @@ mat-expansion-panel-header {
   height: 89vh;
   margin-top: 10px;
   padding: 0px;
+}
+
+.card-m {
+  display: flex;
+}
+
+.card-row {
+  margin-top: 10px;
+  padding: 0px;
+}
+
+.chart-container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
