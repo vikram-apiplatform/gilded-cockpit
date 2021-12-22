@@ -49,6 +49,8 @@ import {AutomationReportComponent} from './automation-report/automation-report.c
 import {BuildReportComponent} from './automation-report/build-report/build-report.component';
 import {MatListModule} from '@angular/material/list';
 import {ChartsModule} from 'ng2-charts';
+import { AutomationDashboardComponent } from './automation-dashboard/automation-dashboard.component';
+import {GaugeChartModule} from 'angular-gauge-chart';
 
 @NgModule({
     imports: [
@@ -85,7 +87,8 @@ import {ChartsModule} from 'ng2-charts';
         MatExpansionModule,
         MatToolbarModule,
         MatListModule,
-        ChartsModule
+        ChartsModule,
+        GaugeChartModule
     ],
     declarations: [
         AppComponent,
@@ -111,6 +114,7 @@ import {ChartsModule} from 'ng2-charts';
         ImageViewerComponent,
         AutomationReportComponent,
         BuildReportComponent,
+        AutomationDashboardComponent,
     ],
     providers: [APIService, LeftpanelComponent, KycDocumentViewerComponent],
     entryComponents: [AttributeDescriptionComponent, KycDocumentViewerComponent, RemediationsComponent, ImageViewerComponent],

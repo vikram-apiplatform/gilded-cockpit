@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Input } from '@angular/core';
 import {ChartDataSets, ChartOptions, ChartType} from 'chart.js';
 import {Color, Label} from 'ng2-charts';
 import {APIService} from '../api.service';
@@ -15,10 +15,11 @@ export class AutomationReportComponent implements OnInit {
 
   currentActiveIndex = -1;
 
-  buildsData: any;
+  buildData: any;
 
   showBuild = false;
-  buildData: any;
+  @Input() buildsData: any;
+  @Input() projectData: any;
   currentBuild: any;
   buildDataLoading = false;
   componentLoading = true;
@@ -67,18 +68,20 @@ export class AutomationReportComponent implements OnInit {
   constructor(public confPost: APIService) { }
 
   ngOnInit() {
-    this.confPost.getAutomationResults( 'partner=' + 'dev-gilded' + '&buildStatus=success&sort=-startedAt').subscribe(response => {
-      this.buildsData = response;
-      this.setChartData();
-      if (this.buildsData.length === 0) {
-        this.isError = true;
-      };
-      this.componentLoading = false;
-    }, error => {
-      setTimeout(() => {
-        // this.router.navigateByUrl('/console');
-      }, 5000);
-    });
+    // this.confPost.getAutomationResults( 'partner=' + 'dev-gilded' + '&buildStatus=success&sort=-startedAt').subscribe(response => {
+    //   this.buildsData = response;
+    //   this.setChartData();
+    //   if (this.buildsData.length === 0) {
+    //     this.isError = true;
+    //   };
+    //   this.componentLoading = false;
+    // }, error => {
+    //   setTimeout(() => {
+    //     // this.router.navigateByUrl('/console');
+    //   }, 5000);
+    // });
+    this.setChartData();
+    this.componentLoading = false;
   }
 
   setChartData() {
