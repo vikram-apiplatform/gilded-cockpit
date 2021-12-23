@@ -1,3 +1,78 @@
-<p>
-  Left menu panel here!
-</p>
+<!--<div>-->
+<!--    Hi..123-->
+<!--    <ul id="accordion" class="accordion">-->
+<!--        <li>-->
+<!--            <div class="menu" [ngClass]="showFiller?'nav-icon-expanded':'nav-icon-collapsed'">-->
+<!--                <i class="fa fa-bars"-->
+<!--                   (click)="showFiller = !showFiller"></i>-->
+<!--            </div>-->
+<!--        </li>-->
+<!--        <li *ngFor="let menu of menus; let i = index">-->
+<!--            <div class="row menu" (click)="toggle(i)">-->
+<!--                <div style="width:1.5rem">-->
+<!--                    <i [class]="menu.iconClass"-->
+<!--                       [ngClass]="showFiller?'main-menu-icon-expanded':'main-menu-icon-collapsed'"></i></div>-->
+<!--                <div class="main-menu-text" *ngIf="showFiller">{{ menu.name }}-->
+<!--                    <i class="fa fa-chevron-down"></i></div>-->
+<!--            </div>-->
+<!--        </li>-->
+<!--    </ul>-->
+<!--</div>-->
+
+<div *ngIf="menus && menus.length" [ngClass]="showFiller?'side-nav-div-expanded':'side-nav-div-collapsed'">
+    <ul id="accordion" class="accordion">
+        <li *ngIf="showFiller">
+            <div [ngClass]="showFiller?'nav-icon-expanded':'nav-icon-collapsed'">
+                <img class="companyMenuLogo" src="../../assets/images/company_icon.ico"/> Gilded Admin
+            </div>
+
+        <li *ngIf="!showFiller">
+            <div class="nav-icon-expanded">
+                <img class="companyMenuLogo" src="../../assets/images/company_icon.ico"/>
+            </div>
+        </li>
+        <li *ngFor="let menu of menus; let i = index"
+            [class.active]="menu.active">
+            <div class="row menu" [ngClass]="activeMenu === menu.name?'activatedMenu':'deactivatedMenu'"
+                 (click)="menu.submenu && menu.submenu.length ?toggle(i): onItemSelected($event, menu.name, '', menu.name, menu.route)">
+                <div class="iconContainer menuIcon">
+                    <i [class]="menu.iconClass"></i></div>
+                <div class="main-menu-text menuTextContainer" *ngIf="showFiller">{{ menu.name }}
+                    <i *ngIf="menu.submenu && menu.submenu.length" class="fa fa-chevron-down"></i>
+                </div>
+            </div>
+            <ul *ngIf="menu.submenu && menu.submenu.length" class="submenu" #submenu
+                [style.display]="menu.active ? 'block' : 'none'">
+                <li *ngFor="let submenu of menu.submenu" [ngClass]="submenu.key===defaultActiveMenu?'active':''"
+                    (click)="onItemSelected($event, menu.name, submenu.name, submenu.key, submenu.route)">
+                    <!--                    <a role="tab" data-toggle="tab"-->
+                    <!--                       href="{{getId(submenu['key'])}}">-->
+                    <!--                        <div class="row">-->
+                    <!--                            <div *ngIf="submenu.icon!==''" style="width: 1.5rem">-->
+                    <!--                                <i [class]="submenu.icon"-->
+                    <!--                                   [ngClass]="showFiller?'submenu-icon-expanded':'submenu-icon-collapsed'"></i></div>-->
+                    <!--                            <div class="main-menu-text"-->
+                    <!--                                 *ngIf="showFiller">{{ submenu.name }}</div>-->
+                    <!--                        </div>-->
+                    <!--                    </a>-->
+                    <div class="row menu submenuContainer"
+                         [ngClass]="activeMenu === submenu.key?'activatedMenu':'deactivatedMenu'">
+                        <div class="iconContainer submenuIcon">
+                            <i [class]="submenu.icon"></i>
+                        </div>
+                        <div class="submenu-text menuTextContainer" *ngIf="showFiller">{{ submenu.name }}
+                            <!--                        <i class="fa fa-chevron-down"></i>-->
+                        </div>
+                    </div>
+                </li>
+            </ul>
+        </li>
+        <div class="fill">
+            <!--            <li>-->
+            <!--                <div>-->
+
+            <!--                </div>-->
+            <!--            </li>-->
+        </div>
+    </ul>
+</div>

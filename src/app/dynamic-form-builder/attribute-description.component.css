@@ -1,0 +1,19 @@
+h1, h2, h3 {
+    font-weight: 600;
+    font-family: 'poppins', sans-serif !important;
+}
+
+mat-dialog-content {
+    font-family: 'poppins', sans-serif !important;
+}
+
+.mat-dialog-title {
+    font-size: 32px !important;
+}
+::ng-deep.confap-mat-expansion {
+    height: auto !important;
+}
+
+.mat-typography {
+    display: grid;
+}

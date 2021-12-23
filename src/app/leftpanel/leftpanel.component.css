@@ -1,0 +1,256 @@
+.accordion {
+    width: 100%;
+    height: 100%;
+    /*max-width: 360px;*/
+    margin: auto;
+    background: transparent;
+    /*border-radius: 4px;*/
+    display: flex;
+    flex-flow: column;
+    border: none;
+    padding: 0px;
+}
+
+.accordion .menu {
+    position: relative;
+    display: flex;
+    padding: 0rem 0rem 0rem 0rem;
+    color: #F2F2F2;
+    font-size: 1rem;
+    /*border-bottom: 0.09rem solid rgba(100, 100, 100, 0.5);*/
+    cursor: pointer;
+    transition: all 0.4s ease;
+
+    /*position: relative;*/
+    /*width: 4rem;*/
+    /*text-align: center;*/
+    /*padding: 1rem 1rem 1rem 1rem;*/
+    /*color: White;*/
+    /*border-bottom: 0.09rem solid rgba(100, 100, 100, 0.5);*/
+    /*cursor: pointer;*/
+    /*transition: all 0.4s ease;*/
+}
+
+.accordion li:last-child .menu {
+    border-bottom: 0;
+}
+
+.menu i {
+    /*position: absolute;*/
+    /*top: 1.2rem;*/
+    /*left: 1rem;*/
+    color: White;
+    transition: all 0.4s ease;
+}
+
+.accordion li i.fa-chevron-down {
+    position: absolute;
+    top: 1.7rem;
+    right: 1rem;
+    left: auto;
+    font-size: 0.8rem;
+}
+
+.accordion li.active i.fa-chevron-down {
+    transform: rotate(180deg);
+}
+
+.accordion li.active .menu {
+
+}
+
+.accordion li.active i {
+
+}
+
+/* Show submenu */
+.accordion li.active .submenu {
+    /*
+      height: 0 -> height: auto;는 transition이 동작하지 않는다.
+      max-height: 임의의 높이;를 지정하면 transition이 동작하지만 타이밍이 망가진다.
+      max-height: 1000px;과 max-height: 133px;을 비교해 보라!
+      height를 1000px으로 transition할 시간에 실제로는 133px정도만 transition하므로 여는 시간이 닫는 시간보다 빠르다.
+    */
+    /* max-height: 1000px; */
+    /* max-height: 133px; */
+}
+
+.submenu {
+    overflow: hidden;
+    background: transparent;
+    font-size: 12px;
+    padding: 0px;
+    transition: height 0.4s ease;
+}
+
+.submenu li:last-child {
+    border-bottom: 0.09rem solid rgba(100, 100, 100, 0.5);
+}
+
+.accordion li:last-child .submenu {
+    border-radius: 0 0 4px 4px;
+}
+
+/*.accordion li:last-child .submenu li:last-child {*/
+/*    border-bottom: 0;*/
+/*}*/
+
+.childMenu {
+    padding-left: 50px;
+}
+
+.submenu a {
+    display: block;
+    text-decoration: none;
+    padding: 12px;
+    padding-left: 3rem;
+    transition: all 0.25s ease-in-out;
+
+    /*display: block;*/
+    /*text-decoration: none;*/
+    /*color: White;*/
+    /*padding: 1rem 0rem 1rem 2rem;*/
+    /*ding-left: 2.3rem;*/
+    /*transition: all 0.25s ease-in-out;*/
+}
+
+.submenu a:hover {
+    background: #b63b4d;
+}
+
+
+*, *:before, *:after {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+ul {
+    list-style-type: none;
+}
+
+h1 {
+    font-size: 2.5rem;
+    text-align: center;
+    padding: 50px 0;
+}
+
+.submenu li a:hover,
+.submenu li.active a,
+.submenu li.active a:hover {
+    background: transparent;
+    background-color: #78828B;
+    border: none;
+}
+
+
+.main-menu-icon-collapsed {
+    font-size: 1.5rem;
+}
+
+.submenu-icon-collapsed {
+    font-size: 1.2rem;
+    margin-right: 1.2rem;
+}
+
+.main-menu-icon-expanded {
+    font-size: 1.2rem;
+}
+
+.submenu-icon-expanded {
+    font-size: 1.2rem;
+    margin-right: 1.2rem;
+}
+
+.nav-icon-expanded {
+    font-size: 1.5rem;
+    font-weight: bold;
+    color: white;
+    padding-top: 0.4rem;
+    padding-bottom: 0.45rem;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: steelblue;
+    text-align: center;
+}
+
+.nav-icon-collapsed {
+    font-size: 1.5rem;
+}
+
+.main-menu-text {
+    margin-left: 1rem;
+    margin-top: 0.5rem;
+    /*color: rgba(200, 200, 200, 0.8);*/
+    font-size: 0.9rem;
+}
+
+.submenu-text {
+    margin-left: 1rem;
+    color: rgba(200, 200, 200, 0.8);
+    font-size: 0.9rem;
+}
+
+.side-nav-div-collapsed {
+    /*width: 4.5rem;*/
+    padding: 0px;
+    /*background-color: #2A3F54;*/
+    background-color: rgba(0, 0, 0, 0.85);
+    height: 100%;
+    overflow: auto;
+}
+
+.side-nav-div-expanded {
+    padding: 0px;
+    /*background-color: #2A3F54;*/
+    background-color: rgba(0, 0, 0, 0.85);
+    height: 100%;
+    overflow: auto;
+}
+
+.targetParent {
+    background-color: #1e2e3d;
+}
+
+.companyMenuLogo {
+    height: 2.5rem
+}
+
+.iconContainer {
+    padding-top: 1rem;
+    padding-bottom: 1rem;
+    padding-left: 1rem;
+    padding-right: 1rem;
+    width: 4rem;
+    background-color: rgba(100, 100, 100, 0.85);
+}
+
+.menuIcon {
+    font-size: 1.5rem;
+}
+
+.submenuIcon {
+    font-size: 1.2rem;
+    padding-left: 2rem;
+}
+
+.menuTextContainer {
+    padding-top: 1rem;
+    padding-bottom: 1rem;
+    padding-right: 3rem;
+}
+
+.activatedMenu {
+    background-color: rgba(100, 100, 100, 0.5);
+}
+
+.deactivatedMenu {
+
+}
+
+.fill {
+    flex: 1 1 auto;
+    background-color: rgba(100, 100, 100, 0.85);
+    width: 4rem
+}

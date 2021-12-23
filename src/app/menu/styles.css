@@ -30,15 +30,17 @@ input {
 }
 
 .ui.floating.label{
-    top:.5em;
+    top:.5rem;
+    left: 4rem;
     margin:0;
 }
 .ui.menu .item>.floating.label{
-    padding:.3em .6em
+    padding:.2em .3em
 }
 
 .ui.menu{
     border-radius:0px;
+    margin: 0px;
 }
 .ui.inverted.menu{
     background-color: #1C2B36;
@@ -48,3 +50,56 @@ input {
     margin: 0;
 }
 
+
+.alert-icon {
+    font-size: 1.5rem;
+}
+
+.ui.menu .item{
+    padding-left: 1.5rem;
+    padding-right: 1.5rem;
+    /*color: rgba(100,100,100,0.5);*/
+}
+
+.gold-rate-container {
+    /*padding: 0.5rem;*/
+    padding-left: 0.5rem;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-evenly;
+    /*height: 15vh;*/
+    /*margin:1rem;*/
+}
+
+.gold-rate-header {
+    display: flex;
+    flex-direction: row;
+    /*justify-content: center;*/
+    align-items: flex-end;
+    color: white;
+}
+
+.gold-rate-icon {
+    font-size: 1rem;
+    margin-right: 0.5rem;
+    margin-top: 0.3rem;
+}
+
+.gold-rate-text {
+    font-size: 1rem;
+}
+
+.gold-rate {
+    font-size: 1.2rem;
+    font-weight: bold;
+    color: #ffcc33;
+    /*padding-left: 0.5rem*/
+    /*text-align: center;*/
+    /*align-self: center;*/
+}
+
+.gold-rate-unit {
+    font-size: 0.8rem;
+    font-weight: normal;
+    text-align: right;
+}

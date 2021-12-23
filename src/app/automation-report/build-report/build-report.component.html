@@ -1,0 +1,228 @@
+
+
+    <div class="chart-c">
+        <mat-card style="display: flex;">
+            <div class = "col-md-12 col-lg-12 col-sm-12 col-xs-12 p-0">
+                <div class = "col-md-3 col-lg-3 col-sm-3 col-xs-3 p-0">
+                    <mat-card class="col-lg-12 col-md-12 col-sm-12 col-xs-12 card-c">
+                        <span style="font-size: 11px"><b>Tests</b></span>
+                        <div class="chart-container">
+                            <canvas baseChart
+                                    [data]="chartData"
+                                    [labels]="chartLabels"
+                                    [legend]=""
+                                    [chartType]="chartType"
+                                    [colors]="colors"
+                                    [options]="chartOptions"
+                                    (chartHover)="chartHovered($event)"
+                                    (chartClick)="chartClicked($event)" style="height: 81px;width: 160px;"></canvas>
+                        </div>
+                    </mat-card>
+                </div>
+                <div class = "col-md-9 col-lg-9 col-sm-9 col-xs-9 p-0">
+                    <div class="col-md-4 col-lg-4 col-sm-4 col-xs-4">
+                        <mat-card class="card-i">
+                            <div class = "col-md-12 col-lg-12 col-sm-12 col-xs-12 inner-card">
+                                <label class = "form-field-label"> Pass Rate </label><br>
+                                {{getPassRate()}} %
+                            </div>
+                        </mat-card>
+                        <mat-card class="card-i" style="margin-top: 10px;">
+                            <div class = "col-md-12 col-lg-12 col-sm-12 col-xs-12 inner-card">
+                                <label class = "form-field-label"> Tests Passed </label><br>
+                                {{this.buildData['passed']}}
+                            </div>
+                        </mat-card>
+                    </div>
+                    <div class="col-md-4 col-lg-4 col-sm-4 col-xs-4">
+                        <mat-card class="card-i">
+                            <div class = "col-md-12 col-lg-12 col-sm-12 col-xs-12 inner-card">
+                                <label class = "form-field-label"> Tests Failed </label><br>
+                                {{this.buildData['failed']}}
+                            </div>
+                        </mat-card>
+                        <mat-card class="card-i" style="margin-top: 10px;">
+                            <div class = "col-md-12 col-lg-12 col-sm-12 col-xs-12 inner-card">
+                                <label class = "form-field-label"> Tests Skipped </label><br>
+                                {{this.buildData['skipped']}}
+                            </div>
+                        </mat-card>
+                    </div>
+                    <div class="col-md-4 col-lg-4 col-sm-4 col-xs-4">
+                        <mat-card class="card-i">
+                            <div class = "col-md-12 col-lg-12 col-sm-12 col-xs-12 inner-card">
+                                <label class = "form-field-label"> Started </label><br>
+                                {{getDate(this.buildData['startedAt'])}}
+                            </div>
+                        </mat-card>
+                        <mat-card class="card-i" style="margin-top: 10px;">
+                            <div class = "col-md-12 col-lg-12 col-sm-12 col-xs-12 inner-card">
+                                <label class = "form-field-label"> Ended </label><br>
+                                {{getDate(this.buildData['endedAt'])}}
+                            </div>
+                        </mat-card>
+                    </div>
+                </div>
+
+            </div>
+        </mat-card>
+    </div>
+
+    <div style="text-align: center; margin-top: 30px;" *ngIf="!(testCases && testCases.length > 0)">
+        <h4>No test-cases found!</h4>
+    </div>
+    <mat-sidenav-container *ngIf="testCases && testCases.length > 0" class="sidenav-full">
+        <mat-sidenav #sidenav opened mode="side" position="start" role="navigation" class="sidenav-wv" style="width: 240px">
+
+            <div fxLayout="column" class="sidenav-normal">
+                <mat-toolbar class="nav-bar-h" > Tests
+<!--                    <li class="dropdown filter-icon"><a class="dropdown-toggle" data-toggle="dropdown" aria-expanded="false"><i class="fa fa-filter"></i></a>-->
+<!--                        <ul id="status-toggle" class="dropdown-menu dropdown-md p-v-0" x-placement="left" style="position: absolute; will-change: transform; left: -140px;;">-->
+<!--                            <a class="dropdown-item {{getSelectedFilter('pass')}}" (click)="testCaseFilter = ['success']; setTestCaseFilter()"><span>Pass</span><span class="status success"></span></a>-->
+<!--                            <a class="dropdown-item {{getSelectedFilter('fail')}}" (click)="testCaseFilter = ['failed']; setTestCaseFilter()"><span>Fail</span><span class="status danger"></span></a>-->
+<!--                            <a class="dropdown-item {{getSelectedFilter('skip')}}" (click)="testCaseFilter = ['skipped']; setTestCaseFilter()"><span>Skip</span><span class="status warning "></span></a>-->
+<!--                            <div class="dropdown-divider"></div>-->
+<!--                            <a (click)="testCaseFilter = ['success', 'failed', 'skipped']; setTestCaseFilter()" class="dropdown-item"><span>Clear</span><span class="pull-right"><i class="fa fa-close"></i></span></a>-->
+<!--                        </ul>-->
+<!--                    </li>-->
+                </mat-toolbar>
+                <mat-nav-list style="padding-top: 55px;">
+                    <mat-list-item *ngFor="let testCase of testCases; let i = index" class="list-item" [ngClass]="i===currentActiveIndex?'lt-i-active':''" (click)="setCurrentTestCase(i)">
+                        <a aria-controls="profile"
+                           role="tab" data-toggle="tab" style="width: 100%"><div class="nav-li-h">{{testCase['name']}}</div>
+                            <div class="nav-li-sb">{{getDate(testCase['startedAt'], true)}}<span class="badge test-case {{testCase['status']}}">{{getStatusName(testCase['status'])}}</span></div></a>
+                    </mat-list-item>
+                </mat-nav-list>
+            </div>
+        </mat-sidenav>
+        <mat-sidenav-content>
+            <div style="padding-left: 5px">
+                <ng-container *ngIf="currentActiveIndex === -1">
+                    <mat-toolbar role="toolbar" class="main-header mat-elevation-z1 sticky-header t-bar">
+                        <mat-toolbar-row>
+                            Gilded Web App automation
+                        </mat-toolbar-row>
+                    </mat-toolbar>
+
+                    <div class="side-container">
+
+                        <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12 card-row" >
+                            <div fxLayout="row wrap">
+                                <div class="col-md-3 col-lg-3 col-sm-3 col-xs-3">
+                                    <mat-card class="card-m">
+                                        <div class = "col-md-12 col-lg-12 col-sm-12 col-xs-12">
+                                            <label class = "form-field-label"> Tests Passed </label><br>
+                                            {{this.buildData['passed']}}
+                                        </div>
+                                    </mat-card>
+                                </div>
+                                <div class="col-md-3 col-lg-3 col-sm-3 col-xs-3">
+                                    <mat-card class="card-m">
+                                        <div class = "col-md-12 col-lg-12 col-sm-12 col-xs-12">
+                                            <label class = "form-field-label"> Tests Failed </label><br>
+                                            {{this.buildData['failed']}}
+                                        </div>
+                                    </mat-card>
+                                </div>
+                                <div class="col-md-3 col-lg-3 col-sm-3 col-xs-3">
+                                    <mat-card class="card-m">
+                                        <div class = "col-md-12 col-lg-12 col-sm-12 col-xs-12">
+                                            <label class = "form-field-label"> Started </label><br>
+                                            {{getDate(this.buildData['startedAt'])}}
+                                        </div>
+                                    </mat-card>
+                                </div>
+                                <div class="col-md-3 col-lg-3 col-sm-3 col-xs-3">
+                                    <mat-card class="card-m">
+                                        <div class = "col-md-12 col-lg-12 col-sm-12 col-xs-12">
+                                            <label class = "form-field-label"> Ended </label><br>
+                                            {{getDate(this.buildData['endedAt'])}}
+                                        </div>
+                                    </mat-card>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12 card-row">
+                            <div fxLayout="row wrap" class="chart-container">
+                                <mat-card class="col-lg-6 col-md-6">
+                                    <span style="font-size: 14px"><b>Tests</b></span>
+                                    <div>
+                                        <canvas baseChart
+                                                [data]="chartData"
+                                                [labels]="chartLabels"
+                                                [chartType]="chartType"
+                                                [colors]="colors"
+                                                [options]="chartOptions"
+                                                (chartHover)="chartHovered($event)"
+                                                (chartClick)="chartClicked($event)"></canvas>
+                                    </div>
+                                </mat-card>
+                            </div>
+                        </div>
+                    </div>
+                </ng-container>
+
+                <ng-container *ngIf="currentActiveIndex > -1">
+                    <div class="info">
+                        <h5 class="test-info-header">{{testCases[currentActiveIndex]['name']}}</h5>
+                        <span class="badge start-date" matTooltip="Start Time">{{getDate(testCases[currentActiveIndex]['startedAt'])}}</span>
+                        <span class="badge end-date" matTooltip="End Time">{{getDate(testCases[currentActiveIndex]['endedAt'])}}</span>
+                        <span class="badge duration" matTooltip="Duration">{{testCases[currentActiveIndex]['endedAt'] - testCases[currentActiveIndex]['startedAt']}} ms</span>
+
+                        <ng-container *ngIf="!currentTestCaseDataLoading && currentTestCaseData">
+                            <span *ngIf="currentTestCaseData['status'] === 'failed' || currentTestCaseData['status'] === 'skipped' && (currentTestCaseData['screenshot'] && currentTestCaseData['screenshot'] !== '')" class="badge view-img" (click)="openBase64Img(currentTestCaseData['screenshot'])">View Screenshot</span>
+                        </ng-container>
+                    </div>
+
+                    <div class="side-container">
+
+                        <div *ngIf="currentTestCaseDataLoading" class="col-md-12 col-lg-12 col-sm-12 col-xs-12 text-center">
+                            <div style="height: 60vh;
+                          display: flex;
+                          align-items: center;
+                          margin-left: 48%;">
+                                <div>
+                                    <img src="assets/images/loading.gif" height="50"/>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div *ngIf="!currentTestCaseDataLoading" class="col-md-12 col-lg-12 col-sm-12 col-xs-12 text-center p-0 logs-container">
+                            <table class="table-striped table">
+                                <tr>
+                                    <th style="width: 10%;text-align: center;">Status</th>
+                                    <th style="width: 15%;text-align: center;">Timestamp</th>
+                                    <th>Message</th>
+                                </tr>
+                                <ng-container *ngFor="let msg of currentTestCaseData['logs'] let i=index">
+                                    <tr>
+                                        <td><span class="badge {{msg['type']}}">{{getStatusName(msg['type'])}}</span></td>
+                                        <td>{{getTime(msg['timeStamp'])}}</td>
+                                        <td style="text-align: left">{{msg['message']}}</td>
+                                    </tr>
+                                </ng-container>
+
+                                <ng-container *ngIf="currentTestCaseData['status'] === 'failed' || currentTestCaseData['status'] === 'skipped'">
+                                    <tr>
+                                        <td><span class="badge {{currentTestCaseData['status']}}">{{getStatusName(currentTestCaseData['status'])}}</span></td>
+                                        <td>{{getTime(currentTestCaseData['endedAt'])}}</td>
+                                        <td style="text-align: left">{{currentTestCaseData['errorMessage']}}</td>
+                                    </tr>
+                                </ng-container>
+
+                                <ng-container *ngIf="currentTestCaseData['status'] === 'success'">
+                                    <tr>
+                                        <td><span class="badge {{currentTestCaseData['status']}}">{{getStatusName(currentTestCaseData['status'])}}</span></td>
+                                        <td>{{getTime(currentTestCaseData['endedAt'])}}</td>
+                                        <td style="text-align: left"></td>
+                                    </tr>
+                                </ng-container>
+                            </table>
+                        </div>
+                    </div>
+                </ng-container>
+
+            </div>
+        </mat-sidenav-content>
+    </mat-sidenav-container>

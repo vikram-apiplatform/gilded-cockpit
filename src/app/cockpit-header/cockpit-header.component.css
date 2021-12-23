@@ -1,0 +1,121 @@
+.container {
+    /*margin-left: 0.2rem;*/
+    /*display: flex;*/
+    /*flex-direction: row;*/
+    /*justify-content: space-between;*/
+    padding: 0px;
+}
+
+.alerts-container {
+    padding: 0.5rem;
+    height: 15vh;
+    margin:1rem;
+}
+
+.alerts-header {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    font-size: 1.1rem;
+}
+
+.alerts-header-text {
+
+}
+
+.alerts-filter {
+
+}
+
+.alerts {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-evenly;
+}
+
+.alert-container {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.alert-icon-container {
+    background-color: #F2F2F2;
+    width: 4rem;
+    height: 4rem;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: 30rem;
+}
+
+.alert-icon {
+    font-size: 1.5rem;
+    /*padding: 1.1rem;*/
+    /*padding-left: 1.2rem;*/
+    /*padding-right: 1.2rem;*/
+    /*padding-top: 1rem;*/
+    /*padding-bottom: 1rem;*/
+    /*padding-left: 1.1rem;*/
+    /*padding-right: 1.1rem;*/
+}
+
+.floating-label {
+    position: absolute;
+    background-color: red;
+    color: white;
+    width: 1.5rem;
+    height: 1.5rem;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: 3rem;
+    margin-left: 2.5rem;
+    top: 2rem;
+    left: auto;
+}
+
+.alert-text {
+    font-size: 0.8rem;
+    margin-top: 0.3rem;
+}
+
+.gold-rate-container {
+    padding: 0.5rem;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-evenly;
+    height: 15vh;
+    margin:1rem;
+}
+
+.gold-rate-header {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    color: #ffcc33
+}
+
+.gold-rate-icon {
+    font-size: 1rem;
+    margin-right: 0.5rem;
+    margin-top: 0.3rem;
+}
+
+.gold-rate-text {
+    font-size: 1.5rem;
+}
+
+.gold-rate {
+    font-size: 2rem;
+    font-weight: bold;
+    text-align: center;
+    align-self: center;
+}
+
+.gold-rate-unit {
+    font-size: 0.8rem;
+    font-weight: normal;
+    text-align: right;
+}

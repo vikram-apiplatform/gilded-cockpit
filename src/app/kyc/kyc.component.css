@@ -1,0 +1,83 @@
+.container {
+    width: 100%
+}
+
+.stats-container {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-evenly;
+    margin-bottom: 1rem;
+}
+
+:host ::ng-deep .mat-expansion-panel-body {
+    padding: 0px;
+}
+
+:host ::ng-deep .mat-content {
+    /*justify-content: center;*/
+    font-size: 1.2rem;
+    font-weight: bold;
+}
+
+.chart-container {
+    margin-bottom: 1rem;
+}
+
+.header-text {
+    font-size: 1.2rem;
+    font-weight: 800;
+}
+
+
+/*body {*/
+/*    background: rgb(99, 39, 120)*/
+/*}*/
+
+.form-control:focus {
+    box-shadow: none;
+    border-color: #BA68C8
+}
+
+.profile-button {
+    background: rgb(99, 39, 120);
+    box-shadow: none;
+    border: none
+}
+
+.profile-button:hover {
+    background: #682773
+}
+
+.profile-button:focus {
+    background: #682773;
+    box-shadow: none
+}
+
+.profile-button:active {
+    background: #682773;
+    box-shadow: none
+}
+
+.back:hover {
+    color: #682773;
+    cursor: pointer
+}
+
+.labels {
+    font-size: 11px
+}
+
+.add-experience:hover {
+    background: #BA68C8;
+    color: #fff;
+    cursor: pointer;
+    border: solid 1px #BA68C8
+}
+
+.form-field {
+    padding: 0.5rem;
+}
+
+.photo-details {
+    margin-top: 3rem;
+}

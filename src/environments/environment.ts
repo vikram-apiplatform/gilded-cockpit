@@ -3,6 +3,9 @@
 // `ng build --env=prod` then `environment.prod.ts` will be used instead.
 // The list of which env maps to which file can be found in `.angular-cli.json`.
 
+const apiHostUrl = 'https://dev-gilded.gateway.apiplatform.io';
+const gildedHostUrl = 'https://apiplatform-services-dev.gildedco.app';
+
 export const environment = {
     production: false,
     productName: 'Gilded Cockpit',
@@ -12,11 +15,18 @@ export const environment = {
         aiSearch: true,
         notification: true
     },
-    boardConfiguration:{
+    boardConfiguration: {
         board: true,
         ai: true,
         endpoint: true
-    }
+    },
+    apiHost: apiHostUrl,
+    gildedHost: gildedHostUrl,
+    apiHostName: 'dev-gilded',
+    partner: 'dev-gilded',
+    account: 'dev-gilded',
+    // kycUrl: apiHostUrl + '/v1/kyc'
+    kycUrl: gildedHostUrl + '/v1/data/dev-gilded/dev-gilded/gildedUser',
+    // amlUrl: apiHostUrl + '/v3/aml'
+    amlUrl: gildedHostUrl + '/v3/data/dev-gilded/dev-gilded/aml'
 };
-
-

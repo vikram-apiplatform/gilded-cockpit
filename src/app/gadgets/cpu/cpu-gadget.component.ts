@@ -6,7 +6,7 @@ import {EndPointService} from '../../configuration/tab-endpoint/endpoint.service
 import {GadgetBase} from '../_common/gadget-base';
 import {CPUService} from './service';
 import {Router} from '@angular/router';
-import {OptionsService} from "../../configuration/tab-options/service";
+import {OptionsService} from '../../configuration/tab-options/service';
 
 @Component({
     selector: 'app-dynamic-component',
@@ -24,12 +24,12 @@ export class CPUGadgetComponent extends GadgetBase {
     showLegend = true;
     showXAxisLabel = true;
     showYAxisLabel = true;
-    yAxisLabel = 'Available CPUs';
+    yAxisLabel = 'Available Gold';
     xAxisLabel = 'Percent Utilization';
     view: any[];
     cpu: any[] = [];
     colorScheme: any = {
-        domain: ['#0d5481', '#0AFF16']
+        domain: ['black', '#ffd700']
     };
 
 
@@ -78,9 +78,7 @@ export class CPUGadgetComponent extends GadgetBase {
     }
 
     public drillDown(data) {
-        this._route.navigate(['/detail'], {
-
-        });
+        this._route.navigate(['/detail'], {});
     }
 
     public updateProperties(updatedProperties: any) {

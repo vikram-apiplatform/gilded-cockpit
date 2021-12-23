@@ -18,9 +18,10 @@ import {PortConnectionGadgetComponent} from '../gadgets/port-connection/port-con
 import {StorageObjectListComponent} from '../gadgets/storage-object-list/storage-object-list.component';
 import {DonutGadgetComponent} from '../gadgets/donut/donut-gadget.component';
 import {TodoGadgetComponent} from '../gadgets/todo/todo-gadget.component';  // todo gadget
-import {BubbleGadgetComponent} from "../gadgets/bubble/bubble-gadget.component";
-import {BarChartGadgetComponent} from "../gadgets/barchart/barchart-gadget.component";
-import {PieChartGadgetComponent} from "../gadgets/piechart/piechart-gadget.component";
+import {BubbleGadgetComponent} from '../gadgets/bubble/bubble-gadget.component';
+import {BarChartGadgetComponent} from '../gadgets/barchart/barchart-gadget.component';
+import {PieChartGadgetComponent} from '../gadgets/piechart/piechart-gadget.component';
+import {GoldInventoryGadgetComponent} from '../gadgets/gold-inventory/gold-inventory-gadget.component';
 
 @NgModule({
     imports: [
@@ -28,6 +29,7 @@ import {PieChartGadgetComponent} from "../gadgets/piechart/piechart-gadget.compo
         GridModule.withComponents([
             MemoryGadgetComponent,
             CPUGadgetComponent,
+            GoldInventoryGadgetComponent,
             ServiceListGadgetComponent,
             PropertyListGadgetComponent,
             DiskGadgetComponent,

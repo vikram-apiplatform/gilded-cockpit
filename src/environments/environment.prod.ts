@@ -1,16 +1,27 @@
+const apiHostUrl = 'https://dev-gilded.gateway.apiplatform.io';
+const gildedHostUrl = 'https://apiplatform-services-dev.gildedco.app';
+
 export const environment = {
-    production: true,
+    production: false,
     productName: 'Gilded Cockpit',
     productVersion: '0.0.1',
     menu: {
-        documentation: false,
-        ai: false,
-        notification: false
+        documentation: true,
+        aiSearch: true,
+        notification: true
     },
     boardConfiguration: {
         board: true,
-        ai: false,
+        ai: true,
         endpoint: true
-    }
-
+    },
+    apiHost: apiHostUrl,
+    gildedHost: gildedHostUrl,
+    apiHostName: 'dev-gilded',
+    partner: 'dev-gilded',
+    account: 'dev-gilded',
+    // kycUrl: apiHostUrl + '/v1/kyc'
+    kycUrl: gildedHostUrl + '/v1/data/dev-gilded/dev-gilded/gildedUser',
+    // amlUrl: apiHostUrl + '/v3/aml'
+    amlUrl: gildedHostUrl + '/v3/data/dev-gilded/dev-gilded/aml'
 };

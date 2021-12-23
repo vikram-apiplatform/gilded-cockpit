@@ -1,0 +1,58 @@
+<!--<p>-->
+<!--  admin-menu works!-->
+<!--</p>-->
+<!--<mat-drawer-container>-->
+<!--    <mat-drawer>-->
+<!--        <div>-->
+<!--            &lt;!&ndash;        <app-menu-list [options]="options" [defaultActiveMenu]="'Roles'" [menus]="environment['type'] === 'admin'?adminMenu:menu" [showFiller]="showFiller"></app-menu-list>&ndash;&gt;-->
+<!--            <app-leftpanel [options]="options" [menus]="adminMenu" [showFiller]="true"></app-leftpanel>-->
+<!--        </div>-->
+<!--    </mat-drawer>-->
+<!--    <div>-->
+
+<!--    </div>-->
+<!--</mat-drawer-container>-->
+
+<mat-drawer-container class="example-container" autosize>
+    <mat-drawer #drawer class="example-sidenav" mode="side" opened>
+        <!--        <p>Auto-resizing sidenav</p>-->
+        <!--        <p *ngIf="showFiller">Lorem, ipsum dolor sit amet consectetur.</p>-->
+        <!--        <button (click)="showFiller = !showFiller" mat-raised-button>-->
+        <!--            Toggle extra text-->
+        <!--        </button>-->
+        <app-leftpanel [options]="options" [menus]="adminMenu" [showFiller]="showFiller"
+                       [activeMenu]="defaultActiveMenu"
+                       (menuItemSelected)="menuItemSelected($event)"></app-leftpanel>
+    </mat-drawer>
+
+    <div class="example-sidenav-content">
+        <!--        <button type="button" mat-button (click)="drawer.toggle()">-->
+        <!--            Toggle sidenav-->
+        <!--        </button>-->
+        <div>
+            <app-menu-component [dashboardList]="dashboardList" [selectedBoard]="selectedBoard"
+                                (adminMenuRefreshDashboard)="updateDashboardMenu('')"></app-menu-component>
+        </div>
+<!--        <app-cockpit-header></app-cockpit-header>-->
+        <div *ngIf="activeMenu==='Dashboard' && !showDrillDown">
+            <app-dashbord-overview></app-dashbord-overview>
+        </div>
+        <!--        <div style="padding: 10px; background-color: red" (click)="toggleFiller()">-->
+        <!--            toggleMe-->
+        <!--        </div>-->
+        <!--        <button mat-fab color="primary" aria-label="Example icon button with a delete icon" (click)="toggleFiller()">-->
+        <!--            Toggle-->
+        <!--        </button>-->
+        <router-outlet *ngIf="!showDrillDown"></router-outlet>
+        <div *ngIf="showDrillDown" class="container">
+            <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                <!--        <app-chart-drilldown (hideDetails)="hideDrillDownDetails()" [data]="drillDownData"-->
+                <!--                             [title]="drillDownTitle"></app-chart-drilldown>-->
+                <app-chart-drill-down (hideDetails)="hideDrillDownDetails()" [data]="drillDownData"
+                                      [title]="drillDownTitle"></app-chart-drill-down>
+            </div>
+        </div>
+    </div>
+
+</mat-drawer-container>
+

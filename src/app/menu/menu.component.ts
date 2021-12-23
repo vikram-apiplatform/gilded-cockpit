@@ -1,10 +1,16 @@
-import {Component, ElementRef, OnInit, ViewChild} from '@angular/core';
+import {Component, ElementRef, EventEmitter, Input, OnInit, Output, ViewChild} from '@angular/core';
 import {ConfigurationService} from '../services/configuration.service';
 import {MenuEventService} from './menu-service';
 import {environment} from '../../environments/environment';
 
 
 declare var jQuery: any;
+
+export interface Alert {
+    name: string;
+    icon: string;
+    notifications: number;
+}
 
 
 /**a
@@ -21,8 +27,9 @@ declare var jQuery: any;
 export class MenuComponent implements OnInit {
 
     host = window.location.host;
-    dashboardList: any[] = [];
-    selectedBoard = '';
+    @Input() dashboardList: any[] = [];
+    @Input() selectedBoard = '';
+    @Output() adminMenuRefreshDashboard: EventEmitter<any> = new EventEmitter<any>();
     placeHolderText = 'Ask the board to do something!';
     searchList: Array<string> = [];
     env: any;
@@ -34,12 +41,35 @@ export class MenuComponent implements OnInit {
 
     notificationSideBar: any;
     layoutSideBar: any;
-    aboutSideBar:any;
+    aboutSideBar: any;
     stickyMenu: any;
 
     typeAheadIsInMenu = true;
 
     layoutId = 0;
+
+    alerts: Alert[] = [
+        // {
+        //     name: 'Downloads',
+        //     icon: 'fa fa-cloud-download',
+        //     notifications: 10
+        // },
+        {
+            name: 'KYC Verifications',
+            icon: 'fa fa-users',
+            notifications: 12
+        },
+        {
+            name: 'AML Verifications',
+            icon: 'fa fa-user-secret',
+            notifications: 10
+        },
+        {
+            name: 'Inventory',
+            icon: 'fa fa-briefcase',
+            notifications: 10
+        }
+    ]
 
     constructor(private _configurationService: ConfigurationService,
                 private _menuEventService: MenuEventService) {
@@ -51,7 +81,7 @@ export class MenuComponent implements OnInit {
     }
 
     setupEventListeners() {
-       let gridEventSubscription =  this._menuEventService.listenForGridEvents().subscribe((event: IEvent) => {
+        let gridEventSubscription = this._menuEventService.listenForGridEvents().subscribe((event: IEvent) => {
 
             const edata = event['data'];
 
@@ -63,12 +93,12 @@ export class MenuComponent implements OnInit {
 
         });
 
-       this._menuEventService.addSubscriber(gridEventSubscription);
+        this._menuEventService.addSubscriber(gridEventSubscription);
 
     }
 
     ngOnInit() {
-        this.updateDashboardMenu('');
+        //this.updateDashboardMenu('');
         this.stickyMenu = jQuery(this.stickyMenuRef.nativeElement);
         this.stickyMenu.sticky();
     }
@@ -84,6 +114,7 @@ export class MenuComponent implements OnInit {
 
     emitBoardCreateEvent(event) {
         this._menuEventService.raiseMenuEvent({name: 'boardCreateEvent', data: event});
+        this.adminMenuRefreshDashboard.emit();
         this.updateDashboardMenu(event);
     }
 
@@ -93,6 +124,7 @@ export class MenuComponent implements OnInit {
 
     emitBoardDeleteEvent(event) {
         this._menuEventService.raiseMenuEvent({name: 'boardDeleteEvent', data: event});
+        this.adminMenuRefreshDashboard.emit();
         this.updateDashboardMenu('');
     }
 
@@ -150,6 +182,7 @@ export class MenuComponent implements OnInit {
         this.notificationSideBar.sidebar('setting', 'transition', 'overlay');
         this.notificationSideBar.sidebar('toggle');
     }
+
     toggleAboutSideBar() {
         this.aboutSideBar = jQuery(this.aboutSideBarRef.nativeElement);
         this.aboutSideBar.sidebar('setting', 'transition', 'overlay');

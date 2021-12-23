@@ -12,6 +12,7 @@ import {NewsGadgetComponent} from './news/news-gadget.component';
 import {TodoGadgetComponent} from './todo/todo-gadget.component';  // todo gadget
 import {JobAnalysisGadgetComponent} from './job-analysis/job-analysis-gadget.component';
 import {CPUService} from './cpu/service';
+import {GoldService} from './gold-inventory/service';
 import {EdgeService} from './edge-service-list/service';
 import {StatisticService} from './statistic/service';
 import {DiskService} from './disk/service';
@@ -41,15 +42,29 @@ import {FacetModule} from '../facet/facet.module';
 import {TypeAheadInputModule} from '../typeahead-input/typeahead-input.module';
 import {TodoService} from './todo/service';
 import {ConnectionService} from './port-connection/service';
-import {BubbleGadgetComponent} from "./bubble/bubble-gadget.component";
-import {ResultViewComponent} from "./port-connection/result-view.component";
-import {SolutionViewComponent} from "./port-connection/solution-view.component";
-import {BarChartGadgetComponent} from "./barchart/barchart-gadget.component";
-import {BarChartService} from "./barchart/service";
-import {PieChartGadgetComponent} from "./piechart/piechart-gadget.component";
-import {PieChartService} from "./piechart/service";  // todo gadget
+import {BubbleGadgetComponent} from './bubble/bubble-gadget.component';
+import {ResultViewComponent} from './port-connection/result-view.component';
+import {SolutionViewComponent} from './port-connection/solution-view.component';
+import {BarChartGadgetComponent} from './barchart/barchart-gadget.component';
+import {BarChartService} from './barchart/service';
+import {PieChartGadgetComponent} from './piechart/piechart-gadget.component';
+import {PieChartService} from './piechart/service';
+import {GoldInventoryGadgetComponent} from './gold-inventory/gold-inventory-gadget.component';
+import {AppModule} from '../app.module';
+import {ChartDrillDownComponent} from './gold-inventory/chart-drill-down/chart-drill-down.component';
+import {NgMultiSelectDropDownModule} from 'ng-multiselect-dropdown';
+import {MatMenuModule} from '@angular/material/menu';
+import {DataTableModule} from 'angular2-datatable';
+import {MatTableModule} from '@angular/material/table';
+import {MatTooltipModule} from '@angular/material/tooltip';
+import {MatDatepickerModule} from '@angular/material/datepicker';
+import {MatNativeDateModule} from '@angular/material/core';
+import { BarchartComponent } from './gold-inventory/barchart/barchart.component';
+import {NgbPaginationModule} from '@ng-bootstrap/ng-bootstrap';
+import {MatChipsModule} from '@angular/material/chips';
+import {MatCardModule} from '@angular/material/card';
 
-
+// todo gadget
 
 
 @NgModule({
@@ -71,11 +86,22 @@ import {PieChartService} from "./piechart/service";  // todo gadget
         FormsModule,
         FacetModule,
         TypeAheadInputModule,
-        DataListModule
+        DataListModule,
+        NgMultiSelectDropDownModule,
+        MatMenuModule,
+        DataTableModule,
+        MatTableModule,
+        MatTooltipModule,
+        MatDatepickerModule,
+        MatNativeDateModule,
+        NgbPaginationModule,
+        MatChipsModule,
+        MatCardModule
     ],
     declarations: [
         TodoGadgetComponent,  // todo gadget
         CPUGadgetComponent,
+        GoldInventoryGadgetComponent,
         CPUMGadgetComponent,
         DiskGadgetComponent,
         MemoryGadgetComponent,
@@ -96,7 +122,9 @@ import {PieChartService} from "./piechart/service";  // todo gadget
         ResultViewComponent,
         SolutionViewComponent,
         BarChartGadgetComponent,
-        PieChartGadgetComponent
+        PieChartGadgetComponent,
+        ChartDrillDownComponent,
+        BarchartComponent,
 
     ],
 
@@ -105,6 +133,7 @@ import {PieChartService} from "./piechart/service";  // todo gadget
         StatisticService,
         EdgeService,
         CPUService,
+        GoldService,
         StorageService,
         DonutService,
         APITokenService,
@@ -117,6 +146,7 @@ import {PieChartService} from "./piechart/service";  // todo gadget
     exports: [
         TodoGadgetComponent,  // todo gadget
         CPUGadgetComponent,
+        GoldInventoryGadgetComponent,
         CPUMGadgetComponent,
         DiskGadgetComponent,
         MemoryGadgetComponent,
@@ -134,8 +164,12 @@ import {PieChartService} from "./piechart/service";  // todo gadget
         DonutGadgetComponent,
         BubbleGadgetComponent,
         BarChartGadgetComponent,
-        PieChartGadgetComponent
-    ]
+        PieChartGadgetComponent,
+        DrillDownComponent,
+        ChartDrillDownComponent,
+        BarchartComponent
+    ],
+    bootstrap: [ChartDrillDownComponent]
 })
 export class GadgetModule {
 }

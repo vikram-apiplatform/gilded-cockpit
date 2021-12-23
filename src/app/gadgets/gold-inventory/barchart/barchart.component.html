@@ -1,0 +1,22 @@
+<div *ngIf="data.length" class="chart-background">
+    <div class="chart-header">
+        {{header}}
+    </div>
+    <ngx-charts-bar-vertical
+            [view]="view"
+            [scheme]="colorScheme"
+            [results]="data"
+            [gradient]="gradient"
+            [xAxis]="true"
+            [yAxis]="true"
+            [legend]="showLegend"
+            [showXAxisLabel]="true"
+            [showYAxisLabel]="true"
+            [xAxisLabel]="xAxisLabel"
+            [yAxisLabel]="yAxisLabel"
+            [showDataLabel]="true"
+            [roundEdges]="false"
+            [barPadding]=barPadding
+    >
+    </ngx-charts-bar-vertical>
+</div>

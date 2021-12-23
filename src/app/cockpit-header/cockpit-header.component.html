@@ -1,0 +1,51 @@
+<div class="container">
+    <mat-card class="col-lg-8 col-md-8 col-sx-12 col-xs-12 alerts-container">
+        <div class="alerts-header">
+            <div class="alerts-header-text">
+                Alerts
+            </div>
+            <div class="alerts-filter">
+
+            </div>
+        </div>
+        <div class="alerts">
+            <div *ngFor="let alert of alerts" class="alert-container">
+                <div class="alert-icon-container">
+                    <div class="alert-icon">
+                        <i [ngClass]="alert.icon"></i>
+                    </div>
+                    <div class="floating-label">
+                        {{alert.notifications}}
+                    </div>
+                </div>
+                <div class="alert-text">
+                    {{alert.name}}
+                </div>
+            </div>
+        </div>
+
+    </mat-card>
+    <!--    <div class="col-lg-1 col-md-1 col-sx-1 col-xs-1">-->
+
+    <!--    </div>-->
+    <mat-card class="col-lg-3 col-md-3 col-sx-12 col-xs-12 gold-rate-container">
+        <div class="gold-rate-header">
+            <div class="gold-rate-icon">
+                <i class="fa fa-usd"></i>
+            </div>
+            <div class="gold-rate-text">
+                Gold Today
+            </div>
+        </div>
+        <div class="gold-rate">
+            <div>
+                4805.89
+            </div>
+            <div class="gold-rate-unit">
+                per gram
+            </div>
+        </div>
+
+    </mat-card>
+
+</div>

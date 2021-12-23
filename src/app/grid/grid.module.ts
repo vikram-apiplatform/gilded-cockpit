@@ -14,14 +14,15 @@ import {TrendService} from '../gadgets/trend/service';
 import {TrendLineService} from '../gadgets/trend-line/service';
 import {EdgeService} from '../gadgets/edge-service-list/service';
 import {CPUService} from '../gadgets/cpu/service';
+import {GoldService} from '../gadgets/gold-inventory/service';
 import {HttpClientModule} from '@angular/common/http';
 import {DonutService} from '../gadgets/donut/service';
 import {TodoService} from '../gadgets/todo/service';
 import {ToastModule} from '../toast/toast.module';
 import {ConnectionService} from '../gadgets/port-connection/service';
-import {BubbleService} from "../gadgets/bubble/service";
-import {BarChartService} from "../gadgets/barchart/service";
-import {PieChartService} from "../gadgets/piechart/service";
+import {BubbleService} from '../gadgets/bubble/service';
+import {BarChartService} from '../gadgets/barchart/service';
+import {PieChartService} from '../gadgets/piechart/service';
 
 
 @NgModule({
@@ -48,10 +49,11 @@ import {PieChartService} from "../gadgets/piechart/service";
         TrendService,
         EdgeService,
         CPUService,
+        GoldService,
         DonutService,
         ConnectionService,
         TodoService  // todo gadget
-        ,BubbleService,
+        , BubbleService,
         BarChartService,
         PieChartService
     ]
