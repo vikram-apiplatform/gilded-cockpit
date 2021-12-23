@@ -1,0 +1,92 @@
+.p-0 {
+  padding: 0px;
+}
+.pr-0 {
+  padding-right: 0px;
+}
+
+.chart-container {
+  display: grid;
+  align-items: center;
+  justify-content: center;
+}
+
+.top-row {
+  height: 20vh;
+}
+
+.trend-container {
+  display: block;
+  margin-top: 10px;
+  min-height: 40vh;
+}
+
+.mt-10 {
+  margin-top: 10px !important;
+}
+
+
+.country-table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.country-table td, .country-table th {
+  border: 1px solid #ddd;
+  padding: 10px;
+}
+
+.country-table tr:nth-child(even) {
+  background-color: #f2f2f2;
+}
+
+.country-table th {
+  padding-top: 12px;
+  padding-bottom: 12px;
+  text-align: center;
+  background-color: rgba(0, 0, 0, 0.87);
+  color: white;
+}
+
+.country-table-container {
+  width: 100%;
+  height: 20vh;
+  overflow-x: hidden;
+  overflow-y: auto;
+  padding: 5px;
+  position: absolute;
+}
+
+.message-column {
+  width: 65%;
+}
+
+.timestamp-column {
+  width: 35%;
+}
+
+.pj-name {
+  cursor: pointer;
+}
+
+.pj-name:hover {
+  color: #0d71bb;
+}
+
+
+.icn-r {
+  color: #f44041;
+}
+
+.icn-g {
+  color: #48ce49;
+}
+
+.icn-y {
+  color: #fadb42;
+}
+
+.icn-b {
+  color: black;
+}
+

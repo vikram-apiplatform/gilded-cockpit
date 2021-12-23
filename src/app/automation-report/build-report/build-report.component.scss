@@ -140,6 +140,8 @@ mat-expansion-panel-header {
   width: 91px;
   font-size: 10px!important;
   cursor: pointer;
+  float: right;
+  margin-right: 10px;
 }
 
 .badge.success {
@@ -179,9 +181,10 @@ mat-expansion-panel-header {
 }
 
 .test-info-header {
-  font-size: 16px;
+  font-size: 14px;
   font-weight: 500;
   word-break: break-all;
+  margin-top: 10px;
 }
 
 .selected{
@@ -234,13 +237,13 @@ mat-expansion-panel-header {
 }
 
 .result-content {
-  height: 85vh;
+  //height: 85vh;
   overflow: auto;
 }
 
 .logs-container {
   overflow: auto;
-  height: 74vh;
+  //height: 59vh;
 }
 
 .nav-bar-h {
@@ -249,13 +252,11 @@ mat-expansion-panel-header {
   height: 50px;
   color: black;
   z-index: 1;
-  cursor: pointer;
   position: absolute;
 }
 
 .side-container {
-  height: 72vh;
-  margin-top: 10px
+  //height: 58vh;
 }
 
 .nav-li-sb {
@@ -282,13 +283,27 @@ mat-expansion-panel-header {
 }
 
 .main-container {
-  height: 89vh;
+  //height: 89vh;
   margin-top: 10px;
   padding: 0px;
 }
 
+.sidenav-full {
+  //height: -webkit-fill-available;
+  height: 66vh;
+}
+
 .card-m {
   display: flex;
+}
+
+.card-i {
+  display: flex;
+  padding: 7px;
+}
+
+.card-c {
+  padding: 7px;
 }
 
 .card-row {
@@ -300,4 +315,26 @@ mat-expansion-panel-header {
   display: flex;
   align-items: center;
   justify-content: center;
+}
+
+.t-bar {
+  height: 50px;
+  margin-bottom: 14px;
+  min-height: 0px !important;
+}
+
+.chart-c {
+  margin-top: 5px;
+  margin-bottom: 5px;
+  padding: 0px;
+}
+
+.inner-card {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.p-0 {
+  padding: 0px;
 }

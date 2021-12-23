@@ -14,7 +14,7 @@ import {APIService} from '../../api.service';
 })
 export class BuildReportComponent implements OnInit, OnChanges {
 
-  currentActiveIndex = -1;
+  currentActiveIndex = 0;
   currentTestCaseData: any;
   currentTestCaseDataLoading = false;
 
@@ -65,13 +65,23 @@ export class BuildReportComponent implements OnInit, OnChanges {
       ]
     }
   ];
-  public chartOptions: any = {
-    labels: {
-      render: 'value',
-      fontSize: 14,
-      fontStyle: 'bold',
-      fontColor: '#000',
-      fontFamily: '"Lucida Console", Monaco, monospace'
+
+  chartOptions: ChartOptions = {
+    responsive: false,
+    legend: {
+      display: true,
+      position: 'right',
+
+    },
+    plugins: {
+      title: {
+        display: true,
+        text: 'Tests',
+        padding: {
+          top: 10,
+          bottom: 30
+        }
+      }
     }
   };
 
@@ -95,13 +105,14 @@ export class BuildReportComponent implements OnInit, OnChanges {
   assertionChartData: number[] = [0, 0, 0];
   reportTitle = '';
 
-  // dataSource = {'testCaseResults':[{'apiResponse':{'statusCode':200,'statusLine':'HTTP/1.1 200 ','body':'[]','headers':[{'name':'Date','value':'Mon, 26 Jul 2021 05:43:31 GMT'},{'name':'Content-Type','value':'application/json;charset=UTF-8'},{'name':'Transfer-Encoding','value':'chunked'},{'name':'Connection','value':'keep-alive'},{'name':'RateLimit-Remaining','value':'4'},{'name':'RateLimit-Reset','value':'29'},{'name':'X-RateLimit-Limit-Minute','value':'5'},{'name':'X-RateLimit-Remaining-Minute','value':'4'},{'name':'RateLimit-Limit','value':'5'},{'name':'Cache-Control','value':'no-store, must-revalidate'},{'name':'vary','value':'Origin'},{'name':'Access-Control-Allow-Origin','value':'*'},{'name':'X-Kong-Upstream-Latency','value':'72'},{'name':'X-Kong-Proxy-Latency','value':'81'},{'name':'Via','value':'kong/2.4.1'}],'cookies':{},'sessionId':null,'timeInMillis':254,'contentLength':2,'attributes':[]},'startTime':1627234313493,'endTime':1627234313479,'name':'case1','result':{'status':'success'},'rules':[{'executor_type':'logic_compare','operator':'=','leftOperand':{'name':'a','type':'attributes','field':'API_gettestapi2_v1>response.statusCode','disabled':false},'rightOperand':{'executor_type':'math_number','field':'200','disabled':false},'disabled':false,'result':{'status':'success','fieldValue':'200'}},{'executor_type':'logic_compare','operator':'<','leftOperand':{'name':'a','type':'attributes','field':'API_gettestapi2_v1>response.body','disabled':false},'rightOperand':{'executor_type':'text','field':'zxvzsc','disabled':false},'disabled':false,'result':{'status':'success','fieldValue':'200'}}]},{'apiResponse':{'statusCode':200,'statusLine':'HTTP/1.1 200 ','body':'[]','headers':[{'name':'Date','value':'Mon, 26 Jul 2021 05:43:31 GMT'},{'name':'Content-Type','value':'application/json;charset=UTF-8'},{'name':'Transfer-Encoding','value':'chunked'},{'name':'Connection','value':'keep-alive'},{'name':'X-RateLimit-Remaining-Minute','value':'3'},{'name':'X-RateLimit-Limit-Minute','value':'5'},{'name':'RateLimit-Remaining','value':'3'},{'name':'RateLimit-Limit','value':'5'},{'name':'RateLimit-Reset','value':'29'},{'name':'Cache-Control','value':'no-store, must-revalidate'},{'name':'vary','value':'Origin'},{'name':'Access-Control-Allow-Origin','value':'*'},{'name':'X-Kong-Upstream-Latency','value':'93'},{'name':'X-Kong-Proxy-Latency','value':'75'},{'name':'Via','value':'kong/2.4.1'}],'cookies':{},'sessionId':null,'timeInMillis':237,'contentLength':2,'attributes':[]},'startTime':1627234313493,'endTime':1627234313479,'name':'case2','result':{'status':'failure','errorType':'assertion'},'rules':[{'executor_type':'logic_compare','operator':'=','leftOperand':{'name':'a','type':'attributes','field':'API_gettestapi2_v1>response.statusCode','disabled':false},'rightOperand':{'executor_type':'math_number','field':'200','disabled':false},'disabled':false,'result':{'status':'success','fieldValue':'200'}},{'executor_type':'logic_compare','operator':'<','leftOperand':{'name':'a','type':'attributes','field':'API_gettestapi2_v1>response.body','disabled':false},'rightOperand':{'executor_type':'text','field':'zxvzsc','disabled':false},'disabled':false,'result':{'status':'failure','fieldValue':'401'}}]},{'apiResponse':{'statusCode':200,'statusLine':'HTTP/1.1 200 ','body':'[]','headers':[{'name':'Date','value':'Mon, 26 Jul 2021 05:43:32 GMT'},{'name':'Content-Type','value':'application/json;charset=UTF-8'},{'name':'Transfer-Encoding','value':'chunked'},{'name':'Connection','value':'keep-alive'},{'name':'X-RateLimit-Remaining-Minute','value':'2'},{'name':'X-RateLimit-Limit-Minute','value':'5'},{'name':'RateLimit-Remaining','value':'2'},{'name':'RateLimit-Reset','value':'29'},{'name':'RateLimit-Limit','value':'5'},{'name':'Cache-Control','value':'no-store, must-revalidate'},{'name':'vary','value':'Origin'},{'name':'Access-Control-Allow-Origin','value':'*'},{'name':'X-Kong-Upstream-Latency','value':'165'},{'name':'X-Kong-Proxy-Latency','value':'62'},{'name':'Via','value':'kong/2.4.1'}],'cookies':{},'sessionId':null,'timeInMillis':287,'contentLength':2,'attributes':[]},'startTime':1627234313493,'endTime':1627234313479,'name':'case3','result':{'status':'success'},'rules':[{'executor_type':'logic_compare','operator':'=','leftOperand':{'name':'a','type':'attributes','field':'API_gettestapi2_v1>response.statusCode','disabled':false},'rightOperand':{'executor_type':'math_number','field':'200','disabled':false},'disabled':false,'result':{'status':'success','fieldValue':'200'}},{'executor_type':'logic_compare','operator':'<','leftOperand':{'name':'a','type':'attributes','field':'API_gettestapi2_v1>response.body','disabled':false},'rightOperand':{'executor_type':'text','field':'zxvzsc','disabled':false},'disabled':false,'result':{'status':'success','fieldValue':'200'}}]},{'apiResponse':{'statusCode':200,'statusLine':'HTTP/1.1 200 ','body':'[]','headers':[{'name':'Date','value':'Mon, 26 Jul 2021 05:43:32 GMT'},{'name':'Content-Type','value':'application/json;charset=UTF-8'},{'name':'Transfer-Encoding','value':'chunked'},{'name':'Connection','value':'keep-alive'},{'name':'RateLimit-Remaining','value':'1'},{'name':'RateLimit-Reset','value':'28'},{'name':'X-RateLimit-Limit-Minute','value':'5'},{'name':'X-RateLimit-Remaining-Minute','value':'1'},{'name':'RateLimit-Limit','value':'5'},{'name':'Cache-Control','value':'no-store, must-revalidate'},{'name':'vary','value':'Origin'},{'name':'Access-Control-Allow-Origin','value':'*'},{'name':'X-Kong-Upstream-Latency','value':'75'},{'name':'X-Kong-Proxy-Latency','value':'3'},{'name':'Via','value':'kong/2.4.1'}],'cookies':{},'sessionId':null,'timeInMillis':133,'contentLength':2,'attributes':[]},'startTime':1627234313493,'endTime':1627234313479,'name':'case4','result':{'status':'failure','errorType':'assertion'},'rules':[{'executor_type':'logic_compare','operator':'=','leftOperand':{'name':'a','type':'attributes','field':'API_gettestapi2_v1>response.statusCode','disabled':false},'rightOperand':{'executor_type':'math_number','field':'200','disabled':false},'disabled':false,'result':{'status':'success','fieldValue':'200'}},{'executor_type':'logic_compare','operator':'<','leftOperand':{'name':'a','type':'attributes','field':'API_gettestapi2_v1>response.body','disabled':false},'rightOperand':{'executor_type':'text','field':'zxvzsc','disabled':false},'disabled':false,'result':{'status':'success','fieldValue':'200'}},{'executor_type':'logic_compare','operator':'<','leftOperand':{'name':'a','type':'attributes','field':'API_gettestapi2_v1>response.body','disabled':false},'rightOperand':{'executor_type':'text','field':'zxvzsc','disabled':false},'disabled':false,'result':{'status':'failure','fieldValue':'404'}}]},{'apiResponse':{'statusCode':200,'statusLine':'HTTP/1.1 200 ','body':'[]','headers':[{'name':'Date','value':'Mon, 26 Jul 2021 05:43:32 GMT'},{'name':'Content-Type','value':'application/json;charset=UTF-8'},{'name':'Transfer-Encoding','value':'chunked'},{'name':'Connection','value':'keep-alive'},{'name':'X-RateLimit-Remaining-Minute','value':'0'},{'name':'X-RateLimit-Limit-Minute','value':'5'},{'name':'RateLimit-Remaining','value':'0'},{'name':'RateLimit-Limit','value':'5'},{'name':'RateLimit-Reset','value':'28'},{'name':'Cache-Control','value':'no-store, must-revalidate'},{'name':'vary','value':'Origin'},{'name':'Access-Control-Allow-Origin','value':'*'},{'name':'X-Kong-Upstream-Latency','value':'59'},{'name':'X-Kong-Proxy-Latency','value':'2'},{'name':'Via','value':'kong/2.4.1'}],'cookies':{},'sessionId':null,'timeInMillis':124,'contentLength':2,'attributes':[]},'startTime':1627234313493,'endTime':1627234313479,'name':'case5','result':{'status':'success'},'rules':[{'executor_type':'logic_compare','operator':'=','leftOperand':{'name':'a','type':'attributes','field':'API_gettestapi2_v1>response.statusCode','disabled':false},'rightOperand':{'executor_type':'math_number','field':'200','disabled':false},'disabled':false,'result':{'status':'success','fieldValue':'200'}},{'executor_type':'logic_compare','operator':'<','leftOperand':{'name':'a','type':'attributes','field':'API_gettestapi2_v1>response.body','disabled':false},'rightOperand':{'executor_type':'text','field':'zxvzsc','disabled':false},'disabled':false,'result':{'status':'success','fieldValue':'200'}}]}],'preStepResults':[],'tearDownStepResults':[]};
-
   constructor(public confPost: APIService, public dialog: MatDialog) {
   }
 
   ngOnInit() {
     this.setContent();
+    if (this.testCases && this.testCases.length > 0) {
+      this.getTestCaseData(this.testCases[0]['id']);
+    }
   }
 
   ngOnChanges(changes: SimpleChanges): void {
@@ -112,6 +123,7 @@ export class BuildReportComponent implements OnInit, OnChanges {
     this.totalTests = this.buildData['tests'];
     this.totalPassedTests = this.buildData['passed'];
     this.totalFailedTests = this.buildData['failed'];
+    this.totalSkippedTests = this.buildData['skipped'];
     this.currentTestCase = '';
     this.currentFailedTestCase = '';
     this.totalFailedAssertions = 0;
@@ -128,6 +140,7 @@ export class BuildReportComponent implements OnInit, OnChanges {
       this.totalTests = this.buildData['tests'];
       this.totalPassedTests = this.buildData['passed'];
       this.totalFailedTests = this.buildData['failed'];
+      this.totalSkippedTests = this.buildData['skipped'];
 
       this.chartData = [this.totalPassedTests, this.totalFailedTests, this.totalSkippedTests];
       this.assertionChartData = [this.totalPassedAssertions, this.totalFailedAssertions, this.totalSkippedAssertions];
@@ -328,6 +341,10 @@ export class BuildReportComponent implements OnInit, OnChanges {
     } else {
       return 'Skip';
     }
+  }
+
+  getPassRate() {
+    return Math.floor(this.buildData['passed'] / this.buildData['tests'] * 100);
   }
 
   public chartClicked(e) {

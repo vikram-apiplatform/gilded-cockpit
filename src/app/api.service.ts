@@ -107,6 +107,16 @@ export class APIService {
             .pipe(map(res => res));
     }
 
+    getAutomationProjects(query) {
+
+        let apiURL = 'https://dev-gilded.gateway.apiplatform.io/v1/automationProjects';
+        if (query) {
+            apiURL = apiURL + '?' + query;
+        }
+        return this._http.get(apiURL, this.httpOptions)
+            .pipe(map(res => res));
+    }
+
     getAutomationBuildResults(query) {
 
         let apiURL = 'https://dev-gilded.gateway.apiplatform.io/v1/automationTests';

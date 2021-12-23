@@ -1,0 +1,88 @@
+<div *ngIf="componentLoading" class="row">
+  <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12 text-center">
+    <div style="height: 80vh;
+                          display: flex;
+                          align-items: center;
+                          margin-left: 48%;">
+      <div>
+        <img src="assets/images/loading.gif" height="50"/>
+      </div>
+    </div>
+  </div>
+</div>
+
+<ng-container *ngIf="!componentLoading && !showBuildAnalytics">
+  <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+    <div class="col-lg-3 col-md-3 col-sm-3 col-xs-3 p-0">
+      <mat-card class="chart-container top-row">
+        <rg-gauge-chart
+                [canvasWidth]="canvasWidth"
+                [needleValue]="needleValue"
+                [centralLabel]="centralLabel"
+                [options]="options"
+                [name]="name"></rg-gauge-chart>
+      </mat-card>
+    </div>
+
+    <div class="col-lg-9 col-md-9 col-sm-9 col-xs-9 pr-0">
+      <mat-card class="chart-container top-row">
+        <div class="country-table-container">
+          <table class="country-table">
+            <tr class="table-header">
+              <ng-container *ngFor="let key of countryColumns">
+                <th>
+                  <div>{{key}}</div>
+                </th>
+              </ng-container>
+            </tr>
+            <tr *ngFor="let project of projects; let i = index">
+              <td>
+                <div><span class="pj-name" (click)="openFilterData(i, {})">{{project['project']['title']}}</span></div>
+              </td>
+              <td class="text-center">
+                <i [ngClass]="getCountryStatus(i, {geoLocation: ['AE']})" style="cursor: pointer" (click)="openFilterData(i, {geoLocation: ['AE']})"></i>
+              </td>
+              <td class="text-center">
+                <i [ngClass]="getCountryStatus(i, {geoLocation: ['IN']})" style="cursor: pointer" (click)="openFilterData(i, {geoLocation: ['IN']})"></i>
+              </td>
+              <td class="text-center">
+                <i [ngClass]="getCountryStatus(i, {geoLocation: ['US']})" style="cursor: pointer" (click)="openFilterData(i, {geoLocation: ['US']})"></i>
+              </td>
+            </tr>
+          </table>
+        </div>
+      </mat-card>
+    </div>
+  </div>
+
+  <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12" style="height: 69vh">
+  <!--  <app-automation-report></app-automation-report>-->
+
+    <mat-card class="col-md-12 col-lg-12 col-sm-12 col-xs-12 trend-container">
+      <div *ngFor="let project of projects; let i = index" class="col-md-6 col-lg-6 col-sm-6 col-xs-6 mt-10">
+        <mat-card >
+          <span style="font-size: 14px"><span class="pj-name" (click)="openFilterData(i, {})"><b>{{project['project']['title']}}</b></span></span>
+          <div>
+            <canvas baseChart width="250" height="250"
+                    [datasets]="project.lineChartData"
+                    [labels]="project.lineChartLabels"
+                    [options]="lineChartOptions"
+                    [colors]="lineChartColors"
+                    [legend]="lineChartLegend"
+                    [chartType]="lineChartType"
+                    [plugins]="lineChartPlugins">
+            </canvas>
+          </div>
+        </mat-card>
+      </div>
+    </mat-card>
+  </div>
+</ng-container>
+
+<ng-container *ngIf="!componentLoading && showBuildAnalytics">
+  <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12" style="height: 89vh">
+    <button (click)="showBuildAnalytics = false"><i class="fa fa-arrow-left" aria-hidden="true"></i> Back</button>
+      <app-automation-report [buildsData]="buildsData"
+                             [projectData]="projectData"></app-automation-report>
+  </div>
+</ng-container>
