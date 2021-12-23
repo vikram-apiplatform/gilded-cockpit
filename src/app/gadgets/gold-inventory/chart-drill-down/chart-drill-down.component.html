@@ -27,7 +27,6 @@
     <!--        </div>-->
 
     <!--    </div>-->
-
     <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 filter-container no-padding">
         <!--    <div class="col-lg-2 col-md-2 col-sm-1 col-xs-1">-->
         <!--        <button (click)="toggleAttributesFilter()" mat-button class="gilded-button">Fileds</button>-->
@@ -57,19 +56,46 @@
         <div class="col-lg-4 col-md-6 col-sm-6 col-xs-12 no-padding">
             <div class="filter-label" style="margin-left: 0.5rem">Date Range</div>
             <div class="date-filter-container">
-                <div class="date-text"> From</div>
+
                 <div class="start-date-filter">
-                    <input type="date" class="form-control date-input" id="startDate"
-                           (input)="selectStartDate()"
-                           min="{{minStartDate}}"
-                           max="{{today | date:'yyyy-MM-dd'}}" [(ngModel)]="startDate">
+                    <!--                    <div class="date-text"> From</div>-->
+                    <input class="form-control date-input" placeholder="mm-dd-yyyy"
+                           [footerTemplate]="footerTemplate"
+                           [minDate]="minStartDate"
+                           [maxDate]="unFormatDate(today)"
+                           name="dp" [(ngModel)]="startDate" (ngModelChange)="selectStartDate()" ngbDatepicker
+                           #d="ngbDatepicker">
+                    <div class="input-group-append">
+                        <button class="btn btn-outline-secondary calendar" (click)="d.toggle()" type="button"><i
+                                class="fa fa-calendar"></i></button>
+                    </div>
+                    <!--                    <input type="date" class="form-control date-input" id="startDate"-->
+                    <!--                           (click)="showStartDateCalendar($event)"-->
+                    <!--                                               (input)="selectStartDate()"-->
+                    <!--                                               min="{{minStartDate}}"-->
+                    <!--                           max="{{today | date:'yyyy-MM-dd'}}" [(ngModel)]="startDate">-->
                 </div>
-                <div class="date-text">To</div>
                 <div class="end-date-filter">
-                    <input type="date" class="form-control date-input" id="endDate" (input)="selectEndDate()"
-                           min="{{minEndDate}}"
-                           max="{{today | date:'yyyy-MM-dd'}}" [(ngModel)]="endDate">
+                    <!--                    <div class="date-text">To</div>-->
+                    <!--                    <input type="date" class="form-control date-input" id="endDate" (input)="selectEndDate()"-->
+                    <!--                                               min="{{minEndDate}}"-->
+                    <!--                           max="{{today | date:'yyyy-MM-dd'}}" [(ngModel)]="endDate">-->
+                    <input class="form-control date-input" placeholder="mm-dd-yyyy"
+                           [footerTemplate]="footerTemplate"
+                           [minDate]="minEndDate"
+                           [maxDate]="unFormatDate(today)"
+                           name="dp" [(ngModel)]="endDate" (ngModelChange)="selectEndDate()" ngbDatepicker
+                           #e="ngbDatepicker">
+                    <div class="input-group-append">
+                        <button class="btn btn-outline-secondary calendar" (click)="e.toggle()" type="button"><i
+                                class="fa fa-calendar"></i></button>
+                    </div>
                 </div>
+                <ng-template #footerTemplate>
+                    <hr class="my-0">
+                    <button class="btn btn-primary btn-sm m-2 float-left" (click)="e.close()">Apply</button>
+                    <button class="btn btn-secondary btn-sm m-2 float-right" (click)="e.close()">Close</button>
+                </ng-template>
             </div>
 
         </div>

@@ -592,10 +592,12 @@ th, td {
 
 .start-date-filter {
   //width: 15%;
+  display: flex;
 }
 
 .end-date-filter {
   //width: 15%;
+  display: flex;
 }
 
 .date-input {
@@ -606,6 +608,7 @@ th, td {
   border-radius: 0.2rem;
   //margin-top: 0.3rem;
   color: #808080;
+  width: 50%
 }
 
 .date-text {

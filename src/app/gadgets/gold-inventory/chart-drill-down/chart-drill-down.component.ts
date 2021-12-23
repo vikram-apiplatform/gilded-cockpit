@@ -1,4 +1,4 @@
-import {Component, EventEmitter, Input, OnChanges, OnInit, Output} from '@angular/core';
+import {Component, EventEmitter, Injectable, Input, OnChanges, OnInit, Output} from '@angular/core';
 import {IDropdownSettings} from 'ng-multiselect-dropdown/multiselect.model';
 import {FilterPipe} from '../../../filter.pipe';
 import {CsvService} from '../../../csv.service';
@@ -7,6 +7,8 @@ import {animate, state, style, transition, trigger} from '@angular/animations';
 import {COMMA, ENTER} from '@angular/cdk/keycodes';
 import {MatChipInputEvent} from '@angular/material/chips';
 import {RDCResultCodes} from '../../../../assets/data/rdc-result-codes';
+import {NgbDateParserFormatter, NgbDateStruct} from '@ng-bootstrap/ng-bootstrap';
+import * as moment from 'moment';
 
 declare let $;
 
@@ -63,9 +65,9 @@ export class ChartDrillDownComponent implements OnInit, OnChanges {
     showAttributesFilter = false;
     startDate: any;
     endDate: any;
-    today: any = new Date();
-    minStartDate = '2015-01-01';
-    minEndDate = '2015-01-01';
+    today: any = moment(new Date()).format('yyyy-MM-DD');
+    minStartDate = '';
+    minEndDate = '';
     maxEndDate: any = new Date();
     currentOffset = 0;
     limit = 10;
@@ -292,6 +294,9 @@ export class ChartDrillDownComponent implements OnInit, OnChanges {
     getReadableFormat(key) {
         if (key === 'kyc_check_count') {
             return 'KYC Attempts'
+        }
+        if (key === 'is_kyc_verified') {
+            return 'Is KYC Verified'
         }
         const formattedKey = key.replace(/([a-z])([A-Z])/g, '$1 $2');
         const words = formattedKey.split(' ');
@@ -530,7 +535,7 @@ export class ChartDrillDownComponent implements OnInit, OnChanges {
     }
 
     selectStartDate() {
-        if (this.endDate !== undefined && this.startDate > this.endDate) {
+        if (this.endDate !== undefined && this.formatDate(this.startDate) > this.formatDate(this.endDate)) {
             this.endDate = '';
         }
         if ((this.startDate !== '' && this.startDate !== undefined) && (this.endDate !== '' && this.endDate !== undefined)) {
@@ -544,6 +549,8 @@ export class ChartDrillDownComponent implements OnInit, OnChanges {
     }
 
     selectEndDate() {
+        console.log(this.startDate);
+        console.log(this.endDate);
         if ((this.startDate !== '' && this.startDate !== undefined) && (this.endDate !== '' && this.endDate !== undefined)) {
             this.applyDateFilters(this.queryParams);
         }
@@ -565,8 +572,8 @@ export class ChartDrillDownComponent implements OnInit, OnChanges {
         // this.filterData = [];
         // this.filteredData = dateFilteredData;
 
-        let fromDate = this.startDate + 'T00:00:00';
-        let toDate = this.endDate + 'T23:59:59';
+        let fromDate = this.formatDate(this.startDate) + '-' + 'T00:00:00';
+        let toDate = this.formatDate(this.endDate) + '-' + 'T23:59:59';
         let dateFilteredData: any = [];
         let params = '';
         if (queryParams !== '') {
@@ -577,7 +584,7 @@ export class ChartDrillDownComponent implements OnInit, OnChanges {
             params += '?date_created.gt=' + fromDate + '&date_created.lt=' + toDate
             //this.queryParams = params;
         }
-        this.currentOffset = 0;
+        //this.currentOffset = 0;
         this.getData(this.apiUrl + params);
         // this.apiService.getData(this.apiUrl + '?date_created.gt=' + fromDate + '&date_created.lt=' + toDate).subscribe(response => {
         //     dateFilteredData = response;
@@ -644,6 +651,10 @@ export class ChartDrillDownComponent implements OnInit, OnChanges {
         return value;
     }
 
+    showStartDateCalendar(event) {
+        console.log(event);
+    }
+
     lastPage() {
         this.currentOffset = (this.page - 1) * this.itemsPerPage;
         this.limit = this.itemsPerPage;
@@ -679,6 +690,24 @@ export class ChartDrillDownComponent implements OnInit, OnChanges {
         //this.currentPageDisplayed = this.page;
     }
 
+    formatDate(date) {
+        if (this.getType(date) === 'object') {
+            if (date.year && date.month && date.day) {
+                return date.year + '-' + date.month + '-' + date.day;
+            }
+        }
+        return date;
+    }
+
+    unFormatDate(date) {
+        console.log(date);
+        if (this.getType(date) === 'string') {
+            let tempDate = date.split('-');
+            return ({year: Number(tempDate[0]), month: Number(tempDate[1]), day: Number(tempDate[2])});
+        }
+        return date;
+    }
+
     setItemsPerPage() {
         switch (this.selectedItemsPerPageIndex) {
             case 1:
@@ -709,4 +738,27 @@ export class ChartDrillDownComponent implements OnInit, OnChanges {
         return [10, 20, 40, 60, 100][current - 1];
     }
 
+}
+
+
+@Injectable()
+export class CustomDateParserFormatter extends NgbDateParserFormatter {
+
+    readonly DELIMITER = '/';
+
+    parse(value: string): NgbDateStruct | null {
+        if (value) {
+            const date = value.split(this.DELIMITER);
+            return {
+                day: parseInt(date[0], 10),
+                month: parseInt(date[1], 10),
+                year: parseInt(date[2], 10)
+            };
+        }
+        return null;
+    }
+
+    format(date: NgbDateStruct | null): string {
+        return date ? date.month + this.DELIMITER + date.day + this.DELIMITER + date.year : '';
+    }
 }
