@@ -60,7 +60,7 @@
                 <div class="start-date-filter">
                     <!--                    <div class="date-text"> From</div>-->
                     <input class="form-control date-input" placeholder="mm-dd-yyyy"
-                           [footerTemplate]="footerTemplate"
+                           [footerTemplate]="startDateFooterTemplate"
                            [minDate]="minStartDate"
                            [maxDate]="unFormatDate(today)"
                            name="dp" [(ngModel)]="startDate" (ngModelChange)="selectStartDate()" ngbDatepicker
@@ -81,7 +81,7 @@
                     <!--                                               min="{{minEndDate}}"-->
                     <!--                           max="{{today | date:'yyyy-MM-dd'}}" [(ngModel)]="endDate">-->
                     <input class="form-control date-input" placeholder="mm-dd-yyyy"
-                           [footerTemplate]="footerTemplate"
+                           [footerTemplate]="endDateFooterTemplate"
                            [minDate]="minEndDate"
                            [maxDate]="unFormatDate(today)"
                            name="dp" [(ngModel)]="endDate" (ngModelChange)="selectEndDate()" ngbDatepicker
@@ -91,10 +91,18 @@
                                 class="fa fa-calendar"></i></button>
                     </div>
                 </div>
-                <ng-template #footerTemplate>
+                <ng-template #startDateFooterTemplate>
+                    <hr class="my-0">
+                    <button class="btn btn-primary btn-sm m-2 float-left" (click)="d.close()">Apply</button>
+                    <button class="btn btn-secondary btn-sm m-2 float-right" (click)="clearStartDate(); d.close()">
+                        Clear
+                    </button>
+                </ng-template>
+                <ng-template #endDateFooterTemplate>
                     <hr class="my-0">
                     <button class="btn btn-primary btn-sm m-2 float-left" (click)="e.close()">Apply</button>
-                    <button class="btn btn-secondary btn-sm m-2 float-right" (click)="e.close()">Close</button>
+                    <button class="btn btn-secondary btn-sm m-2 float-right" (click)="clearEndDate(); e.close()">Clear
+                    </button>
                 </ng-template>
             </div>
 

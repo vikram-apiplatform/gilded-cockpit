@@ -316,6 +316,18 @@ export class ChartDrillDownComponent implements OnInit, OnChanges {
         return formattedString;
     }
 
+    clearStartDate() {
+        this.startDate = ''
+        this.selectStartDate();
+        //this.applyDateFilters(this.queryParams);
+    }
+
+    clearEndDate() {
+        this.endDate = ''
+        this.selectEndDate();
+        //this.applyDateFilters(this.queryParams);
+    }
+
     toggleQueryFilter(key) {
         if (!this.showQueryFilter[key]) {
             this.queryFilterData[key].dropdownList = [];
@@ -542,20 +554,20 @@ export class ChartDrillDownComponent implements OnInit, OnChanges {
             this.applyDateFilters(this.queryParams);
         }
         if (this.startDate === '' || this.startDate === undefined) {
-            this.filteredData = this.data;
+            //this.filteredData = this.data;
+            this.getData(this.apiUrl + this.queryParams);
             this.applyQueryFilters('', false);
         }
         this.minEndDate = this.startDate;
     }
 
     selectEndDate() {
-        console.log(this.startDate);
-        console.log(this.endDate);
         if ((this.startDate !== '' && this.startDate !== undefined) && (this.endDate !== '' && this.endDate !== undefined)) {
             this.applyDateFilters(this.queryParams);
         }
         if (this.endDate === '' || this.endDate === undefined) {
-            this.filteredData = this.data;
+            //this.filteredData = this.data;
+            this.getData(this.apiUrl + this.queryParams);
             this.applyQueryFilters('', false);
         }
     }
