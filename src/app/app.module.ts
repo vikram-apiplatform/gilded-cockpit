@@ -88,7 +88,7 @@ import {GaugeChartModule} from 'angular-gauge-chart';
         MatToolbarModule,
         MatListModule,
         ChartsModule,
-        GaugeChartModule
+        GaugeChartModule,
     ],
     declarations: [
         AppComponent,

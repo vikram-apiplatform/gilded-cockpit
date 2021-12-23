@@ -100,6 +100,7 @@ export class APIService {
     getAutomationResults(query) {
 
         let apiURL = 'https://dev-gilded.gateway.apiplatform.io/v1/automationBuilds';
+        apiURL = environment.gildedHost + '/v1/data/' + environment.partner + '/' + environment.account + '/' + 'automationBuilds';
         if (query) {
             apiURL = apiURL + '?' + query;
         }
@@ -110,6 +111,7 @@ export class APIService {
     getAutomationProjects(query) {
 
         let apiURL = 'https://dev-gilded.gateway.apiplatform.io/v1/automationProjects';
+        apiURL = environment.gildedHost + '/v1/data/' + environment.partner + '/' + environment.account + '/' + 'automationProjects';
         if (query) {
             apiURL = apiURL + '?' + query;
         }
@@ -119,7 +121,8 @@ export class APIService {
 
     getAutomationBuildResults(query) {
 
-        let apiURL = 'https://dev-gilded.gateway.apiplatform.io/v1/automationTests';
+        let apiURL = 'https://gateway-dev.gildedco.app/v1/automationTests';
+        apiURL = environment.gildedHost + '/v1/data/' + environment.partner + '/' + environment.account + '/' + 'automationTests';
         if (query) {
             apiURL = apiURL + '?' + query;
         }

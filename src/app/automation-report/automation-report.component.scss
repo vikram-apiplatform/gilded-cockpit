@@ -216,3 +216,19 @@ a:hover,a:focus{
 .main-header {
   font-size: 14px;
 }
+
+.chart-c {
+  margin-top: 5px;
+  margin-bottom: 5px;
+  padding: 0px;
+}
+
+.inner-card {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.card-i {
+  display: flex;
+  padding: 7px;
+}

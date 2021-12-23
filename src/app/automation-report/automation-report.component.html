@@ -44,8 +44,74 @@
                             </mat-toolbar>
 
                             <div class="side-container">
+
+                                <div class = "col-md-12 col-lg-12 col-sm-12 col-xs-12">
+                                    <mat-card style="display: flow-root; margin-top: 10px; margin-bottom: 10px">
+                                        <span style="font-size: 14px"><b>Latest Test Result</b></span><br>
+                                        <div class = "col-md-3 col-lg-3 col-sm-3 col-xs-3 p-0">
+                                            <mat-card class="col-lg-12 col-md-12 col-sm-12 col-xs-12 card-c">
+                                                <span style="font-size: 11px"><b>Tests</b></span>
+                                                <div class="chart-container">
+                                                    <canvas baseChart
+                                                            [data]="doughnutChartData"
+                                                            [labels]="['Passed', 'Failed', 'Skipped']"
+                                                            [legend]=""
+                                                            [chartType]="'doughnut'"
+                                                            [colors]="doughnutColors"
+                                                            [options]="doughnutChartOptions" style="height: 81px;width: 160px;"></canvas>
+                                                </div>
+                                            </mat-card>
+                                        </div>
+                                        <div class = "col-md-9 col-lg-9 col-sm-9 col-xs-9 p-0">
+                                            <div class="col-md-4 col-lg-4 col-sm-4 col-xs-4">
+                                                <mat-card class="card-i">
+                                                    <div class = "col-md-12 col-lg-12 col-sm-12 col-xs-12 inner-card">
+                                                        <label class = "form-field-label"> Pass Rate </label><br>
+                                                        {{getPassRate(this.latestBuild['passed'], this.latestBuild['tests'])}} %
+                                                    </div>
+                                                </mat-card>
+                                                <mat-card class="card-i" style="margin-top: 10px;">
+                                                    <div class = "col-md-12 col-lg-12 col-sm-12 col-xs-12 inner-card">
+                                                        <label class = "form-field-label"> Tests Passed </label><br>
+                                                        {{this.latestBuild['passed']}}
+                                                    </div>
+                                                </mat-card>
+                                            </div>
+                                            <div class="col-md-4 col-lg-4 col-sm-4 col-xs-4">
+                                                <mat-card class="card-i">
+                                                    <div class = "col-md-12 col-lg-12 col-sm-12 col-xs-12 inner-card">
+                                                        <label class = "form-field-label"> Tests Failed </label><br>
+                                                        {{this.latestBuild['failed']}}
+                                                    </div>
+                                                </mat-card>
+                                                <mat-card class="card-i" style="margin-top: 10px;">
+                                                    <div class = "col-md-12 col-lg-12 col-sm-12 col-xs-12 inner-card">
+                                                        <label class = "form-field-label"> Tests Skipped </label><br>
+                                                        {{this.latestBuild['skipped']}}
+                                                    </div>
+                                                </mat-card>
+                                            </div>
+                                            <div class="col-md-4 col-lg-4 col-sm-4 col-xs-4">
+                                                <mat-card class="card-i">
+                                                    <div class = "col-md-12 col-lg-12 col-sm-12 col-xs-12 inner-card">
+                                                        <label class = "form-field-label"> Started </label><br>
+                                                        {{getDate(this.latestBuild['startedAt'])}}
+                                                    </div>
+                                                </mat-card>
+                                                <mat-card class="card-i" style="margin-top: 10px;">
+                                                    <div class = "col-md-12 col-lg-12 col-sm-12 col-xs-12 inner-card">
+                                                        <label class = "form-field-label"> Ended </label><br>
+                                                        {{getDate(this.latestBuild['endedAt'])}}
+                                                    </div>
+                                                </mat-card>
+                                            </div>
+                                        </div>
+                                    </mat-card>
+                                </div>
+
+
                                 <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12 card-row chart-container">
-                                    <mat-card class="col-lg-6 col-md-6">
+                                    <mat-card class="col-lg-6 col-md-6 col-sm-6 col-xs-6">
                                         <span style="font-size: 14px"><b>Test Result Trend</b></span>
                                         <div>
                                             <canvas baseChart width="250" height="250"
