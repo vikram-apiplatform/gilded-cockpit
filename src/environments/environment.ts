@@ -28,5 +28,6 @@ export const environment = {
     // kycUrl: apiHostUrl + '/v1/kyc'
     kycUrl: gildedHostUrl + '/v1/data/dev-gilded/dev-gilded/gildedUser',
     // amlUrl: apiHostUrl + '/v3/aml'
-    amlUrl: gildedHostUrl + '/v3/data/dev-gilded/dev-gilded/aml'
+    // amlUrl: gildedHostUrl + '/v3/data/dev-gilded/dev-gilded/aml'
+    amlUrl: gildedHostUrl + '/v1/data/dev-gilded/dev-gilded/filteredAMLData'
 };

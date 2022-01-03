@@ -107,7 +107,8 @@ export class AmlComponent implements OnInit {
     drillDownTitle = '';
     drillDownQueryParams = '';
     // columns = ['account_no', 'full_name', 'email_id', 'mobile_no', 'country', 'is_rdc_verified', 'is_aml_verified'];
-    columns = ['Batch_Id', 'Inquiry_Id', 'Tracking_Id', 'Inquiry_Name', 'Country', 'Response_Code', 'Acct_Balance_(gr)', 'RDC_Result_Codes'];
+    // columns = ['Batch_Id', 'Inquiry_Id', 'Tracking_Id', 'Inquiry_Name', 'Country', 'Response_Code', 'Acct_Balance_(gr)', 'RDC_Result_Codes'];
+    columns = ['batch_id', 'inquiry_id', 'tracking_id', 'inquiry_name', 'country', 'response_code', 'rdc_result_code'];
     remediateIdentifiers = ['In Review', 'Client Decisioning Review', 'Client Decisioned Alert', 'Client Decisioned Ignored Match']
 
     constructor(public apiService: APIService, public dialog: MatDialog) {
@@ -465,6 +466,19 @@ export class AmlComponent implements OnInit {
             data: record,
             width: '70%',
             height: '80%'
+        })
+    }
+
+    getAMLData() {
+        this.apiService.getAMBADData().subscribe(response => {
+            console.log(response);
+            let data: any;
+            data = response;
+            if (data && data.length) {
+                this.apiService.postFilteredAMBADData(data).subscribe(resp => {
+                    console.log(resp);
+                })
+            }
         })
     }
 

@@ -140,6 +140,7 @@
                 >
                 </ng-multiselect-dropdown>
                 <i (click)="download()" class="fa fa-download download-icon"></i>
+                <i (click)="refresh()" style="margin-right: -3rem" class="fa fa-window-close-o download-icon"></i>
             </div>
         </div>
         <!--        <div class="col-lg-1 col-md-1 col-sm-1 col-xs-1 filter-action">-->
@@ -268,10 +269,10 @@
                                                      [ngClass]="i===0?'table-data-first-child':''"
                                                      *ngIf="key!==remediateKey && itemList.includes(key)">
                                                     <div *ngIf="record[key]!==null">
-                                                        <div *ngIf="key!=='RDC_Result_Codes'">
+                                                        <div *ngIf="key!=='rdc_result_code'">
                                                             {{getActualData(record[key], key, title, recordId)}}
                                                         </div>
-                                                        <div *ngIf="key==='RDC_Result_Codes'">
+                                                        <div *ngIf="key==='rdc_result_code'">
                                                             <mat-chip-list aria-orientation="horizontal">
                                                                 <mat-chip *ngFor="let code of getRDCCodes(record[key])"
                                                                           [matTooltip]="getRDCCodeValue(code)"

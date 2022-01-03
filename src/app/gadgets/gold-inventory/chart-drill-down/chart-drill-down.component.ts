@@ -584,16 +584,18 @@ export class ChartDrillDownComponent implements OnInit, OnChanges {
         // this.filterData = [];
         // this.filteredData = dateFilteredData;
 
-        let fromDate = this.formatDate(this.startDate) + '-' + 'T00:00:00';
-        let toDate = this.formatDate(this.endDate) + '-' + 'T23:59:59';
+        let fromDate = this.type === 'kyc' ? this.formatDate(this.startDate) + '-' + 'T00:00:00' : this.formatDate(this.startDate) + '-' + ' 00:00:00';
+        let toDate = this.type === 'kyc' ? this.formatDate(this.endDate) + '-' + 'T23:59:59' : this.formatDate(this.endDate) + '-' + ' 23:59:59';
         let dateFilteredData: any = [];
         let params = '';
         if (queryParams !== '') {
             params = queryParams;
-            params += '&date_created.gt=' + fromDate + '&date_created.lt=' + toDate;
+            params += this.type === 'kyc' ? '&date_created.gt=' + fromDate + '&date_created.lt=' + toDate : '&batch_submitted.gt=' + fromDate + '&batch_submitted.lt=' + toDate
+            //params += '&batch_submitted.gt=' + fromDate + '&batch_submitted.lt=' + toDate;
             //this.queryParams += params;
         } else {
-            params += '?date_created.gt=' + fromDate + '&date_created.lt=' + toDate
+            params += this.type === 'kyc' ? '?date_created.gt=' + fromDate + '&date_created.lt=' + toDate : '?batch_submitted.gt=' + fromDate + '&batch_submitted.lt=' + toDate
+            //params += '?batch_submitted.gt=' + fromDate + '&batch_submitted.lt=' + toDate
             //this.queryParams = params;
         }
         //this.currentOffset = 0;
@@ -636,7 +638,10 @@ export class ChartDrillDownComponent implements OnInit, OnChanges {
     }
 
     getRDCCodes(codes) {
-        return codes.split('; ');
+        if (codes && codes.includes(';')) {
+            codes = codes.replace(',', '; ');
+            return codes.split('; ');
+        }
     }
 
     getRDCCodeValue(code) {
@@ -718,6 +723,13 @@ export class ChartDrillDownComponent implements OnInit, OnChanges {
             return ({year: Number(tempDate[0]), month: Number(tempDate[1]), day: Number(tempDate[2])});
         }
         return date;
+    }
+
+    refresh() {
+        this.queryParams = '';
+        this.startDate = '';
+        this.endDate = '';
+        this.getData();
     }
 
     setItemsPerPage() {
