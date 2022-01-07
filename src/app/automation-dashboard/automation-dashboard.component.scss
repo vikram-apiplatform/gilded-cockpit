@@ -138,3 +138,68 @@
   padding: 7px;
 }
 
+.dr-selector {
+  font-size: 0.6rem;
+  height: 10px;
+  top: -5px;
+  width: 100px;
+}
+
+.sts-c{
+  display: flex;
+  justify-content: center;
+  align-content: center;
+  flex-direction: row;
+}
+
+.sts-p-c {
+  display: flex;
+  justify-content: center;
+  align-content: center;
+  flex-direction: column;
+  padding-left: 5px;
+}
+
+.q-card {
+  margin-bottom: 10px;
+  display: flex;
+}
+
+.q-con {
+  padding-top: 3px;
+}
+
+.pl-7 {
+  padding-left: 7px;
+}
+
+.date-range-picker-icon {
+  margin-left: -25px;
+  z-index: 1;
+}
+
+.right-inner-addon {
+  position: relative;
+  width: 150px;
+}
+
+.right-inner-addon input{
+  padding: 3px 15px 3px 5px;
+  box-sizing: border-box;
+  border: 2px solid #ccc;
+  border-radius: 4px;
+  background-color: #f8f8f8;
+  font-size: 0.7rem;
+  color: #605e5e;
+}
+
+.right-inner-addon i{
+  position: absolute;
+  right: 5px;
+  top: 5px;
+  color: #605e5e;
+}
+
+:host ::ng-deep .md-drppicker {
+  left: -453px;
+}

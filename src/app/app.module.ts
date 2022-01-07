@@ -51,6 +51,7 @@ import {MatListModule} from '@angular/material/list';
 import {ChartsModule} from 'ng2-charts';
 import { AutomationDashboardComponent } from './automation-dashboard/automation-dashboard.component';
 import {GaugeChartModule} from 'angular-gauge-chart';
+import {NgxDaterangepickerMd} from 'ngx-daterangepicker-material';
 
 @NgModule({
     imports: [
@@ -89,6 +90,7 @@ import {GaugeChartModule} from 'angular-gauge-chart';
         MatListModule,
         ChartsModule,
         GaugeChartModule,
+        NgxDaterangepickerMd.forRoot(),
     ],
     declarations: [
         AppComponent,

@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import {ChartDataSets, ChartOptions, ChartType} from 'chart.js';
 import {Color, Label} from 'ng2-charts';
 import {APIService} from '../api.service';
+import * as moment from 'moment';
 
 @Component({
   selector: 'app-automation-dashboard',
@@ -13,7 +14,7 @@ export class AutomationDashboardComponent implements OnInit {
   public canvasWidth = 200
   public needleValue = 0
   public centralLabel = ''
-  public name = 'Automation Health'
+  public name: string
   public options = {
     hasNeedle: true,
     needleColor: 'gray',
@@ -62,6 +63,7 @@ export class AutomationDashboardComponent implements OnInit {
   //chart
 
   projects = [];
+  projectsArray: any;
 
   countryColumns = ['PRODUCT',  'USA', 'UAE', 'INDIA'];
   componentLoading = true;
@@ -71,21 +73,62 @@ export class AutomationDashboardComponent implements OnInit {
   buildsData: any;
   buildsCurrentActiveIndex = -1;
 
+  queryTime = 'week';
+  dateRanges = [
+    {display_name: 'Past Day', range: 'day'},
+    {display_name: 'Past Week', range: 'week'},
+    {display_name: 'Past Month', range: 'month'},
+    {display_name: 'Past Year', range: 'year'},
+    {display_name: 'All Time', range: 'all'},
+  ];
 
-  constructor(public confPost: APIService) { }
+  ranges: any = {
+    'Today': [moment(), moment()],
+    'Last 7 Days': [moment().subtract(6, 'days'), moment()],
+    'Last 30 Days': [moment().subtract(29, 'days'), moment()],
+    'This Month': [moment().startOf('month'), moment().endOf('month')],
+  };
+
+  selectedDateRange: {startDate: moment.Moment, endDate: moment.Moment} = {startDate: moment().subtract(6, 'days'), endDate: moment()};
+
+  minDate = moment('2021-12-16', 'YYYY-MM-DD');
+  maxDate = moment();
+
+  constructor(public confPost: APIService) {}
 
   ngOnInit() {
 
     this.confPost.getAutomationProjects( 'partner=' + 'dev-gilded').subscribe(projects => {
 
-      let projectData: any;
-      projectData = projects;
+      this.projectsArray = projects;
+      this.getAutomationResultForProjects();
+    });
+  }
 
-      const promises = [];
+  projectsHasData() {
+    if (this.projects.length > 0) {
+      for (const project of this.projects) {
+        if (project.data.length > 0) {
+          return true;
+        }
+      }
+      return false;
+    } else {
+      return false;
+    }
+  }
 
-      for (const project of projectData) {
+  getAutomationResultForProjects() {
+    const promises = [];
+
+    if (this.projectsArray) {
+      this.projects = [];
+
+      for (const project of this.projectsArray) {
         promises.push(this.getAutomationResultForProject(project));
       }
+
+      this.componentLoading = true;
 
       Promise.all(promises)
           .then(async (results) => {
@@ -98,15 +141,37 @@ export class AutomationDashboardComponent implements OnInit {
                 this.needleValue = Math.floor(passedTests / totalTests * 100);
               }
             }
-            this.name = this.name + ': ' + this.needleValue + '%'
+            this.name = 'Automation Health' + ': ' + this.needleValue + '%';
+            this.showBuildAnalytics = false;
             this.componentLoading = false;
           });
-    });
+    }
   }
 
   async getAutomationResultForProject(project) {
     return new Promise(async (resolve, reject) => {
-      this.confPost.getAutomationResults('projectId=' + project['id'] + '&partner=' + 'dev-gilded' + '&buildStatus=success&sort=-startedAt').subscribe(response => {
+      const d = new Date(Date.now());
+      d.setDate(d.getDate() - 7);
+
+      let query = 'projectId=' + project['id'] + '&partner=' + 'dev-gilded';
+      // if (this.queryTime === 'week') {
+      //   d.setDate(d.getDate() - 7);
+      //   query += '&startedAt.gte=' + d.getTime();
+      // } else if (this.queryTime === 'day') {
+      //   d.setHours(d.getHours() - 24);
+      //   query += '&startedAt.gte=' + d.getTime();
+      // } else if (this.queryTime === 'month') {
+      //   d.setDate(d.getDate() - 30);
+      //   query += '&startedAt.gte=' + d.getTime();
+      // } else if (this.queryTime === 'year') {
+      //   d.setDate(d.getDate() - 365);
+      //   query += '&startedAt.gte=' + d.getTime();
+      // } else if (this.queryTime === 'all') {
+      // } else {
+      //   d.setDate(d.getDate() - 7);
+      //   query += '&startedAt.gte=' + d.getTime();
+      // }
+      this.confPost.getAutomationResults('projectId=' + project['id'] + '&partner=' + 'dev-gilded' + '&startedAt.gte=' + this.selectedDateRange.startDate.startOf('day').valueOf() + '&endedAt.lte=' + this.selectedDateRange.endDate.endOf('day').valueOf() + '&buildStatus=success&sort=-startedAt').subscribe(response => {
         let result: any;
         result = response;
 

@@ -1,4 +1,4 @@
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 import {ChartDataSets, ChartOptions, ChartType} from 'chart.js';
 import {Color, Label} from 'ng2-charts';
 import {APIService} from '../api.service';
@@ -14,6 +14,8 @@ export class AutomationReportComponent implements OnInit {
   state = 'collapsed';
 
   @Input() currentActiveIndex = -1;
+
+  @Output() backBtnClicked: EventEmitter<any> = new EventEmitter<any>();
 
   buildData: any;
 
@@ -196,6 +198,10 @@ export class AutomationReportComponent implements OnInit {
     } else {
       return '-';
     }
+  }
+
+  backButtonClicked() {
+    this.backBtnClicked.emit('cliked');
   }
 
   hasViewPagePermissions() {

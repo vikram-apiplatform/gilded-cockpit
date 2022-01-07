@@ -148,7 +148,6 @@ export class ChartDrillDownComponent implements OnInit, OnChanges {
             this.apiService.getData(url).subscribe(response => {
                 let items: any;
                 items = response;
-                console.log(items);
                 if (items && items.length > 0) {
                     this.data = items[0].data;
                     this.filteredData = items[0].data;
@@ -457,8 +456,6 @@ export class ChartDrillDownComponent implements OnInit, OnChanges {
         this.currentOffset = 0;
         this.currentPageDisplayed = 1;
         this.page = 1;
-        console.log(this.startDate);
-        console.log(this.endDate);
         if (this.startDate && this.endDate) {
             this.applyDateFilters(this.queryParams);
         } else {
@@ -717,7 +714,6 @@ export class ChartDrillDownComponent implements OnInit, OnChanges {
     }
 
     unFormatDate(date) {
-        console.log(date);
         if (this.getType(date) === 'string') {
             let tempDate = date.split('-');
             return ({year: Number(tempDate[0]), month: Number(tempDate[1]), day: Number(tempDate[2])});

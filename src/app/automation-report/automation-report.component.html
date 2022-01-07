@@ -23,7 +23,9 @@
                 <mat-sidenav #sidenav2 opened mode="side" position="start" role="navigation" class="sidenav-wv" style="width: 240px">
 
                     <div fxLayout="column" class="sidenav-normal">
-                        <mat-toolbar class="nav-bar-h" (click)="currentActiveIndex=-1"> Build History</mat-toolbar>
+                        <mat-toolbar class="nav-bar-h" >
+                            <div class="bh-bck" (click)="backButtonClicked()"><i class="fa fa-chevron-left" aria-hidden="true"></i></div>
+                            <div class="bh-t" (click)="currentActiveIndex=-1">Build History</div></mat-toolbar>
                         <mat-nav-list style="padding-top: 55px;">
                             <mat-list-item *ngFor="let result of buildsData; let i = index" class="list-item" [ngClass]="i===currentActiveIndex?'lt-i-active':''" (click)="setResult(result['id'], i)">
                                 <a
