@@ -23,12 +23,12 @@
     <ul id="accordion" class="accordion">
         <li *ngIf="showFiller">
             <div [ngClass]="showFiller?'nav-icon-expanded':'nav-icon-collapsed'">
-                <img class="companyMenuLogo" src="../../assets/images/company_icon.ico"/> Gilded Admin
+                <img class="companyMenuLogo" src="../../assets/images/company_icon.png"/> Gilded Ops
             </div>
 
         <li *ngIf="!showFiller">
             <div class="nav-icon-expanded">
-                <img class="companyMenuLogo" src="../../assets/images/company_icon.ico"/>
+                <img class="companyMenuLogo" src="../../assets/images/company_icon.png"/>
             </div>
         </li>
         <li *ngFor="let menu of menus; let i = index"

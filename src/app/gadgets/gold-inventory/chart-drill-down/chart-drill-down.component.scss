@@ -592,10 +592,12 @@ th, td {
 
 .start-date-filter {
   //width: 15%;
+  display: flex;
 }
 
 .end-date-filter {
   //width: 15%;
+  display: flex;
 }
 
 .date-input {
@@ -606,6 +608,7 @@ th, td {
   border-radius: 0.2rem;
   //margin-top: 0.3rem;
   color: #808080;
+  width: 50%
 }
 
 .date-text {
@@ -653,7 +656,7 @@ th, td {
 }
 
 .download-icon {
-  font-size: 1.5rem;
+  font-size: 1.2rem;
   margin-left: 1.5rem;
   cursor: pointer;
   color: #808080;

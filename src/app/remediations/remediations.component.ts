@@ -24,8 +24,8 @@ export class RemediationsComponent implements OnInit {
 
 
     ngOnInit() {
-        this.accNo = this.data.account_no ? this.data.account_no : this.data['Tracking_Id'];
-        this.name = this.data.full_name ? this.data.full_name : this.data['Inquiry_Name'];
+        this.accNo = this.data.account_no ? this.data.account_no : this.data['tracking_id'];
+        this.name = this.data.full_name ? this.data.full_name : this.data['inquiry_name'];
         this.getRemediationsData()
     }
 

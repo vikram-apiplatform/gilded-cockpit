@@ -51,7 +51,7 @@ import {PieChartGadgetComponent} from './piechart/piechart-gadget.component';
 import {PieChartService} from './piechart/service';
 import {GoldInventoryGadgetComponent} from './gold-inventory/gold-inventory-gadget.component';
 import {AppModule} from '../app.module';
-import {ChartDrillDownComponent} from './gold-inventory/chart-drill-down/chart-drill-down.component';
+import {ChartDrillDownComponent, CustomDateParserFormatter} from './gold-inventory/chart-drill-down/chart-drill-down.component';
 import {NgMultiSelectDropDownModule} from 'ng-multiselect-dropdown';
 import {MatMenuModule} from '@angular/material/menu';
 import {DataTableModule} from 'angular2-datatable';
@@ -59,8 +59,8 @@ import {MatTableModule} from '@angular/material/table';
 import {MatTooltipModule} from '@angular/material/tooltip';
 import {MatDatepickerModule} from '@angular/material/datepicker';
 import {MatNativeDateModule} from '@angular/material/core';
-import { BarchartComponent } from './gold-inventory/barchart/barchart.component';
-import {NgbPaginationModule} from '@ng-bootstrap/ng-bootstrap';
+import {BarchartComponent} from './gold-inventory/barchart/barchart.component';
+import {NgbDateParserFormatter, NgbDatepickerModule, NgbPaginationModule} from '@ng-bootstrap/ng-bootstrap';
 import {MatChipsModule} from '@angular/material/chips';
 import {MatCardModule} from '@angular/material/card';
 
@@ -96,7 +96,8 @@ import {MatCardModule} from '@angular/material/card';
         MatNativeDateModule,
         NgbPaginationModule,
         MatChipsModule,
-        MatCardModule
+        MatCardModule,
+        NgbDatepickerModule
     ],
     declarations: [
         TodoGadgetComponent,  // todo gadget
@@ -140,7 +141,8 @@ import {MatCardModule} from '@angular/material/card';
         ConnectionService,
         TodoService,  // todo gadget
         BarChartService,
-        PieChartService
+        PieChartService,
+        {provide: NgbDateParserFormatter, useClass: CustomDateParserFormatter}
     ],
 
     exports: [

@@ -1,4 +1,4 @@
-import {Component, EventEmitter, Input, OnChanges, OnInit, Output} from '@angular/core';
+import {Component, EventEmitter, Injectable, Input, OnChanges, OnInit, Output} from '@angular/core';
 import {IDropdownSettings} from 'ng-multiselect-dropdown/multiselect.model';
 import {FilterPipe} from '../../../filter.pipe';
 import {CsvService} from '../../../csv.service';
@@ -7,6 +7,8 @@ import {animate, state, style, transition, trigger} from '@angular/animations';
 import {COMMA, ENTER} from '@angular/cdk/keycodes';
 import {MatChipInputEvent} from '@angular/material/chips';
 import {RDCResultCodes} from '../../../../assets/data/rdc-result-codes';
+import {NgbDateParserFormatter, NgbDateStruct} from '@ng-bootstrap/ng-bootstrap';
+import * as moment from 'moment';
 
 declare let $;
 
@@ -63,9 +65,9 @@ export class ChartDrillDownComponent implements OnInit, OnChanges {
     showAttributesFilter = false;
     startDate: any;
     endDate: any;
-    today: any = new Date();
-    minStartDate = '2015-01-01';
-    minEndDate = '2015-01-01';
+    today: any = moment(new Date()).format('yyyy-MM-DD');
+    minStartDate = '';
+    minEndDate = '';
     maxEndDate: any = new Date();
     currentOffset = 0;
     limit = 10;
@@ -146,7 +148,6 @@ export class ChartDrillDownComponent implements OnInit, OnChanges {
             this.apiService.getData(url).subscribe(response => {
                 let items: any;
                 items = response;
-                console.log(items);
                 if (items && items.length > 0) {
                     this.data = items[0].data;
                     this.filteredData = items[0].data;
@@ -293,6 +294,9 @@ export class ChartDrillDownComponent implements OnInit, OnChanges {
         if (key === 'kyc_check_count') {
             return 'KYC Attempts'
         }
+        if (key === 'is_kyc_verified') {
+            return 'Is KYC Verified'
+        }
         const formattedKey = key.replace(/([a-z])([A-Z])/g, '$1 $2');
         const words = formattedKey.split(' ');
         for (let i = 0; i < words.length; i++) {
@@ -309,6 +313,18 @@ export class ChartDrillDownComponent implements OnInit, OnChanges {
             }
         }
         return formattedString;
+    }
+
+    clearStartDate() {
+        this.startDate = ''
+        this.selectStartDate();
+        //this.applyDateFilters(this.queryParams);
+    }
+
+    clearEndDate() {
+        this.endDate = ''
+        this.selectEndDate();
+        //this.applyDateFilters(this.queryParams);
     }
 
     toggleQueryFilter(key) {
@@ -440,8 +456,6 @@ export class ChartDrillDownComponent implements OnInit, OnChanges {
         this.currentOffset = 0;
         this.currentPageDisplayed = 1;
         this.page = 1;
-        console.log(this.startDate);
-        console.log(this.endDate);
         if (this.startDate && this.endDate) {
             this.applyDateFilters(this.queryParams);
         } else {
@@ -530,14 +544,15 @@ export class ChartDrillDownComponent implements OnInit, OnChanges {
     }
 
     selectStartDate() {
-        if (this.endDate !== undefined && this.startDate > this.endDate) {
+        if (this.endDate !== undefined && this.formatDate(this.startDate) > this.formatDate(this.endDate)) {
             this.endDate = '';
         }
         if ((this.startDate !== '' && this.startDate !== undefined) && (this.endDate !== '' && this.endDate !== undefined)) {
             this.applyDateFilters(this.queryParams);
         }
         if (this.startDate === '' || this.startDate === undefined) {
-            this.filteredData = this.data;
+            //this.filteredData = this.data;
+            this.getData(this.apiUrl + this.queryParams);
             this.applyQueryFilters('', false);
         }
         this.minEndDate = this.startDate;
@@ -548,7 +563,8 @@ export class ChartDrillDownComponent implements OnInit, OnChanges {
             this.applyDateFilters(this.queryParams);
         }
         if (this.endDate === '' || this.endDate === undefined) {
-            this.filteredData = this.data;
+            //this.filteredData = this.data;
+            this.getData(this.apiUrl + this.queryParams);
             this.applyQueryFilters('', false);
         }
     }
@@ -565,19 +581,21 @@ export class ChartDrillDownComponent implements OnInit, OnChanges {
         // this.filterData = [];
         // this.filteredData = dateFilteredData;
 
-        let fromDate = this.startDate + 'T00:00:00';
-        let toDate = this.endDate + 'T23:59:59';
+        let fromDate = this.type === 'kyc' ? this.formatDate(this.startDate) + '-' + 'T00:00:00' : this.formatDate(this.startDate) + '-' + ' 00:00:00';
+        let toDate = this.type === 'kyc' ? this.formatDate(this.endDate) + '-' + 'T23:59:59' : this.formatDate(this.endDate) + '-' + ' 23:59:59';
         let dateFilteredData: any = [];
         let params = '';
         if (queryParams !== '') {
             params = queryParams;
-            params += '&date_created.gt=' + fromDate + '&date_created.lt=' + toDate;
+            params += this.type === 'kyc' ? '&date_created.gt=' + fromDate + '&date_created.lt=' + toDate : '&batch_submitted.gt=' + fromDate + '&batch_submitted.lt=' + toDate
+            //params += '&batch_submitted.gt=' + fromDate + '&batch_submitted.lt=' + toDate;
             //this.queryParams += params;
         } else {
-            params += '?date_created.gt=' + fromDate + '&date_created.lt=' + toDate
+            params += this.type === 'kyc' ? '?date_created.gt=' + fromDate + '&date_created.lt=' + toDate : '?batch_submitted.gt=' + fromDate + '&batch_submitted.lt=' + toDate
+            //params += '?batch_submitted.gt=' + fromDate + '&batch_submitted.lt=' + toDate
             //this.queryParams = params;
         }
-        this.currentOffset = 0;
+        //this.currentOffset = 0;
         this.getData(this.apiUrl + params);
         // this.apiService.getData(this.apiUrl + '?date_created.gt=' + fromDate + '&date_created.lt=' + toDate).subscribe(response => {
         //     dateFilteredData = response;
@@ -617,7 +635,10 @@ export class ChartDrillDownComponent implements OnInit, OnChanges {
     }
 
     getRDCCodes(codes) {
-        return codes.split('; ');
+        if (codes && codes.includes(';')) {
+            codes = codes.replace(',', '; ');
+            return codes.split('; ');
+        }
     }
 
     getRDCCodeValue(code) {
@@ -642,6 +663,10 @@ export class ChartDrillDownComponent implements OnInit, OnChanges {
         // `
 
         return value;
+    }
+
+    showStartDateCalendar(event) {
+        console.log(event);
     }
 
     lastPage() {
@@ -679,6 +704,30 @@ export class ChartDrillDownComponent implements OnInit, OnChanges {
         //this.currentPageDisplayed = this.page;
     }
 
+    formatDate(date) {
+        if (this.getType(date) === 'object') {
+            if (date.year && date.month && date.day) {
+                return date.year + '-' + date.month + '-' + date.day;
+            }
+        }
+        return date;
+    }
+
+    unFormatDate(date) {
+        if (this.getType(date) === 'string') {
+            let tempDate = date.split('-');
+            return ({year: Number(tempDate[0]), month: Number(tempDate[1]), day: Number(tempDate[2])});
+        }
+        return date;
+    }
+
+    refresh() {
+        this.queryParams = '';
+        this.startDate = '';
+        this.endDate = '';
+        this.getData();
+    }
+
     setItemsPerPage() {
         switch (this.selectedItemsPerPageIndex) {
             case 1:
@@ -709,4 +758,27 @@ export class ChartDrillDownComponent implements OnInit, OnChanges {
         return [10, 20, 40, 60, 100][current - 1];
     }
 
+}
+
+
+@Injectable()
+export class CustomDateParserFormatter extends NgbDateParserFormatter {
+
+    readonly DELIMITER = '/';
+
+    parse(value: string): NgbDateStruct | null {
+        if (value) {
+            const date = value.split(this.DELIMITER);
+            return {
+                day: parseInt(date[0], 10),
+                month: parseInt(date[1], 10),
+                year: parseInt(date[2], 10)
+            };
+        }
+        return null;
+    }
+
+    format(date: NgbDateStruct | null): string {
+        return date ? date.month + this.DELIMITER + date.day + this.DELIMITER + date.year : '';
+    }
 }
