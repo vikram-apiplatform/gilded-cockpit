@@ -9,6 +9,7 @@
 
 # dependencies
 /node_modules
+/npm-shrinkwrap.json
 
 # profiling files
 chrome-profiler-events*.json
