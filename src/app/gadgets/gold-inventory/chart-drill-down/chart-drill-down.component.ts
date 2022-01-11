@@ -635,9 +635,10 @@ export class ChartDrillDownComponent implements OnInit, OnChanges {
     }
 
     getRDCCodes(codes) {
-        if (codes && codes.includes(';')) {
-            codes = codes.replace(',', '; ');
-            return codes.split('; ');
+        if (codes && (codes.includes(';') || codes.includes(','))) {
+            // let code = codes.replace(',', '; ');
+            let code = codes.split(',').join('; ')
+            return code.split('; ');
         }
     }
 
