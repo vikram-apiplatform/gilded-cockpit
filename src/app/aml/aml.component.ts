@@ -105,7 +105,7 @@ export class AmlComponent implements OnInit {
     showDrillDown = false;
     drillDownData: any;
     drillDownTitle = '';
-    drillDownQueryParams = '';
+    drillDownQueryParams = 'sort=-batch_submitted';
     // columns = ['account_no', 'full_name', 'email_id', 'mobile_no', 'country', 'is_rdc_verified', 'is_aml_verified'];
     // columns = ['Batch_Id', 'Inquiry_Id', 'Tracking_Id', 'Inquiry_Name', 'Country', 'Response_Code', 'Acct_Balance_(gr)', 'RDC_Result_Codes'];
     columns = ['batch_id', 'inquiry_id', 'tracking_id', 'inquiry_name', 'country', 'response_code', 'rdc_result_code'];

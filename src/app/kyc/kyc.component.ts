@@ -70,7 +70,7 @@ export class KycComponent implements OnInit {
     showDrillDown = false;
     drillDownData: any;
     drillDownTitle = '';
-    drillDownQueryParams = '';
+    drillDownQueryParams = 'sort=-date_created';
     columns = ['account_no', 'full_name', 'email_id', 'mobile_no', 'country', 'is_kyc_verified', 'kyc_check_count'];
     kycHistoryColumns = ['date_created', 'last_updated', 'request_id', 'name', 'doc_type', 'reason', 'docInfo']
 

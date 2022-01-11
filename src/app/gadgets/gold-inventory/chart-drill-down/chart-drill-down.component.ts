@@ -143,6 +143,9 @@ export class ChartDrillDownComponent implements OnInit, OnChanges {
             } else {
                 url += '&pagination=true&offset=' + this.currentOffset + '&limit=' + this.limit;
             }
+            if (this.includesParams) {
+                url += '&' + this.paramsToBePassed;
+            }
             //url = this.apiUrl + '?pagination=true&offset=' + this.currentOffset + '&limit=' + this.limit;
 
             this.apiService.getData(url).subscribe(response => {
@@ -420,9 +423,9 @@ export class ChartDrillDownComponent implements OnInit, OnChanges {
         for (const key of Object.keys(this.queryFilterData)) {
             if (queryParams === '') {
                 queryParams += '?';
-                if (this.includesParams) {
-                    queryParams += this.paramsToBePassed;
-                }
+                // if (this.includesParams) {
+                //     queryParams += this.paramsToBePassed;
+                // }
             }
             // else {
             //     queryParams += '&';
@@ -581,17 +584,17 @@ export class ChartDrillDownComponent implements OnInit, OnChanges {
         // this.filterData = [];
         // this.filteredData = dateFilteredData;
 
-        let fromDate = this.type === 'kyc' ? this.formatDate(this.startDate) + '-' + 'T00:00:00' : this.formatDate(this.startDate) + '-' + ' 00:00:00';
-        let toDate = this.type === 'kyc' ? this.formatDate(this.endDate) + '-' + 'T23:59:59' : this.formatDate(this.endDate) + '-' + ' 23:59:59';
+        let fromDate = this.type === 'kyc' ? this.formatDate(this.startDate) + 'T00:00:00' : this.formatDate(this.startDate) + '- 00:00:00';
+        let toDate = this.type === 'kyc' ? this.formatDate(this.endDate)  + 'T23:59:59' : this.formatDate(this.endDate) + '- 23:59:59';
         let dateFilteredData: any = [];
         let params = '';
         if (queryParams !== '') {
             params = queryParams;
-            params += this.type === 'kyc' ? '&date_created.gt=' + fromDate + '&date_created.lt=' + toDate : '&batch_submitted.gt=' + fromDate + '&batch_submitted.lt=' + toDate
+            params += this.type === 'kyc' ? '&date_created.gte=' + fromDate + '&date_created.lte=' + toDate : '&batch_submitted.gte=' + fromDate + '&batch_submitted.lte=' + toDate
             //params += '&batch_submitted.gt=' + fromDate + '&batch_submitted.lt=' + toDate;
             //this.queryParams += params;
         } else {
-            params += this.type === 'kyc' ? '?date_created.gt=' + fromDate + '&date_created.lt=' + toDate : '?batch_submitted.gt=' + fromDate + '&batch_submitted.lt=' + toDate
+            params += this.type === 'kyc' ? '?date_created.gte=' + fromDate + '&date_created.lte=' + toDate : '?batch_submitted.gte=' + fromDate + '&batch_submitted.lte=' + toDate
             //params += '?batch_submitted.gt=' + fromDate + '&batch_submitted.lt=' + toDate
             //this.queryParams = params;
         }
