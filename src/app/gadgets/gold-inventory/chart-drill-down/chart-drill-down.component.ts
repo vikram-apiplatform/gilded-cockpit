@@ -63,8 +63,8 @@ export class ChartDrillDownComponent implements OnInit, OnChanges {
     expandedElement: any;
     @Input() showExpansionPanel = {};
     showAttributesFilter = false;
-    startDate: any;
-    endDate: any;
+    @Input() startDate: any;
+    @Input() endDate: any;
     today: any = moment(new Date()).format('yyyy-MM-DD');
     minStartDate = '';
     minEndDate = '';
@@ -91,7 +91,11 @@ export class ChartDrillDownComponent implements OnInit, OnChanges {
     }
 
     async ngOnInit() {
-        await this.getData();
+        if (this.startDate && this.endDate) {
+            this.applyDateFilters('');
+        } else {
+            await this.getData();
+        }
         //this.filteredData = this.data;
         this.populateFilters();
         this.populateQueryFiltersData();
@@ -252,6 +256,9 @@ export class ChartDrillDownComponent implements OnInit, OnChanges {
                 return data[0].refinery
             }
             //return JSON.stringify(data);
+        }
+        if (key === 'date_created' || key === 'batch_submitted') {
+            return (moment(data).format('M/D/YYYY, h:mm a'));
         }
         return data;
     }
@@ -585,7 +592,7 @@ export class ChartDrillDownComponent implements OnInit, OnChanges {
         // this.filteredData = dateFilteredData;
 
         let fromDate = this.type === 'kyc' ? this.formatDate(this.startDate) + 'T00:00:00' : this.formatDate(this.startDate) + '- 00:00:00';
-        let toDate = this.type === 'kyc' ? this.formatDate(this.endDate)  + 'T23:59:59' : this.formatDate(this.endDate) + '- 23:59:59';
+        let toDate = this.type === 'kyc' ? this.formatDate(this.endDate) + 'T23:59:59' : this.formatDate(this.endDate) + '- 23:59:59';
         let dateFilteredData: any = [];
         let params = '';
         if (queryParams !== '') {
@@ -721,6 +728,15 @@ export class ChartDrillDownComponent implements OnInit, OnChanges {
         if (this.getType(date) === 'string') {
             let tempDate = date.split('-');
             return ({year: Number(tempDate[0]), month: Number(tempDate[1]), day: Number(tempDate[2])});
+        }
+        return date;
+    }
+
+    getReadableDate(date) {
+        if (this.getType(date) === 'object') {
+            if (date.year && date.month && date.day) {
+                return date.month + '/' + date.day + '/' + date.year;
+            }
         }
         return date;
     }

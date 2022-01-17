@@ -166,14 +166,7 @@
                 <span *ngIf="searchText!==''">{{tempCollectionSize}}</span>
                 <span *ngIf="searchText===''">{{collectionSize}}</span>
             </b> records
-        </div>
-        <div>
-            <!--        <span>Total records fetched: <b *ngIf="filteredData">{{filteredData.length}}</b></span>-->
-            <!--        <span (click)="getitems('', true)" class="fetchRecords">-->
-            <!--                        <u style="color: blue" *ngIf="!isdbSearch">Fetch all-->
-            <!--                            &lt;!&ndash;                        <span *ngIf="searchText!==''">{{tempCollectionSize}}</span>&ndash;&gt;-->
-            <!--                        <span>{{collectionSize}}</span> records</u>-->
-            <!--                    </span>-->
+            <span *ngIf="startDate && endDate">({{getReadableDate(startDate)}} - {{getReadableDate(endDate)}})</span>
         </div>
     </div>
     <div class="limiter">
@@ -253,9 +246,6 @@
                                         </ng-container>
                                     </div>
                                 </th>
-                                <!--                            <th>-->
-
-                                <!--                            </th>-->
                             </tr>
                             </thead>
                             <tbody>
@@ -298,22 +288,6 @@
                                                             </div>
                                                         </div>
                                                     </div>
-                                                    <!--                                                    <div style="align-content: center">-->
-                                                    <!--                                                        <span style="width: 50%; float: right"*ngIf="record[key]!==null">{{getActualData(record[key], key, title, recordId)}}</span>-->
-                                                    <!--                                                        <span style="width: 50%; float: left">-->
-                                                    <!--                                                            <div>-->
-                                                    <!--                                                                <i class="show-details-icon"-->
-                                                    <!--                                                                    [ngClass]="showExpansionPanel[recordId] === 'show-btn' ? 'fa fa-eye' : 'fa fa-eye-slash'"-->
-                                                    <!--                                                                    (click)="toggleExpansionPanel(recordId)"-->
-                                                    <!--                                                                    *ngIf="key===expandKey && record[expandKey] && record[expandKey]>0 && (showExpansionPanel[recordId] === 'show-btn' || showExpansionPanel[recordId] === 'hide-btn')"></i>-->
-                                                    <!--                                                                <div *ngIf="key===expandKey && showExpansionPanel[recordId] === 'loading'" >-->
-                                                    <!--                                                                    <div>-->
-                                                    <!--                                                                        <img src="assets/images/loading.gif" height="20"/>-->
-                                                    <!--                                                                    </div>-->
-                                                    <!--                                                                </div>-->
-                                                    <!--                                                            </div>-->
-                                                    <!--                                                        </span>-->
-                                                    <!--                                                    </div>-->
                                                 </div>
                                                 <div class="row100 body {{record[key]}}"
                                                      [matTooltip]="getActualData(record[key], key, title, recordId)"
@@ -329,16 +303,6 @@
                                                 </div>
                                             </div>
                                         </td>
-                                        <!--                                <td>-->
-                                        <!--                                    <div (click)="toggleExpansionPanel(recordId)"-->
-                                        <!--                                         *ngIf="!showExpansionPanel[recordId] && record.noOfAttempts && record.noOfAttempts>0"-->
-                                        <!--                                         class="row100-body toggle-detail-text">More-->
-                                        <!--                                    </div>-->
-                                        <!--                                    <div (click)="toggleExpansionPanel(recordId)"-->
-                                        <!--                                         *ngIf="showExpansionPanel[recordId] && record.noOfAttempts && record.noOfAttempts>0"-->
-                                        <!--                                         class="row100-body toggle-detail-text">Less-->
-                                        <!--                                    </div>-->
-                                        <!--                                </td>-->
                                     </tr>
                                     <tr *ngIf="showExpansionPanel[recordId] === 'hide-btn' && kycHistory && kycHistory[record.id]"
                                         style="margin:1rem">
@@ -358,9 +322,6 @@
                                                                 <mfDefaultSorter by="{{key}}"><span
                                                                         class="table-key-text">{{getReadableFormat(key)}}</span>
                                                                 </mfDefaultSorter>
-                                                                <!--                                                        <button *ngIf="i==getKeys(mf.data[0]).length-2" mat-button-->
-                                                                <!--                                                                class="gilded-button remediate-button">Remediate-->
-                                                                <!--                                                        </button>-->
                                                             </div>
                                                         </th>
                                                     </tr>
@@ -412,122 +373,6 @@
                                 </div>
                             </div>
                         </table>
-
-                        <!--                    <table #mf="mfDataTable" mat-table [dataSource]="filteredData" multiTemplateDataRows [mfData]="filteredData" class="">-->
-
-                        <!--                        <th *ngFor="let key of getKeys(mf.data[0]); let i=index" mfSortByChange>-->
-                        <!--                            <div class="table-head"-->
-                        <!--                                 [ngClass]="i==0?'table-head-first-child':i==getKeys(filteredData[0]).length-1?'table-head-last-child':''"-->
-                        <!--                                 *ngIf="key!=='id' && itemList.includes(key)">-->
-                        <!--                                <mfDefaultSorter by="{{key}}"><span-->
-                        <!--                                        class="table-key-text">{{getReadableFormat(key)}}</span></mfDefaultSorter>-->
-                        <!--                                <i class="fa fa-filter filter-icon" (click)="toggleQueryFilter(key)"></i>-->
-
-                        <!--                                <i *ngIf="queryFilterData[key] && queryFilterData[key].filterData && queryFilterData[key].filterData.length"-->
-                        <!--                                   class="fa fa-times-rectangle-o filter-icon"-->
-                        <!--                                   (click)="clearFilter(key, false)"></i>-->
-                        <!--                            </div>-->
-                        <!--                            <div *ngIf="showQueryFilter && showQueryFilter[key]" class="filter-query-container">-->
-                        <!--                                <div class="query-filter-action-container">-->
-                        <!--                                    <button mat-button class="gilded-button" (click)="clearFilter(key)">Clear-->
-                        <!--                                    </button>-->
-                        <!--                                    <button mat-button class="gilded-button" (click)="applyQueryFilters(key)">-->
-                        <!--                                        Apply-->
-                        <!--                                    </button>-->
-                        <!--                                </div>-->
-                        <!--                                <div class="query-filter-selector">-->
-                        <!--                                    <ng-multiselect-dropdown-->
-                        <!--                                            [placeholder]="'Select ' + getReadableFormat(key) + ' to filter'"-->
-                        <!--                                            [settings]="showQueryFilter && showQueryFilter[key]?queryFilterDropdownSettings:null"-->
-                        <!--                                            [data]="queryFilterData[key].dropdownList"-->
-                        <!--                                            [(ngModel)]="queryFilterData[key].filterData"-->
-                        <!--                                    >-->
-                        <!--                                    </ng-multiselect-dropdown>-->
-                        <!--                                </div>-->
-                        <!--                            </div>-->
-                        <!--                        </th>-->
-                        <!--                        -->
-                        <!--                        <tr matColumnDef="{{column}}" *ngFor="let column of columns">-->
-                        <!--                            <th mat-header-cell *matHeaderCellDef> {{column}} </th>-->
-                        <!--                            <td mat-cell *matCellDef="let element"> {{element[column]}} </td>-->
-                        <!--                        </tr>-->
-
-                        <!--                        &lt;!&ndash; Expanded Content Column - The detail row is made up of this one column that spans across all columns &ndash;&gt;-->
-                        <!--                        <ng-container matColumnDef="expandedDetail">-->
-                        <!--                            <td mat-cell *matCellDef="let element" [attr.colspan]="columns.length">-->
-                        <!--                                <div class="example-element-detail"-->
-                        <!--                                     [@detailExpand]="element == expandedElement ? 'expanded' : 'collapsed'">-->
-                        <!--&lt;!&ndash;                                    <div class="example-element-diagram">&ndash;&gt;-->
-                        <!--&lt;!&ndash;                                        <div class="example-element-position"> {{element.position}} </div>&ndash;&gt;-->
-                        <!--&lt;!&ndash;                                        <div class="example-element-symbol"> {{element.symbol}} </div>&ndash;&gt;-->
-                        <!--&lt;!&ndash;                                        <div class="example-element-name"> {{element.name}} </div>&ndash;&gt;-->
-                        <!--&lt;!&ndash;                                        <div class="example-element-weight"> {{element.weight}} </div>&ndash;&gt;-->
-                        <!--&lt;!&ndash;                                    </div>&ndash;&gt;-->
-                        <!--&lt;!&ndash;                                    <div class="example-element-description">&ndash;&gt;-->
-                        <!--&lt;!&ndash;                                        {{element.description}}&ndash;&gt;-->
-                        <!--&lt;!&ndash;                                        <span class="example-element-description-attribution"> &#45;&#45; Wikipedia </span>&ndash;&gt;-->
-                        <!--&lt;!&ndash;                                    </div>&ndash;&gt;-->
-                        <!--                                    Hi..-->
-                        <!--                                </div>-->
-                        <!--                            </td>-->
-                        <!--                        </ng-container>-->
-
-                        <!--                        <tr mat-header-row *matHeaderRowDef="columns"></tr>-->
-                        <!--                        <tr mat-row *matRowDef="let element; columns: columns;"-->
-                        <!--                            class="example-element-row"-->
-                        <!--                            [class.example-expanded-row]="expandedElement === element"-->
-                        <!--                            (click)="expandedElement = expandedElement === element ? null : element">-->
-                        <!--                        </tr>-->
-                        <!--                        <tr mat-row *matRowDef="let row; columns: ['expandedDetail']" class="example-detail-row"></tr>-->
-
-                        <!--                        <thead>-->
-                        <!--                        <ng-container class="row100 head">-->
-                        <!--                            <th *ngFor="let key of getKeys(mf.data[0]); let i=index" mfSortByChange>-->
-                        <!--                                <div class="table-head"-->
-                        <!--                                     [ngClass]="i==0?'table-head-first-child':i==getKeys(filteredData[0]).length-1?'table-head-last-child':''"-->
-                        <!--                                     *ngIf="key!=='id' && itemList.includes(key)">-->
-                        <!--                                    <mfDefaultSorter by="{{key}}"><span-->
-                        <!--                                            class="table-key-text">{{getReadableFormat(key)}}</span></mfDefaultSorter>-->
-                        <!--                                    <i class="fa fa-filter filter-icon" (click)="toggleQueryFilter(key)"></i>-->
-
-                        <!--                                    <i *ngIf="queryFilterData[key] && queryFilterData[key].filterData && queryFilterData[key].filterData.length"-->
-                        <!--                                       class="fa fa-times-rectangle-o filter-icon"-->
-                        <!--                                       (click)="clearFilter(key, false)"></i>-->
-                        <!--                                </div>-->
-                        <!--                                <div *ngIf="showQueryFilter && showQueryFilter[key]" class="filter-query-container">-->
-                        <!--                                    <div class="query-filter-action-container">-->
-                        <!--                                        <button mat-button class="gilded-button" (click)="clearFilter(key)">Clear-->
-                        <!--                                        </button>-->
-                        <!--                                        <button mat-button class="gilded-button" (click)="applyQueryFilters(key)">-->
-                        <!--                                            Apply-->
-                        <!--                                        </button>-->
-                        <!--                                    </div>-->
-                        <!--                                    <div class="query-filter-selector">-->
-                        <!--                                        <ng-multiselect-dropdown-->
-                        <!--                                                [placeholder]="'Select ' + getReadableFormat(key) + ' to filter'"-->
-                        <!--                                                [settings]="showQueryFilter && showQueryFilter[key]?queryFilterDropdownSettings:null"-->
-                        <!--                                                [data]="queryFilterData[key].dropdownList"-->
-                        <!--                                                [(ngModel)]="queryFilterData[key].filterData"-->
-                        <!--                                        >-->
-                        <!--                                        </ng-multiselect-dropdown>-->
-                        <!--                                    </div>-->
-                        <!--                                </div>-->
-                        <!--                            </th>-->
-                        <!--                        </ng-container>-->
-                        <!--                        </thead>-->
-                        <!--                        <tbody>-->
-                        <!--                        <tr *ngFor="let record of mf.data; let recordId=index">-->
-                        <!--                            <td *ngFor="let key of getKeys(record); let i=index">-->
-                        <!--                                <div class="row100 body" [ngClass]="i===0?'table-data-first-child':''"-->
-                        <!--                                     *ngIf="key!=='id' && itemList.includes(key)">-->
-                        <!--                                    {{getActualData(record[key], key, title, recordId)}}-->
-                        <!--                                </div>-->
-                        <!--                            </td>-->
-                        <!--                        </tr>-->
-                        <!--                        </tbody>-->
-                        <!--                    </table>-->
-
-
                     </div>
                 </div>
             </div>

@@ -5,6 +5,7 @@ import {MAT_DIALOG_DATA, MatDialog, MatDialogRef} from '@angular/material/dialog
 import {LeftpanelComponent} from '../leftpanel/leftpanel.component';
 import {RemediationsComponent} from '../remediations/remediations.component';
 import {not} from 'rxjs/internal-compatibility';
+import * as moment from 'moment';
 
 @Component({
     selector: 'app-kyc',
@@ -71,8 +72,10 @@ export class KycComponent implements OnInit {
     drillDownData: any;
     drillDownTitle = '';
     drillDownQueryParams = 'sort=-date_created';
-    columns = ['account_no', 'full_name', 'email_id', 'mobile_no', 'country', 'is_kyc_verified', 'kyc_check_count'];
-    kycHistoryColumns = ['date_created', 'last_updated', 'request_id', 'name', 'doc_type', 'reason', 'docInfo']
+    columns = ['account_no', 'full_name', 'email_id', 'mobile_no', 'country', 'is_kyc_verified', 'kyc_check_count', 'date_created'];
+    kycHistoryColumns = ['date_created', 'last_updated', 'request_id', 'name', 'doc_type', 'reason', 'docInfo'];
+    startDate: any;
+    endDate: any;
 
     constructor(public apiService: APIService, public dialog: MatDialog) {
     }
@@ -137,6 +140,14 @@ export class KycComponent implements OnInit {
     }
 
     getKYC() {
+        const sDate = moment().subtract(30, 'days').calendar();
+        const tempsDate = sDate.split('/');
+        this.startDate = {year: Number(tempsDate[2]), month: Number(tempsDate[0]), day: Number(tempsDate[1])}
+        const eDate = moment().format('l');
+        const tempeDate = eDate.split('/');
+        this.endDate = {year: Number(tempeDate[2]), month: Number(tempeDate[0]), day: Number(tempeDate[1])}
+        console.log(this.startDate);
+        console.log(this.endDate);
         this.apiService.getKYCDetails().subscribe(response => {
             this.kycDetails = response;
             //this.attemptsChartData = [];
