@@ -85,12 +85,16 @@ export class ChartDrillDownComponent implements OnInit, OnChanges {
     filterQueryContainerPos = '300px';
     lastSortedKey = '';
     lastSortedOrder = 'desc';
+    defaultFilter: boolean;
     readonly separatorKeysCodes = [ENTER, COMMA];
 
     constructor(public _csvService: CsvService, public apiService: APIService) {
     }
 
     async ngOnInit() {
+        if (this.type === 'aml') {
+            this.defaultFilter = true;
+        }
         if (this.startDate && this.endDate) {
             this.applyDateFilters('');
         } else {
@@ -149,6 +153,9 @@ export class ChartDrillDownComponent implements OnInit, OnChanges {
             }
             if (this.includesParams) {
                 url += '&' + this.paramsToBePassed;
+            }
+            if (this.defaultFilter) {
+                url += '&response_code=Client Decisioning Review';
             }
             //url = this.apiUrl + '?pagination=true&offset=' + this.currentOffset + '&limit=' + this.limit;
 
@@ -209,6 +216,10 @@ export class ChartDrillDownComponent implements OnInit, OnChanges {
                 dropdownList: [],
                 filterData: []
             }
+        }
+        if (this.defaultFilter) {
+            this.queryFilterData['response_code'].filterData.push({item_id: 2, item_text: 'Client Decisioning Review'})
+            this.defaultFilter = false;
         }
     }
 
@@ -341,52 +352,52 @@ export class ChartDrillDownComponent implements OnInit, OnChanges {
         if (!this.showQueryFilter[key]) {
             this.queryFilterData[key].dropdownList = [];
             if (!this.queryFilterData[key].dropdownList.length) {
-                if (this.type === 'aml') {
-                    this.filterLoading = false;
-                    this.showChipSelector = true;
-                    Object.keys(this.showQueryFilter).forEach(queryKey => {
-                        this.showQueryFilter[queryKey] = false
-                    });
-                    this.showQueryFilter[key] = true;
-                } else {
-                    this.filterLoading = true;
-                    Object.keys(this.showQueryFilter).forEach(queryKey => {
-                        this.showQueryFilter[queryKey] = false
-                    });
-                    this.showQueryFilter[key] = true;
-                    this.apiService.getAttributeValues(key, this.type).subscribe(response => {
-                        let attributeValues: any;
-                        attributeValues = response;
-                        if (attributeValues && attributeValues.length && attributeValues.length < 10000) {
-                            for (let i = 0; i < attributeValues.length; i++) {
-                                let keys = Object.keys(attributeValues[i]);
-                                if (key === 'is_kyc_verified') {
-                                    if (attributeValues[i][keys[0]]) {
-                                        this.queryFilterData[key].dropdownList.push({item_id: i, item_text: 'Pass'});
-                                    } else if (attributeValues[i][keys[0]] === 0) {
-                                        this.queryFilterData[key].dropdownList.push({item_id: i, item_text: 'Fail'});
-                                    } else {
-                                        //if (attributeValues[i][keys[0]] !== null) {
-                                        this.queryFilterData[key].dropdownList.push({
-                                            item_id: i,
-                                            item_text: attributeValues[i][keys[0]]
-                                        });
-                                        // }
-                                    }
+                // if (this.type === 'aml') {
+                //     this.filterLoading = false;
+                //     this.showChipSelector = true;
+                //     Object.keys(this.showQueryFilter).forEach(queryKey => {
+                //         this.showQueryFilter[queryKey] = false
+                //     });
+                //     this.showQueryFilter[key] = true;
+                // } else {
+                this.filterLoading = true;
+                Object.keys(this.showQueryFilter).forEach(queryKey => {
+                    this.showQueryFilter[queryKey] = false
+                });
+                this.showQueryFilter[key] = true;
+                this.apiService.getAttributeValues(key, this.type).subscribe(response => {
+                    let attributeValues: any;
+                    attributeValues = response;
+                    if (attributeValues && attributeValues.length && attributeValues.length < 10000) {
+                        for (let i = 0; i < attributeValues.length; i++) {
+                            let keys = Object.keys(attributeValues[i]);
+                            if (key === 'is_kyc_verified') {
+                                if (attributeValues[i][keys[0]]) {
+                                    this.queryFilterData[key].dropdownList.push({item_id: i, item_text: 'Pass'});
+                                } else if (attributeValues[i][keys[0]] === 0) {
+                                    this.queryFilterData[key].dropdownList.push({item_id: i, item_text: 'Fail'});
                                 } else {
-                                    if (attributeValues[i][keys[0]] !== null) {
-                                        this.queryFilterData[key].dropdownList.push({item_id: i, item_text: attributeValues[i][keys[0]]});
-                                    }
+                                    //if (attributeValues[i][keys[0]] !== null) {
+                                    this.queryFilterData[key].dropdownList.push({
+                                        item_id: i,
+                                        item_text: attributeValues[i][keys[0]]
+                                    });
+                                    // }
+                                }
+                            } else {
+                                if (attributeValues[i][keys[0]] !== null) {
+                                    this.queryFilterData[key].dropdownList.push({item_id: i, item_text: attributeValues[i][keys[0]]});
                                 }
                             }
-                            this.showChipSelector = false;
-                        } else {
-                            this.showChipSelector = true;
                         }
-                        this.filterLoading = false;
+                        this.showChipSelector = false;
+                    } else {
+                        this.showChipSelector = true;
+                    }
+                    this.filterLoading = false;
 
-                    });
-                }
+                });
+                //}
             }
             const filterPos = document.getElementById('data-table');
             // $('.filter-query-container').css({'left': filterPos.offsetLeft})

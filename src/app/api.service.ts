@@ -82,6 +82,8 @@ export class APIService {
     getAttributeValues(key, type) {
         if (type === 'kyc') {
             return this._http.get(environment.gildedHost + '/' + environment.partner + '/' + environment.account + '/v1/' + 'getAttributeValues?attribute=' + key, this.gildedHttpOptions).pipe(map(res => res));
+        } else if (type === 'aml') {
+            return this._http.get(environment.gildedHost + '/' + environment.partner + '/' + environment.account + '/v1/' + 'getAttributeValuesForAML?attribute=' + key, this.gildedHttpOptions).pipe(map(res => res));
         }
     }
 
